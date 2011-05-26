@@ -1,0 +1,89 @@
+\documentclass[12pt]{article}
+\title{Responsibilities}
+\author{S. Poss}
+\date{\today}
+\begin{document}
+\maketitle
+\abstract{This document show the different responsibilities that have to be
+taken to have a fully working system}
+
+\section{Production Manager}
+The Production Manager is in charge of producing data (duh!). That means
+running the different applications in the right order (duh! again) to produce a
+given amount of data. In details:
+\begin{itemize}
+  \item create productions
+  \item monitor the status of productions with the web page: report to sys admin
+  (see later) when problems arise.
+  \item run the DataRecoveryAgent (until it is actually installed as an Agent
+  in the server): recovers failed jobs that don't have uploaded the expected
+  files
+  \item prepare the production summary: the table for the twiki page
+  \item Run productions in the right order: when generation has produced at
+  least 1 file, definme the SIM production, then REC.
+  \item stop productions that are done (to gain time essentially as they are
+  not considered by the different agents), complete those that are really
+  finished (removes all jobs from WMS, cleans sandbox files (log files)),
+  and clean the productions are are invalidated (removes all, even data)
+ \end{itemize}
+ Amount of time per day: 1-2 h
+ 
+\section{Data Manager}
+The data manager is responsible for the data (haha). He is in charge of the
+following:
+\begin{itemize}
+  \item monitoring of available disk space at the different SEs (lcg-infosites
+  is useful)
+  \item replication of data where needed: can be
+  done using Replication transformation
+  \item Monitor the replicas: where is what?
+  \item staging/unstaging data (REC files in particular)
+  \item replicating the software and making sure it's available
+  everywhere
+  \item Testing daily the SE access, and report to sys admins if something is
+  wrong
+  \item providing statisitics of usage
+\end{itemize}
+Amount of time per day: 1-2h
+
+ \section{System Administrator}
+ The system administrator is responsible for:
+ \begin{itemize}
+   \item monitoring the status of the vobox: disk, mem, cpu usage (SLS sensors
+   can be used)
+   \item monitoring the status of the agents and services (logging to vobox
+   mandatory)
+   \item reporting to DIRAC devs the bugs found
+   \item Reporting to ILCDIRAC devs the issues
+   \item ordering new voboxes
+   \item request new space tokens for storage
+   \item interact with computing elements when problems arise 
+   \item Check global status of jobs: understand cause of failures in pilots
+   and/or jobs
+   \item Ban/unban sites
+   \item Update DIRAC version to use when devs have done their work
+   \item add new CE in the CS. 
+ \end{itemize}
+ Amount of work per day: 2h (but can be much more)
+ 
+ \section{ILCDIRAC developer}
+ \begin{itemize}
+   \item Implement new functionality when users ask
+   \item fix bugs
+   \item test new DIRAC versions before putting them in production
+   \item manage the repository
+ \end{itemize}
+ Amount of time per day: depends on the problems found
+ 
+ \section{Responsible for generator}
+ This role implies the following:
+ \begin{itemize}
+   \item installing whizard and PYTHIA (once only)
+   \item adding new processes in whizard: add, recompile, test
+   \item upload to GRID and register in DIRAC 
+   \item Same for PYTHIA
+   \item Prepare the grid files (result of whizard integration): run whizard on
+   dedicated machine
+ \end{itemize}
+ Amount of time per day: 2-3 h.
+\end{document}
