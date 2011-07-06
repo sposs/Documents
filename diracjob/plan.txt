@@ -1,0 +1,107 @@
+Definitons:
+
+Job : successions of steps, job has one Inputdata/inputsandbox and one Outputdata/outputsandbox. Each one can be a list 
+of items 
+
+2 types of jobs: user and production
+user job: no control on inputdata and input sandbox. Just return error if files are not found
+no control on steps applied: up to the user
+control application existence
+allow output file name setting
+control site
+control system config
+control CPU needed
+allow sb files as lfn or local files
+
+production jobs: input data is to be controlled as FC query, input sandbox is for the steering files only
+output data must be specified properly using well defined conventions
+steps must be very well predefined: order is important e.g. register data cannot be done before end of job
+control applications
+control every step of the definition
+
+Model:
+          Class job 
+class userJob  Class productionjob
+
+                    Class Application 
+cls Whizard   class mokka    class slic    class Marlin   class lcsim   class slicpandora   class ...
+
+class job(list):
+setCPUtime
+setsystemconfig
+setname
+setjobgroup
+setdestination
+setbannedsites
+append(application): Define workflow parameters (get them from aplication) and set values. 
+Calls application.checkConsitency
+setignoreapplicationerrors
+
+class userjob(job):
+setinputdata
+setinputsandbox
+setoutputdata
+setoutputsandbox
+
+
+class productionjob(job):
+setinputdataquery
+overload append(): check consistency, for every step ask confirmation
+setproddetail
+createProd
+finalizeProd
+
+
+class application:
+self.name
+self.version
+self.parameters (dict[name]['type']=type, [name]['description']=description, [name]['default']=default, etc.)
+setname
+setversion
+setsteeringfile (default none)
+setoutputfile (default none)
+setlogfile
+setNbEvts (self.nbevts)
+checkConsistency(): overloaded by every subclass to check validity (app version exists, links between apps !!!)
+
+class whizard(application):
+setprocess: check process and find corresponding version
+setnbevts
+setlumi (optional)
+self.appname="whizard"
+
+class stdhepcut(application):
+setcutfile
+self.appname="stdhepcut"
+setnbevtsperfile
+
+class mokka(application):
+self.appname="mokka"
+setdetecormodel(sql file)
+
+class marlin(application):
+self.appname="marlin"
+setgearfile (optionnal), but checkconsistency checks that Mokka ran before
+
+class slic(application):
+self.appname=slic
+setdetectormodel
+
+class lcsim(application):
+self.appname=lcsim
+setdetectormodel (optionnal), but checkConsistency checks that slic ran before
+
+class slicpandora(application):
+self.appname=slicpandora
+setpandorasettings (optionnal)
+
+class rootExec(application):
+self.appname=root
+setExec
+setArgs
+
+class rootScript(application):
+self.appname='root'
+setScript
+setArgs
+
