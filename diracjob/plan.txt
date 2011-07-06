@@ -41,12 +41,14 @@ Calls __addParameter
 Sets default logfile if not set already
 setignoreapplicationerrors
 
+========================
 class userjob(job):
 setinputdata
 setinputsandbox
 setoutputdata
 setoutputsandbox
 
+========================
 class productionjob(job):
 setinputdataquery -> get energy, evttype, etc.
 overload append(application): check consistency, for every step ask confirmation
@@ -131,7 +133,7 @@ self.detectortype= 'SID'
 self.datatype = 'SIM'
 self.appname='slic'
 self.modulename = "SLICAnalysis"
-setdetectormodel (zip name)
+setdetectormodel(zip name)
 
 =======
 class lcsim(application):
