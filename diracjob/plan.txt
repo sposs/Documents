@@ -38,6 +38,7 @@ setbannedsites
 append(application): Define workflow parameters (get them from application) and set values 
 Calls application.checkConsitency
 Calls __addParameter
+Sets default logfile if not set already
 setignoreapplicationerrors
 
 class userjob(job):
@@ -47,9 +48,9 @@ setoutputdata
 setoutputsandbox
 
 class productionjob(job):
-setinputdataquery -> get energy
+setinputdataquery -> get energy, evttype, etc.
 overload append(application): check consistency, for every step ask confirmation
-get from application the elements to build path
+get from application the elements to build path (self.prodparameters)
 setproddetail
 createProd
 finalizeProd
@@ -67,19 +68,23 @@ self.energy = ''
 self.logfile = ''
 self.steeringfile = ''
 self.OutputFile = ''
-getParameters() needed by Job
+self.modulename = "ApplicationScript"
+
 setname() (self.name)
 setversion() (self.version)
 setsteeringfile(file) (default none) (self.steeringfile)
+setlogfile() (self.logfile): default is self.appname_self.appversion_stepid.log, created when appending to job
+setNbEvts() (self.nbevts)
+setEnergy() (self.energy)
+setScript(): Generic application definition: to be used with ApplicationScript module
+
 setoutputfile(file) (default none) (self.OutputFile):
 if self.detectortype:
   self.prodparameters[file]["detectortype"]=self.detectortype
 if self.datatype:
   self.prodparameters[file]["Datatype"]=self.datatype
 
-setlogfile() (self.logfile)
-setNbEvts() (self.nbevts)
-setEnergy() (self.energy)
+getParameters() needed by Job
 checkConsistency(): overloaded by every subclass to check validity (app version exists, links between apps !!!), 
 check datatype
 
@@ -88,25 +93,29 @@ class whizard(application):
 setprocess: check process and find corresponding version
 setlumi (optional)
 self.appname="whizard"
+self.modulename= "WhizardAnalysis"
 self.datatype = 'gen'
 
 =======
 class stdhepcut(application):
-setcutfile
+setcutfile()
 self.appname="stdhepcut"
-setnbevtsperfile
+self.modulename = "StdhepCut"
+setnbevtsperfile()
 self.datatype = 'gen'
 
 =======
 class mokka(application):
 self.detectortype='ILD'
 self.appname="mokka"
+self.modulename = "MokkaAnalysis"
 setdetectormodel(sql file)
 self.datatype = 'SIM'
 
 =======
 class marlin(application):
 self.appname="marlin"
+self.modulename = "MarlinAnalysis"
 setgearfile (optionnal), but checkconsistency checks that Mokka ran before
 self.datatype=None
 setOutputDST(file) : 
@@ -120,14 +129,16 @@ self.prodparameters[file]["detectortype"]='ILD'
 class slic(application):
 self.detectortype= 'SID'
 self.datatype = 'SIM'
-self.appname=slic
+self.appname='slic'
+self.modulename = "SLICAnalysis"
 setdetectormodel (zip name)
 
 =======
 class lcsim(application):
 self.detectortype='SID'
 self.datatype = None
-self.appname=lcsim
+self.appname='lcsim'
+self.modulename = "LCSIMAnalysis"
 setdetectormodel (optionnal), but checkConsistency checks that slic ran before
 setOutputDST(file) : 
 self.prodparameters[file]['Datatype']="DST"
@@ -141,10 +152,12 @@ class slicpandora(application):
 self.detectortype='SID'
 self.datatype='SIM'
 self.appname='slicpandora'
+self.modulename = "SlicPandoraAnalysis"
 setpandorasettings (optionnal)
 
 =======
 class rootExec(application):
+self.modulename = "RootExecutable" (or whatever)
 self.appname='root'
 setExec
 setArgs
@@ -152,6 +165,7 @@ setArgs
 =======
 class rootScript(application):
 self.appname='root'
+self.modulename = "RootScript" (or whatever)
 setScript
 setArgs
 
