@@ -26,6 +26,8 @@ class userJob  Class productionjob
                     Class Application 
 cls Whizard   class mokka    class slic    class Marlin   class lcsim   class slicpandora   class ...
 
+
+=======================================================================
 class job(list):
 setCPUtime
 setsystemconfig
@@ -33,8 +35,9 @@ setname
 setjobgroup
 setdestination
 setbannedsites
-append(application): Define workflow parameters (get them from aplication) and set values. 
+append(application): Define workflow parameters (get them from application) and set values 
 Calls application.checkConsitency
+Calls __addParameter
 setignoreapplicationerrors
 
 class userjob(job):
@@ -43,63 +46,110 @@ setinputsandbox
 setoutputdata
 setoutputsandbox
 
-
 class productionjob(job):
-setinputdataquery
-overload append(): check consistency, for every step ask confirmation
+setinputdataquery -> get energy
+overload append(application): check consistency, for every step ask confirmation
+get from application the elements to build path
 setproddetail
 createProd
 finalizeProd
 
-
+===================================================================
 class application:
-self.name
-self.version
+self.name=''
+self.version=''
+self.prodparameters = {}
 self.parameters (dict[name]['type']=type, [name]['description']=description, [name]['default']=default, etc.)
-setname
-setversion
-setsteeringfile (default none)
-setoutputfile (default none)
-setlogfile
-setNbEvts (self.nbevts)
-checkConsistency(): overloaded by every subclass to check validity (app version exists, links between apps !!!)
+self.detectortype= None
+self.datatype = None
+self.nbevts = 0
+self.energy = ''
+self.logfile = ''
+self.steeringfile = ''
+self.OutputFile = ''
+getParameters() needed by Job
+setname() (self.name)
+setversion() (self.version)
+setsteeringfile(file) (default none) (self.steeringfile)
+setoutputfile(file) (default none) (self.OutputFile):
+if self.detectortype:
+  self.prodparameters[file]["detectortype"]=self.detectortype
+if self.datatype:
+  self.prodparameters[file]["Datatype"]=self.datatype
 
+setlogfile() (self.logfile)
+setNbEvts() (self.nbevts)
+setEnergy() (self.energy)
+checkConsistency(): overloaded by every subclass to check validity (app version exists, links between apps !!!), 
+check datatype
+
+=======
 class whizard(application):
 setprocess: check process and find corresponding version
-setnbevts
 setlumi (optional)
 self.appname="whizard"
+self.datatype = 'gen'
 
+=======
 class stdhepcut(application):
 setcutfile
 self.appname="stdhepcut"
 setnbevtsperfile
+self.datatype = 'gen'
 
+=======
 class mokka(application):
+self.detectortype='ILD'
 self.appname="mokka"
-setdetecormodel(sql file)
+setdetectormodel(sql file)
+self.datatype = 'SIM'
 
+=======
 class marlin(application):
 self.appname="marlin"
 setgearfile (optionnal), but checkconsistency checks that Mokka ran before
+self.datatype=None
+setOutputDST(file) : 
+self.prodparameters[file]['Datatype']="DST"
+self.prodparameters[file]["detectortype"]='ILD'
+setOutputREC(file) : 
+self.prodparameters[file]['Datatype']="REC"
+self.prodparameters[file]["detectortype"]='ILD'
 
+=======
 class slic(application):
+self.detectortype= 'SID'
+self.datatype = 'SIM'
 self.appname=slic
-setdetectormodel
+setdetectormodel (zip name)
 
+=======
 class lcsim(application):
+self.detectortype='SID'
+self.datatype = None
 self.appname=lcsim
 setdetectormodel (optionnal), but checkConsistency checks that slic ran before
+setOutputDST(file) : 
+self.prodparameters[file]['Datatype']="DST"
+self.prodparameters[file]["detectortype"]='SID'
+setOutputREC(file) : 
+self.prodparameters[file]['Datatype']="REC"
+self.prodparameters[file]["detectortype"]='SID'
 
+=======
 class slicpandora(application):
-self.appname=slicpandora
+self.detectortype='SID'
+self.datatype='SIM'
+self.appname='slicpandora'
 setpandorasettings (optionnal)
 
+=======
 class rootExec(application):
-self.appname=root
+self.appname='root'
 setExec
 setArgs
 
+=======
 class rootScript(application):
 self.appname='root'
 setScript
