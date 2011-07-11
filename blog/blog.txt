@@ -34,3 +34,6 @@ it allows to work offline, and still commit things, branch, tag, etc. then a pus
 on the web, with all the release history, and stuff. This document is hosted on my GIT repository on github. That way I'm 
 sure to get access to it anywhere. One feature I'd like to have is that emacs would stage the file once it's been saved. 
 That way I would not have to do it. It already allows to commit directly, and that is good. 
+
+I'm thinking that I should have some structure in my documents, for fast access. Because if I stash everything in the same
+directory, I'll face several problems to recover a given information. 

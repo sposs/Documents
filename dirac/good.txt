@@ -1,0 +1,37 @@
+mailing list for production to send warnings 
+
+job monitor problems: too many overlay jobs getting the jobs numbers
+-> solution: 2 possibilities 
+1) duplication of JobMonitor
+2) dedicated service: high priority
+
+Log files: too many, disk space too low
+solution: disk server (4Tb)
+Agent in LHCb 
+Configuration issue for the StorageElement
+
+Castor issues: access to data
+Pb: all data is only at CERN
+Solution: replicate automatically
+
+merging of DST files: higher priority
+
+staging: need to hack in DB to mark them as OK
+solution: update DIRAC
+
+replication system: not functionnal yet 
+solution: DIRAC update
+
+interface: update, needs student
+
+Test phase: test all applications before release
+relies on ProcessProductionSystem (to be done)
+
+Do nt delete productions: just stop them
+
+Use TOMATO !
+
+More fields in metadata: 
+cross section
+mother prod
+SWpackages
