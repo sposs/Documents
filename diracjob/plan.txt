@@ -94,6 +94,7 @@ check datatype
 class whizard(application):
 setprocess: check process and find corresponding version
 setlumi (optional)
+setModel() default 'sm' list to obtain from ILCDIRAC.Core.Utilities.GeneratorModels getModels
 self.appname="whizard"
 self.modulename= "WhizardAnalysis"
 self.datatype = 'gen'
@@ -105,6 +106,16 @@ self.appname="stdhepcut"
 self.modulename = "StdhepCut"
 setnbevtsperfile()
 self.datatype = 'gen'
+
+=======
+class overlayinput(application):
+self.appname = 'overlay'
+self.appversion='default' (no need in fact)
+setDetectorModel() ("ILD" or "SID")
+setBX() (int)
+setGGhadInts() (float)
+setProdID() (optional, int)
+No outputfile
 
 =======
 class mokka(application):
