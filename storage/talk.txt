@@ -1,0 +1,9 @@
+12/07/2011
+
+pass the request id to release the files to srm
+Bug to report: need to keep the request token and pass it to the release file call (whatever that means)
+
+cernvmfs? 
+
+shared area at CERN: see with steve
+
