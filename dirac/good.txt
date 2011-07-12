@@ -2,11 +2,11 @@ mailing list for production to send warnings
 
 job monitor problems: too many overlay jobs getting the jobs numbers
 -> solution: 2 possibilities 
-1) duplication of JobMonitor
-2) dedicated service: high priority
+1) duplication of JobMonitor -> vobox ordered
+2) dedicated service: high priority -> done
 
 Log files: too many, disk space too low
-solution: disk server (4Tb)
+solution: disk server (4Tb) -> ordered
 Agent in LHCb 
 Configuration issue for the StorageElement
 
