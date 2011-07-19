@@ -59,8 +59,8 @@ finalizeProd
 
 ===================================================================
 class application:
-self.name=''
-self.version=''
+self.appname=None
+self.version=None
 self.prodparameters = {}
 self.parameters (dict[name]['type']=type, [name]['description']=description, [name]['default']=default, etc.)
 self.detectortype= None
@@ -72,10 +72,10 @@ self.steeringfile = ''
 self.OutputFile = ''
 self.modulename = "ApplicationScript"
 
-setname() (self.name)
-setversion() (self.version)
-setsteeringfile(file) (default none) (self.steeringfile)
-setlogfile() (self.logfile): default is self.appname_self.appversion_stepid.log, created when appending to job
+setName() (self.name)
+setVersion() (self.version)
+setSteeringFile(file) (default none) (self.steeringfile)
+setLogFile() (self.logfile): default is self.appname_self.appversion_stepid.log, created when appending to job
 setNbEvts() (self.nbevts)
 setEnergy() (self.energy)
 setScript(): Generic application definition: to be used with ApplicationScript module
@@ -91,26 +91,58 @@ checkConsistency(): overloaded by every subclass to check validity (app version 
 check datatype
 
 =======
+class GetSRMFile(applcation):
+""" Dummy class that just calls getStorageFile from job, bypassing the LFN resolution"""
+self.appname = "getsrmfile"
+self.version = "default" (no need in fact)
+setFileDict(): self.filedict is a list of dictionnaries {file:site}
+self.modulename = "GetSRMFile"
+No Software package needed
+
+=======
 class whizard(application):
-setprocess: check process and find corresponding version
-setlumi (optional)
+setProcess: check process and find corresponding version: see below
+setLumi (optional)
+setRandomSeed (optional)
+setParametersDict: takes a dict of steering parameters
 setModel() default 'sm' list to obtain from ILCDIRAC.Core.Utilities.GeneratorModels getModels
 self.appname="whizard"
 self.modulename= "WhizardAnalysis"
 self.datatype = 'gen'
+For process list: plan on the interface to ProcessProductionSystem. Until then 
+Use existing interface: job gets process list, and when Whizard is passed, check process
+in checkConsistency()
+
+=======
+Class pythia(application):
+self.appname = "pythia"
+self.modulename= "PythiaAnalysis"
+self.datatype = 'gen'
+All other parameters are part of base application
+Version must be not None (checkConsistency)
+
+=======
+class postGenCuts(application):
+""" Potentially not needed anymore """
+self.appname = "PostGenSel"
+self.modulename = "PostGenSelection"
+Version must be not None (checkConsistency)
+no outputData
 
 =======
 class stdhepcut(application):
-setcutfile()
+setCutFile() : file to be added to input SB
+setMaxNbEvts() : max number of events to keep in each file
 self.appname="stdhepcut"
 self.modulename = "StdhepCut"
 setnbevtsperfile()
 self.datatype = 'gen'
+Version must be not None (checkConsistency)
 
 =======
 class overlayinput(application):
 self.appname = 'overlay'
-self.appversion='default' (no need in fact)
+self.version='default' (no need in fact)
 setDetectorModel() ("ILD" or "SID")
 setBX() (int)
 setGGhadInts() (float)
@@ -122,14 +154,20 @@ class mokka(application):
 self.detectortype='ILD'
 self.appname="mokka"
 self.modulename = "MokkaAnalysis"
-setdetectormodel(sql file)
 self.datatype = 'SIM'
+setDetectorModel(Detector model) (optional)
+setDBSlice(sql file) (optional)
+setRandomSeed( int ): optional, default is the job number (so None here)
+setMacFile( file ) : optional file
+SkipNevents(int): optional
+setProcessID(string): optional, added to every event in output slcio
 
 =======
 class marlin(application):
 self.appname="marlin"
 self.modulename = "MarlinAnalysis"
-setgearfile (optionnal), but checkconsistency checks that Mokka ran before
+setXMLFile()
+setGearFile (optionnal), but checkConsistency checks that Mokka ran before
 self.datatype=None
 setOutputDST(file) : 
 self.prodparameters[file]['Datatype']="DST"
@@ -144,7 +182,7 @@ self.detectortype= 'SID'
 self.datatype = 'SIM'
 self.appname='slic'
 self.modulename = "SLICAnalysis"
-setdetectormodel(zip name)
+setDetectorModel(zip name)
 
 =======
 class lcsim(application):

@@ -1,0 +1,218 @@
+%% LaTeX Beamer presentation template (requires beamer package)
+%% see http://latex-beamer.sourceforge.net/
+%% idea contributed by H. Turgut Uyar
+%% template based on a template by Till Tantau
+%% this template is still evolving - it might differ in future releases!
+\documentclass{beamer}
+\usepackage{beamerarticle}
+\usepackage{pgf} 
+%%\usepackage{heppennames}
+%%\usepackage{hepnicenames}
+\usepackage{graphicx} 
+\usepackage{multirow}
+\usepackage{amsbsy,amsmath,amssymb}
+
+\mode<presentation>
+{
+\usetheme{Singapore}
+  \setbeamercovered{transparent}
+   \setbeamertemplate{footline}[frame number] 
+  \setbeamertemplate{navigation symbols}{ 
+  \insertslidenavigationsymbol
+  \insertframenavigationsymbol
+  \insertsubsectionnavigationsymbol
+  \insertsectionnavigationsymbol
+  \insertdocnavigationsymbol
+  \insertbackfindforwardnavigationsymbol
+  \hskip 0.3cm
+  %\insertframenumber / \inserttotalframenumber  % <<< frame #
+  %\insertpagenumber / \insertpresentationendpage % <<< page #
+} 
+}
+
+\usepackage[english]{babel}
+\usepackage[latin1]{inputenc}
+
+% font definitions, try \usepackage{ae} instead of the following
+% three lines if you don't like this look
+\usepackage{mathptmx}
+\usepackage[scaled=.90]{helvet}
+\usepackage{courier}
+
+
+\usepackage[T1]{fontenc}
+
+\usepackage{listings}
+\lstloadlanguages{bash}
+
+\title{Production status: problems encountered}
+
+\subtitle{Lessons learned, actions to take}
+
+% - Use the \inst{?} command only if the authors have different
+%   affiliation.
+%\author{F.~Author\inst{1} \and S.~Another\inst{2}}
+\author{C.~Grefe, C.~B.~Lam, S.~Poss, J.~Strube}
+
+% - Use the \inst command only if there are several affiliations.
+% - Keep it simple, no one is interested in your street address.
+\institute[CERN]
+{%
+CERN, Switzerland
+}
+
+\date{\today}
+
+
+% This is only inserted into the PDF information catalog. Can be left
+% out.
+\subject{ILCDIRAC}
+
+
+
+% If you have a file called "university-logo-filename.xxx", where xxx
+% is a graphic format that can be processed by latex or pdflatex,
+% resp., then you can add a logo as follows:
+
+% \pgfdeclareimage[height=0.5cm]{university-logo}{university-logo-filename}
+% \logo{\pgfuseimage{university-logo}}
+
+
+
+% Delete this, if you do not want the table of contents to pop up at
+% the beginning of each subsection:
+\AtBeginSubsection[]
+{
+\begin{frame}<beamer>
+\frametitle{Outline}
+\tableofcontents[currentsection,currentsubsection]
+\end{frame}
+}
+
+% If you wish to uncover everything in a step-wise fashion, uncomment
+% the following command:
+
+%\beamerdefaultoverlayspecification{<+->}
+
+\begin{document}
+
+\begin{frame}
+\titlepage
+\end{frame}
+
+\begin{frame}
+\frametitle{Outline}
+\tableofcontents
+% You might wish to add the option [pausesections]
+\end{frame}
+
+\section{Introduction}
+\begin{frame}
+\frametitle{Introduction}
+Production ``nearly'' done, check usual pages for status
+\end{frame}
+
+\section{Problems}
+\begin{frame}
+\frametitle{Current problems}
+\begin{itemize}
+  \item \alert{Productions stalled}
+  \item Access to \alert{data} is limiting the efficiency
+  \item \alert{Overlay problems} are also affecting the efficiency
+
+\end{itemize}
+\end{frame}
+\section{Data access}
+\begin{frame}
+\frametitle{Data specific problems}
+\begin{itemize}
+  \item Disk at CERN \alert{nearly full} (10.6\% free)
+  \item Garbage collector started ``cleanup'': remove from disk ``old'' files
+  \item Some input files were processed a while back and are considered ``old''
+  \item Consequence: need \alert{staging of many files}, but fight against
+  garbage collector
+  \item Many files fail to be obtained and jobs fail
+\end{itemize}
+Solution: have many replicas (2 at least, but more is better). Replication
+system in DIRAC is useful but buggy: need to hack the DB by hand to make it work, need
+some time to look into it.
+\end{frame}
+\section{Overlay related problems}
+\begin{frame}
+\frametitle{Overlay problems}
+\begin{itemize}
+  \item Overlay at 500GeV are killing every thing: 1 file per event, 50 even per
+  job $\to$ 50 files: too much for the disks
+  \item Need to \alert{merge} them (started this morning)
+  \item Need to know how many jobs are running at each site: limit number of
+  concurrent access
+  \item JobManager of DIRAC could do the job: but service flooded and lost
+  efficiency
+  \item Designed and implemented dedicated service that tells a job is it can
+  proceed (1 night shift).
+  \item Getting files do not use CPU: while doing so, jobs can be identified as
+  stalled and are killed. $\to$ Need to use CPU time (count to 50e6 for the
+  moment).
+\end{itemize}
+\end{frame}
+\section{Other Problems}
+\begin{frame}
+\frametitle{Other problems}
+\begin{itemize}
+  \item Log files are filling up our server: do we need them? Ordered disk
+  server, should be available in August
+  \item \alert{Data validation} should be done in a more systematic way: use
+  Tomato!
+  \item Metadata in the catalog is not sufficient: add cross section, mother
+  prodution, software packages, etc.
+  \item Productions were archived: could not be extended anymore, needed to
+  create new ones (3 prods every time)
+  \item Interface to create productions a bit cumbersome: student coming in
+  August to implement better interface
+  \item Applications need testing before being used in production: adds some
+  delay
+  \item Need automatic merging of DSTs.
+\end{itemize}
+\end{frame}
+\section{Changes in methodology}
+\begin{frame}
+\frametitle{Changes in methodology}
+Application handling:
+\begin{itemize}
+  \item Big change: use shared area where possible
+  \item Put there also the steering files needed (considered as an
+  application in dirac)
+  \item Implies tools to install and remove the apps (1 night work\ldots)
+\end{itemize}
+Data handling:
+\begin{itemize}
+  \item Use stager in DIRAC as much as possible
+\end{itemize}
+\end{frame}
+\section{The future}
+\begin{frame}
+\frametitle{What about the future}
+\begin{itemize}
+  \item Having so many samples is a management nightmare: think about having a
+  large but unique inclusive background sample
+  \item Overlay: is it really needed for the background? 
+  \item Need more data validation: individual WG should check the data as soon
+  as it comes out, avoid to have to reproduce large samples at the last minute
+  \item Complete review of data model: where do we store things, how do we
+  access them (will request more storage at CERN, but that's not a long term
+  solution)
+\end{itemize}
+\end{frame}
+\section{Conclusion}
+\begin{frame}
+\frametitle{Conclusion}
+\begin{itemize}
+  \item Many problems remain
+  \item Data access is the biggest issue
+  \item Overlay is still an issue
+  \item Some last minute hacks were needed to proceed: major changes of strategy
+  were needed\\~\\
+  \item Most productions very well advanced
+\end{itemize}
+\end{frame}
+\end{document}
