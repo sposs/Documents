@@ -1,0 +1,19 @@
+Storage
+- Not enough space at CERN for prod and user data: need 2 disks at least
+- Not enough throuput
+- Data is now being removed from disk because of garbage collector: serious problems accessing the data forseen
+
+Sites
+
+
+Data management
+- Data availability not good enough: 1 site is not enough. Need to have many replicas of everything
+
+
+Log files
+- Do we need them? Currently stored on one box with limited disk space. Being upgraded to disk server.
+
+Application versions
+- Install applications in the shared areas
+- install steering files in the shared areas also
+- Need to keep track of what is where.
