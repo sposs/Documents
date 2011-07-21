@@ -6,14 +6,17 @@ of items
 2 types of jobs: user and production
 user job: no control on inputdata and input sandbox. Just return error if files are not found
 no control on steps applied: up to the user
+Pack large sandbox as LFN automatically, make sure subsequent dirac instance call share the same path. What happens if 
+SB changes during submission?
 control application existence
 allow output file name setting
 control site
 control system config
 control CPU needed
 allow sb files as lfn or local files
+steeringfiles are obtained from job def and added to inputSB
 
-production jobs: input data is to be controlled as FC query, input sandbox is for the steering files only
+production jobs: input data is to be controlled as FC query, steering files are only application parameters
 output data must be specified properly using well defined conventions
 steps must be very well predefined: order is important e.g. register data cannot be done before end of job
 control applications
@@ -28,23 +31,26 @@ cls Whizard   class mokka    class slic    class Marlin   class lcsim   class sl
 
 
 =======================================================================
-class job(list):
+class job(Job):
 setCPUtime
 setsystemconfig
 setname
 setjobgroup
 setdestination
 setbannedsites
-append(application): Define workflow parameters (get them from application) and set values 
-Calls application.checkConsitency
+append(application): Define workflow parameters (get them from application) and set values, 
+create workflow instances, etc
+get app.inputSB and add to global inputsb (self.inputSandbox)
+Calls application.checkConsistency
 Calls __addParameter
 Sets default logfile if not set already
 setignoreapplicationerrors
+self.applicationlist = [] (filled by append call)
 
 ========================
 class userjob(job):
 setinputdata
-setinputsandbox
+setinputsandbox (global inputSB)
 setoutputdata
 setoutputsandbox
 
@@ -62,7 +68,7 @@ class application:
 self.appname=None
 self.version=None
 self.prodparameters = {}
-self.parameters (dict[name]['type']=type, [name]['description']=description, [name]['default']=default, etc.)
+self.parameters (dict[name]['type']=type, [name]['description']=description, [name]['default']=default, 'value')
 self.detectortype= None
 self.datatype = None
 self.nbevts = 0
@@ -71,10 +77,10 @@ self.logfile = ''
 self.steeringfile = ''
 self.OutputFile = ''
 self.modulename = "ApplicationScript"
-
+self.inputSB = []
 setName() (self.name)
 setVersion() (self.version)
-setSteeringFile(file) (default none) (self.steeringfile)
+setSteeringFile(file) (default none) (self.steeringfile, self.inputSB.append(file))
 setLogFile() (self.logfile): default is self.appname_self.appversion_stepid.log, created when appending to job
 setNbEvts() (self.nbevts)
 setEnergy() (self.energy)
@@ -86,7 +92,13 @@ if self.detectortype:
 if self.datatype:
   self.prodparameters[file]["Datatype"]=self.datatype
 
-getParameters() needed by Job
+getParameters() needed by Job to contruct workflow
+
+getInputfromApp(Application): to allow linking of apps. This is first use to copy things: store app pointer and check param
+when Job builds workflow, remember to look for linked apps: application expect omething from a prexisting app: outputfile
+in detail: this checks for app type and rejects wrong types, check expected value defined: example marlin expects
+mokka, with outputfile defined, GearFile can be hardcoded. 
+
 checkConsistency(): overloaded by every subclass to check validity (app version exists, links between apps !!!), 
 check datatype
 
@@ -131,7 +143,7 @@ no outputData
 
 =======
 class stdhepcut(application):
-setCutFile() : file to be added to input SB
+setCutFile(file) : file to be added to input SB (self.inputSB.append(file))
 setMaxNbEvts() : max number of events to keep in each file
 self.appname="stdhepcut"
 self.modulename = "StdhepCut"
@@ -156,9 +168,9 @@ self.appname="mokka"
 self.modulename = "MokkaAnalysis"
 self.datatype = 'SIM'
 setDetectorModel(Detector model) (optional)
-setDBSlice(sql file) (optional)
+setDBSlice(sql file) (optional, self.inputSB)
 setRandomSeed( int ): optional, default is the job number (so None here)
-setMacFile( file ) : optional file
+setMacFile( file ) : optional file (self.inputSB)
 SkipNevents(int): optional
 setProcessID(string): optional, added to every event in output slcio
 
@@ -166,8 +178,8 @@ setProcessID(string): optional, added to every event in output slcio
 class marlin(application):
 self.appname="marlin"
 self.modulename = "MarlinAnalysis"
-setXMLFile()
-setGearFile (optionnal), but checkConsistency checks that Mokka ran before
+setXMLFile(file): (self.inputSB)
+setGearFile (optionnal), but checkConsistency checks that Mokka is used as input, self.inputSB
 self.datatype=None
 setOutputDST(file) : 
 self.prodparameters[file]['Datatype']="DST"
@@ -182,7 +194,7 @@ self.detectortype= 'SID'
 self.datatype = 'SIM'
 self.appname='slic'
 self.modulename = "SLICAnalysis"
-setDetectorModel(zip name)
+setDetectorModel(zip name) (self.inputSB)
 
 =======
 class lcsim(application):
@@ -204,19 +216,19 @@ self.detectortype='SID'
 self.datatype='SIM'
 self.appname='slicpandora'
 self.modulename = "SlicPandoraAnalysis"
-setpandorasettings (optionnal)
+setpandorasettings (optionnal) (self.inputSB)
 
 =======
 class rootExec(application):
 self.modulename = "RootExecutable" (or whatever)
 self.appname='root'
-setExec
+setExec (self.inputSB)
 setArgs
 
 =======
 class rootScript(application):
 self.appname='root'
 self.modulename = "RootScript" (or whatever)
-setScript
+setScript (self.inputSB)
 setArgs
 
