@@ -47,6 +47,9 @@ Sets default logfile if not set already
 setignoreapplicationerrors
 self.applicationlist = [] (filled by append call)
 
+AskUser() called from Dirac.submit, asks only if job.check is True (set by default overwritten by job.ignoreChecks)
+
+
 ========================
 class userjob(job):
 setinputdata
@@ -57,7 +60,6 @@ setoutputsandbox
 ========================
 class productionjob(job):
 setinputdataquery -> get energy, evttype, etc.
-overload append(application): check consistency, for every step ask confirmation
 get from application the elements to build path (self.prodparameters)
 setproddetail
 createProd
@@ -84,7 +86,6 @@ setSteeringFile(file) (default none) (self.steeringfile, self.inputSB.append(fil
 setLogFile() (self.logfile): default is self.appname_self.appversion_stepid.log, created when appending to job
 setNbEvts() (self.nbevts)
 setEnergy() (self.energy)
-setScript(): Generic application definition: to be used with ApplicationScript module
 
 setoutputfile(file) (default none) (self.OutputFile):
 if self.detectortype:
@@ -101,6 +102,11 @@ mokka, with outputfile defined, GearFile can be hardcoded.
 
 checkConsistency(): overloaded by every subclass to check validity (app version exists, links between apps !!!), 
 check datatype
+
+======
+class GenericApp(Application)
+dict of apps
+setScript(): Generic application definition: to be used with ApplicationScript module
 
 =======
 class GetSRMFile(applcation):

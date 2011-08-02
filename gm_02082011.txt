@@ -1,0 +1,7 @@
+- DIRAC: some overlay changes: reduce number of files needed: latest productions use less files: events used more than once
+- prod: things are going on, still some failures, some are due to overlay, some are due to applications (mokka db access 
+in particular)
+- clean in2p3 storage: no space left on device
+- need to look at all data available, clean what is not needed. (data from last year needed?)
+
+
