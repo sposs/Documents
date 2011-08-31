@@ -21,11 +21,24 @@ CPU time consumed, average memory used, and final disk space required.
 
 \section{Framework and tools: DIRAC}
 
+The DIRAC framework (CITE DIRAC) was developed for the LHCb collaboration to perform their Monte Carlo production and 
+real data analysis. 
+
 \section{Generation}
+The generation is performed using two programs: WHIZARD and PYTHIA.
 
 \section{Simulation}
+The simulation depending on the detector model, 2 different frameworks are used: SLIC and Mokka. The detector 
+geometries are described in CITE DETECTORGOEM.
 
 \section{Reconstruction}
+As for the simulation, because 2 detector models are used, 2 frameworks are needed. In the CLIC\_ILD context, Marlin 
+is used, while in the CLIC\_SiD framework, a combinaison of LCSIM, SLICPandora, and Marlin is used. In the next 2sections, 
+we present the parameters specific to the case with and without overlay.
+
+The official production process performs all steps until the flavour tagging, which is left out because it has 
+a dedicated study.
+
 \subsection{Without overlay}
 
 \subsection{With overlay}
