@@ -100,6 +100,7 @@ Total number of events generated in the last 6 months: \alert{$17\cdot 10^6$}, e
 DIRAC has a Transformation System:
 \begin{itemize}
 \item  Create a workflow object (XML representation of a job), and let the system create the jobs for you
+\item Productions are identified unique ID
 \item Automatic resubmission of failed jobs: minor monitoring needed
 \end{itemize}
 ~\\
@@ -118,7 +119,7 @@ The DIRAC transformation system comes with a useful set of API commands: get pro
 \frametitle{Defining steps}
 \begin{itemize}
 \item Due to uncertain CPU usage, it was decided to split all steps in different jobs.
-\item Implies dedicated productions for:
+\item Implies specific productions for:
 \begin{itemize}
 \item Generation: WHIZARD/PYTHIA.
 \item Simulation: Mokka/SLIC.
@@ -229,15 +230,6 @@ Works but a bit tedious: requires to have all the files locally once. Plus one n
 Needed solution: \alert{use random access} (LCIO v1.51 has it, but not LCSIM). Then only one big file is needed on every site with direct access. No more transfers are needed.
 \end{frame}
 
-\section{Data validation}
-\begin{frame}
-\frametitle{Data validation}
-When simulating data with 2 frameworks, it's necessary to validate it before running. For that purpose \alert{TOMATO} was designed: convert the stdhep to slcio (stdhepjob supported by DIRAC), and run TOMATO (Marlin processor) to create histograms of "significant" distributions.  \\
-~\\
-"Significant" is specific to the different analysis, so every working group needs to provide the variables to be plotted.\\
-~\\
-Was used for the $\Ptop\APtop$ analysis.
-\end{frame}
 
 \part{Prospects}
 \begin{frame}
@@ -328,5 +320,14 @@ Same problem with JobManager with high load.
 \item File name is process\_prodID\_jobID.ext (ext=stdhep,slcio)
 \end{itemize} 
  \end{frame}
+\section{Data validation}
+\begin{frame}
+\frametitle{Data validation}
+When simulating data with 2 frameworks, it's necessary to validate it before running. For that purpose \alert{TOMATO} was designed: convert the stdhep to slcio (stdhepjob supported by DIRAC), and run TOMATO (Marlin processor) to create histograms of "significant" distributions.  \\
+~\\
+"Significant" is specific to the different analysis, so every working group needs to provide the variables to be plotted.\\
+~\\
+Was used for the $\Ptop\APtop$ analysis.
+\end{frame}
 
 \end{document}
