@@ -36,7 +36,7 @@
 
 
 \usepackage[T1]{fontenc}
-\author{S. Poss, C.B. Lam, J. Strube, C. Grefe}
+\author{S. Poss, \emph{C.B. Lam, J. Strube, C. Grefe}}
 \institute[CERN]{CERN}
 
 \subject{CLICProduction}
@@ -65,7 +65,7 @@
 \item Introduction
 \item Production framework
 \item CLIC productions
-\item Other considerations
+\item Prospects
 \item Conclusion
 \end{itemize}
 \end{frame}
@@ -84,9 +84,10 @@
 \item $\Pep\Pem \to \PSgxpm_i \PSgxmp_j,\, \Pep\Pem \to \PSgxz_i \PSgxz_j$,
 \item  $\Pep\Pem \to \Pqt \Paqt$ (500~GeV).
 \end{itemize}
-\item Plus all the backgrounds
+\item Plus all the backgrounds (Standard Model)
+\item 2 detector models
 \end{itemize}
-Total number of events generated in the last 6 months: \alert{$17\cdot 10^6$}, events processed: $\sim 100\cdot 10^6$.
+Number of events processed in the last 9 months: $17\cdot 10^6$ generated, $29\cdot 10^6$ simulated, $17\cdot 10^6$ reconstructed.
 \end{frame}
 
 \part{Framework}
@@ -99,8 +100,8 @@ Total number of events generated in the last 6 months: \alert{$17\cdot 10^6$}, e
 	\frametitle{Production framework}
 DIRAC has a Transformation System:
 \begin{itemize}
-\item  Create a workflow object (XML representation of a job), and let the system create the jobs for you
-\item Productions are identified unique ID
+\item  Create a work flow object (XML representation of a job), and let the system create the jobs for you
+\item Productions are identified with a unique ID
 \item Automatic resubmission of failed jobs: minor monitoring needed
 \end{itemize}
 ~\\
@@ -111,22 +112,21 @@ It \alert{saved us a huge amount of time and man power}.
 \frametitle{Production framework}
 The DIRAC transformation system comes with a useful set of API commands: get properties, change them, update inputs, etc.\\
 ~\\
-\alert{Full support for the ILD and SiD software frameworks}, plus support for WHIZARD and PYTHIA code. Additionnaly we have support for generator level cuts (StdhepCut tool from Lars Weuste), Overlay input, etc.~\\
+\alert{Full interface to the ILD and SiD software frameworks}, and to WHIZARD and PYTHIA code. Additionally we have an interface for generator level cuts (StdhepCut tool from Lars Weuste), Overlay input, etc.~\\
 
 \end{frame}
 
 \begin{frame}
 \frametitle{Defining steps}
 \begin{itemize}
-\item Due to uncertain CPU usage, it was decided to split all steps in different jobs.
-\item Implies specific productions for:
+\item Decided to split all steps in different jobs, implying specific productions for:
 \begin{itemize}
 \item Generation: WHIZARD/PYTHIA.
 \item Simulation: Mokka/SLIC.
 \item Reconstruction: Marlin/LCSIM-SLICPandora-LCSIM.
 \end{itemize}
-\item Limitation: few number of events per step ($10-50$), so small files to carry around.
-\item Linking of productions is straightforward, more on that later: \alert{data driven production management}.
+\item Because of long simulation and reconstruction CPU time, few number of events per step ($10-50$) are required $\Rightarrow$ small files to manage.
+\item Chaining of productions is straightforward, more on that later: \alert{data driven production management}.
 \end{itemize}
 All files produced are stored in the DIRAC replica and Metadata catalog
 \end{frame}
@@ -135,18 +135,17 @@ All files produced are stored in the DIRAC replica and Metadata catalog
 \begin{frame}
 \frametitle{Replica catalog} 
 \begin{itemize}
-\item Use of LFC is somewhat \alert{limited in performance sometimes} (more true for the LHC though)
-\item \alert{DIRAC provides a catalog} to overcome this
-\item Has also the possibility to \alert{write and read in the LFC via the same interface}.
+\item \alert{DIRAC provides a catalog}: fast and efficient
+\item Has the possibility to \alert{write and read in the Lcg FC via the same interface}.
 \end{itemize}
-In the futur (coming month), when adding a file in the DIRAC FC, it will also end up in the ILC LFC. It would be nice that the files be always added in both catalogs.
+In the futur (coming month), when adding a file in the DIRAC FC, it will also enter in the ILC LFC.
  \end{frame}
 \begin{frame}
 \frametitle{Metadata catalog}
 \begin{itemize}
 \item ILC stores the metadata encoded in the file names.
 \item Somehow restricts the number of meta info that one can add to a given file once the file is created.
-\item DIRAC FC comes with a metadata catalog, that sets the \alert{metadata at directory level} (e.g. production ID, software packages, cross section, polarisation, etc.) and at File level (number of events, etc.).
+\item DIRAC FC comes with a metadata catalogue, that sets the \alert{metadata at directory level} (e.g. production ID, software packages, cross section, polarisation, etc.) and at File level (number of events, etc.).
 \item Flexible as one can add (and remove) metadata on the fly.
 \item Searchable: find EvtType=tt Datatype=SIM
 \item Possibility to set ACLs.
@@ -160,9 +159,10 @@ Web interface is under development, should be available for tests in the coming 
 Monitoring done with web site: 
 \begin{itemize}
 \item Overview of production statuses: \% of the files processed,\\ failure rate
-\item Access to jobs from a given production in one click
+\item Control of jobs from a given production in two clicks
 \item Monitoring and accounting plots also available
 \end{itemize}
+
 \end{frame}
 
 \part{CLIC Production}
@@ -176,35 +176,38 @@ Monitoring done with web site:
 \begin{enumerate}
 \item Define the input data (if any) via a metadata query (e.g. meta['ProdID']=186)
 \item Define the application and versions you want to use
-\item Define the output files (if any)
+\item Define the output files and output storage
 \end{enumerate}
-\alert{Data driven procedure}: if new files are added to the catalog that correspond to the input data query, jobs are automatically created.
+\alert{Data driven procedure}: if new files are added to the catalogue that correspond to the metadata query, jobs processing those files are automatically created.
 \end{frame}
 
 
 \section{Generation}
 \begin{frame}
 \frametitle{Generating Events}
-Use WHIZARD for most samples:
+Use WHIZARD 1.95 (PYTHIA 6.4) for most samples:
 \begin{itemize}
 \item Handling of \alert{beam spectrum and ISR included}
 \item Adding a \alert{new process} is straight forward
-\item Does the correct computation of diagrams and interference: \alert{accurate cross section and kinematics estimation}
+\item Does the correct computation of diagrams and interference: \alert{accurate cross section and phase space}
 \item Limitation: \alert{final states have no width}, cannot do $\Pqt\Paqt$, $\PWp\PWm$ or $\PZz\PZz$.
 \end{itemize} 
-Use PYTHIA for those 3 samples:
+Use PYTHIA 6.4 for those 3 samples:
 \begin{itemize}
 \item Final states have the correct width
-\item Not so accurate estimation of cross section or kinematics, but simple enough to be very similar to those produced by WHIZARD
+\item Less accurate estimation of cross section and phase space, but compatible to those produced by WHIZARD
 \item Has \alert{beam spectrum interface via CALYPSO}, ISR is PYTHIA default
-\item Limitation: \alert{no flexibility at all}, adding a channel cannot be done easily
+\item Limitation: \alert{less flexibility}, adding a channel cannot be done easily
 \end{itemize}
 \end{frame}
 
 \section{Simulation}
 \begin{frame}
 \frametitle{Simulation}
-Define productions for both detector concepts, but very similar interface.  
+Define productions for both detector concepts, but very similar interface. Not an issue in the production framework:\\
+\begin{center}
+\includegraphics[width=9cm]{SimJobStatus}
+\end{center}
 \end{frame}
 
 \section{Reconstruction with Overlay}
@@ -212,20 +215,29 @@ Define productions for both detector concepts, but very similar interface.
 \frametitle{Reconstruction}
  As for the simulation: dedicated productions are created, automatically using files produced by the simulation step.\\
 ~\\
-Reconstruction done with and without Overlay.
+Without Overlay:\\
+\begin{center}
+\includegraphics[width=7cm]{RecoNoOverlayStatus}
+\end{center}
+\end{frame}
+\begin{frame}
+\frametitle{Reconstruction with overlay}
+\begin{center}
+\includegraphics[width=9cm]{RecoOverlayStatus} 
+\end{center}
 \end{frame}
 \begin{frame}
 \frametitle{Overlay handling (1)}
-CLIC detector benchmark require to reconstruct the events with overlaid $\gamma\gamma \to had$. \alert{60 BX with 3.2 interactions per bunch Xings are considered for every signal event}.\\
+CLIC detector benchmark require to reconstruct the physics events with overlaid $\gamma\gamma \to had$ background. \alert{60 BX with 3.2 interactions per BX are considered for every signal event}.\\
 ~\\
-Simulated background files contain $100$ events each (more would be better but CPU is a constrain). For a 10 signal events file, one need $\sim 2000$ bkg events, or \alert{$20$ files per job}.
+Simulated background files contain $100$ events each (more would be better but CPU is a constrain). For a 10 physics events file, one need $\sim 2000$ bkg events, or \alert{$20$ files per job}.
 \end{frame}
 \begin{frame}
 \frametitle{Overlay handling (2)}
 This did not work: storages (CERN in particular, but also IN2P3) do not cope with such a load (2000 jobs trying to access 20 random files each represent a huge number of queries).\\
-Solution: \alert{merge the files randomly once} to reduce the number of files needed: merge them by packs of 200.\\ 
+Solution: \alert{merge the files randomly once} to reduce the number of files needed: merge them by groups of 200 files.\\ 
 ~\\
-Works but a bit tedious: requires to have all the files locally once. Plus one needs a \alert{very large number of files} to have enough combinaisons.\\
+Works but requires manual intervention, and one needs a \alert{very large number of files} to have enough combinations.\\
 ~\\
 Needed solution: \alert{use random access} (LCIO v1.51 has it, but not LCSIM). Then only one big file is needed on every site with direct access. No more transfers are needed.
 \end{frame}
@@ -238,7 +250,7 @@ Needed solution: \alert{use random access} (LCIO v1.51 has it, but not LCSIM). T
 
 \begin{frame}
 \frametitle{Prospects} 
-Testing running in the US sites: when it runs, we'll need to see for disk space here and there. CERN disk requests will be made: for the moment, only 40Tb are available on disk (as mush as needed on TAPE though).\\
+Now running in the US sites: need to see for disk space. CERN disk requests will be made: for the moment, only 40Tb are available on disk (all used, but as mush as needed on TAPE though).\\
 ~\\
 Will finish implementing dedicated service that will know the available processes, to easy users' lives. For the moment, a text file holds all the processes available and the corresponding WHIZARD version.\\
 ~\\
@@ -253,13 +265,13 @@ Will push to get the File Catalog web browser.
 \begin{frame}
 \frametitle{Conclusion} 
 \begin{itemize}
-\item Produced in 6 month $\approx 100$ million events in 9 months
+\item $\approx 60$ million events processed in 9 months
 \item Used $2\cdot 10^{10}$ KSI2K seconds of CPU in $\sim 20$ sites
 \item Data produced correspond to $\sim 130$~TB
-\item Most problems were due to storage access, in particular for the overlay files
-\item ILC DBD could benefit from DIRAC usage
+\item Most issues were due to storage access (overlay in particular), not to software
 \end{itemize}
-At least, the data produced should be stored in both catalogs.
+Overall worked well $\rightarrow$ \alert{CDR is out!}\\
+https://edms.cern.ch/document/1160419
 \end{frame}
 
 \appendix
@@ -302,7 +314,7 @@ Software installed in the Shared areas of the sites when/where possible. Does no
 
 \begin{frame}
 \frametitle{Services availability}
-100 million events correspond to $\sim 4$ million jobs. On average 1000 concurrently running.\\
+60 million events correspond to $\sim 4$ million jobs. On average 1000 concurrently running.\\
 ~\\
 File catalog is the most expensive service in terms of CPU and simultaneous queries to DB. Had to duplicate service (not DB). ~\\
 ~\\
