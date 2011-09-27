@@ -87,7 +87,7 @@
 \item Plus all the backgrounds (Standard Model)
 \item 2 detector models
 \end{itemize}
-Number of events processed in the last 9 months: $17\cdot 10^6$ generated, $29\cdot 10^6$ simulated, $17\cdot 10^6$ reconstructed.
+Number of events processed in the last 9 months: $17\cdot 10^6 \times 3$ processed.
 \end{frame}
 
 \part{Framework}
@@ -112,7 +112,7 @@ It \alert{saved us a huge amount of time and man power}.
 \frametitle{Production framework}
 The DIRAC transformation system comes with a useful set of API commands: get properties, change them, update inputs, etc.\\
 ~\\
-\alert{Full interface to the ILD and SiD software frameworks}, and to WHIZARD and PYTHIA code. Additionally we have an interface for generator level cuts (StdhepCut tool from Lars Weuste), Overlay input, etc.~\\
+\alert{Full interface to the ILD and SiD software frameworks}\footnote{Look at http://lcd-data.web.cern.ch/lcd-data/doc/ilcdiracdoc/ILCDIRAC.Interfaces.API.NewInterface.Applications-module.html}, and to WHIZARD and PYTHIA code. Additionally we have an interface for generator level cuts (StdhepCut tool from Lars Weuste), Overlay input, etc.~\\
 
 \end{frame}
 
@@ -140,6 +140,8 @@ All files produced are stored in the DIRAC replica and Metadata catalog
 \end{itemize}
 In the futur (coming month), when adding a file in the DIRAC FC, it will also enter in the ILC LFC.
  \end{frame}
+{
+\usebackgroundtemplate{\includegraphics[width=\paperwidth]{FC_2}}
 \begin{frame}
 \frametitle{Metadata catalog}
 \begin{itemize}
@@ -153,7 +155,10 @@ In the futur (coming month), when adding a file in the DIRAC FC, it will also en
 \end{itemize} 
 Web interface is under development, should be available for tests in the coming weeks.
  \end{frame}
+}
 \section{Monitoring}
+{
+\usebackgroundtemplate{\includegraphics[width=\paperwidth]{prod_mon2}}
 \begin{frame}
 \frametitle{Production Monitoring}
 Monitoring done with web site: 
@@ -164,7 +169,7 @@ Monitoring done with web site:
 \end{itemize}
 
 \end{frame}
-
+}
 \part{CLIC Production}
 \begin{frame}
 \partpage 
@@ -180,9 +185,9 @@ Monitoring done with web site:
 \end{enumerate}
 \alert{Data driven procedure}: if new files are added to the catalogue that correspond to the metadata query, jobs processing those files are automatically created.
 \end{frame}
-
-
 \section{Generation}
+{
+\usebackgroundtemplate{\includegraphics[width=\paperwidth]{process_ex_1}}
 \begin{frame}
 \frametitle{Generating Events}
 Use WHIZARD 1.95 (PYTHIA 6.4) for most samples:
@@ -200,7 +205,7 @@ Use PYTHIA 6.4 for those 3 samples:
 \item Limitation: \alert{less flexibility}, adding a channel cannot be done easily
 \end{itemize}
 \end{frame}
-
+}
 \section{Simulation}
 \begin{frame}
 \frametitle{Simulation}
@@ -226,11 +231,13 @@ Without Overlay:\\
 \includegraphics[width=9cm]{RecoOverlayStatus} 
 \end{center}
 \end{frame}
+{
+\usebackgroundtemplate{\includegraphics[width=\paperwidth]{WWAll_transp2}}
 \begin{frame}
 \frametitle{Overlay handling (1)}
 CLIC detector benchmark require to reconstruct the physics events with overlaid $\gamma\gamma \to had$ background. \alert{60 BX with 3.2 interactions per BX are considered for every signal event}.\\
 ~\\
-Simulated background files contain $100$ events each (more would be better but CPU is a constrain). For a 10 physics events file, one need $\sim 2000$ bkg events, or \alert{$20$ files per job}.
+Simulated background files contain $100$ events each (more would be better but CPU is a constraint). For a 10 physics events file, one needs $\sim 2000$ bkg events, or \alert{$20$ files per job}.
 \end{frame}
 \begin{frame}
 \frametitle{Overlay handling (2)}
@@ -241,7 +248,7 @@ Works but requires manual intervention, and one needs a \alert{very large number
 ~\\
 Needed solution: \alert{use random access} (LCIO v1.51 has it, but not LCSIM). Then only one big file is needed on every site with direct access. No more transfers are needed.
 \end{frame}
-
+}
 
 \part{Prospects}
 \begin{frame}
@@ -250,11 +257,13 @@ Needed solution: \alert{use random access} (LCIO v1.51 has it, but not LCSIM). T
 
 \begin{frame}
 \frametitle{Prospects} 
-Now running in the US sites: need to see for disk space. CERN disk requests will be made: for the moment, only 40Tb are available on disk (all used, but as mush as needed on TAPE though).\\
+\alert{Now running in the US sites}: need to see for disk space. CERN disk requests will be made: 
+for the moment, only 40Tb are available on disk (all used, but as mush as needed on TAPE though).\\
 ~\\
-Will finish implementing dedicated service that will know the available processes, to easy users' lives. For the moment, a text file holds all the processes available and the corresponding WHIZARD version.\\
+Will finish implementing dedicated service that \alert{will know the available processes}, to ease users' lives. 
+For the moment, a text file holds all the processes available and the corresponding WHIZARD version.\\
 ~\\
-Will push to get the File Catalog web browser.
+Will push to get the \alert{File Catalog web browser}.
 \end{frame}
 
 \part{Conclusion}
@@ -270,7 +279,7 @@ Will push to get the File Catalog web browser.
 \item Data produced correspond to $\sim 130$~TB
 \item Most issues were due to storage access (overlay in particular), not to software
 \end{itemize}
-Overall worked well $\rightarrow$ \alert{CDR is out!}\\
+\alert{Overall worked well: CDR (physics \& detectors) is out!}\\
 https://edms.cern.ch/document/1160419
 \end{frame}
 
