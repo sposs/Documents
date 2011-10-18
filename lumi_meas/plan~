@@ -1,0 +1,8 @@
+2 aspects:
+
+1) data
+Any sample created using the production system. We will have to generate a 
+bhabha sample though. The reason behind is that the lumi spectrum included is 
+provided by GP. To generate the Bhabha events we will use BHWide.
+
+2) MC Samples.
