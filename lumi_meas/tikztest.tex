@@ -11,9 +11,68 @@
 \tikzstyle{line} = [draw, -triangle 90]
 \tikzstyle{dline} = [draw, dashed, -triangle 90]
 %\tikzstyle{cloud} = [draw, ellipse,fill=red!20, node distance=3cm,minimum height=2em]
-\section{First method: dumb and easy}
+\section{Lumi spectrum}
 \begin{frame}
-\frametitle{First method: dumb and easy}
+\frametitle{Luminosity spectrum}
+Why it's important to know it:
+\begin{itemize}
+\item any cross section measurement
+\item etc.
+\end{itemize}
+What we want to ``measure'': a parametrisation $[p]$ that describes the luminosity spectrum.
+\begin{itemize}
+\item need a correct model (hardest), based on assumptions
+\item need a framework/procedure for parameter estimation
+\item need data 
+\end{itemize}
+\end{frame}
+\section{Obtaining data}
+\begin{frame}
+\frametitle{Obtaining data}
+\begin{figure}[h]
+\begin{tikzpicture}[scale=0.8,auto]
+\matrix [column sep=7mm, row sep=4mm,ampersand replacement=\&]
+{
+%row1
+\uncover<1->{\node [block] (money) {Get money};} \&
+\uncover<2->{\node [block] (build) {Build detector};} \&
+\uncover<3->{\node [block] (recdata) {Take Bhabha data};} \&
+\uncover<4->{\node [autoblock, color=red] (rec) {Reconstruction};} \\
+%row2
+~ \&
+\uncover<5->{\node [block] (gen) {Generation using GP and BHWide};} \&
+\uncover<6->{\node [autoblock] (sim) {Simulate};} \&
+~\\
+};
+\uncover<2->{\path [line] (money) -- (build);}
+\uncover<3->{\path [line] (build) -- (recdata);}
+\uncover<4->{\path [line] (recdata) -- (rec);}
+\uncover<6->{\path [line] (gen) -- (sim);}
+\uncover<7->{\path [line] (sim) -| (rec);}
+\end{tikzpicture}
+\end{figure}
+\end{frame}
+\section{Chosen model}
+\begin{frame}
+\frametitle{Chosen model}
+Based on the individual components' analysis (BDS and beam strahlung), we use beta functions everywhere. 
+
+~\\
+
+We have 21 free parameters. Need more detail on model.
+\end{frame}
+\section{Methods}
+\begin{frame}
+\frametitle{Methods}
+2 methods are available:
+\begin{itemize}
+\item Direct fit: dumb and easy, obvious method, but not CPU wise,
+\item Reweighting fit: smart and elegant, not so obvious, but clearly affordable CPU wise.
+\end{itemize}
+\end{frame}
+\section{First method: direct fit}
+\begin{frame}
+\frametitle{First method: direct fit}
 \begin{figure}[h]
   \begin{tikzpicture}[scale=2.8,auto]
 \uncover<1-2>{\node [autoblock] (start) {\scriptsize Start: $[p]_0$};}
@@ -39,10 +98,23 @@
 \end{tikzpicture}
 \end{figure}
 \end{frame}
-
-\section{Second method: Smart and elegant}
 \begin{frame}
-\frametitle{Second method: Smart and elegant}
+\frametitle{First method: direct fit}
+Pros:
+\begin{itemize}
+\item logical
+\item straight-foward to set up
+\end{itemize}
+Cons:
+\begin{itemize}
+\item Takes forever
+\item all MC samples need to be reconstructed (1 reco per iteration)
+\end{itemize}
+\end{frame}
+
+\section{Second method: Reweighting fit}
+\begin{frame}
+\frametitle{Second method: reweighting fit}
 %Shown in fig.~\ref{fig:second}
 %begin{figure}[h]
 \begin{tikzpicture}[scale=.8,auto, remember picture]
@@ -90,5 +162,35 @@
 \end{scope}
 \end{tikzpicture}
 %\end{figure}
+\end{frame}
+\begin{frame}
+\frametitle{Second method: reweighting fit}
+Pros:
+\begin{itemize}
+\item Need to create only 1 MC sample
+\item Need to reconstruct the MC samples only once
+\end{itemize}
+Cons:
+\begin{itemize}
+\item Not simple to explain and understand, especially why it is correct
+\end{itemize}
+\end{frame}
+\section{So far}
+\begin{frame}
+\frametitle{So far}
+We have:
+\begin{itemize}
+\item framework
+\item MC production tools: generator level
+\item Guinea pig level data: generator level
+\end{itemize}
+Simulation and reconstruction will be done later, when some results are obtained. 
+
+~\\
+
+What we don't have yet:
+\begin{itemize}
+\item a model that works on generator level data.
+\end{itemize}
 \end{frame}
 \end{document}
