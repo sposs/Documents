@@ -1,0 +1,94 @@
+%\documentclass{article}
+\documentclass{beamer}
+\usepackage{beamerarticle}
+\usepackage{tikz}
+\usetikzlibrary{arrows,shapes}
+
+\begin{document}
+\tikzstyle{decision} = [diamond, draw, text badly centered, node distance=2.8cm]
+\tikzstyle{block} = [rectangle, draw, text centered, rounded corners, text width=1.9cm, node distance=2.2cm]
+\tikzstyle{autoblock} = [rectangle, draw, text centered, rounded corners, node distance=2.2cm]
+\tikzstyle{line} = [draw, -triangle 90]
+\tikzstyle{dline} = [draw, dashed, -triangle 90]
+%\tikzstyle{cloud} = [draw, ellipse,fill=red!20, node distance=3cm,minimum height=2em]
+\section{First method: dumb and easy}
+\begin{frame}
+\frametitle{First method: dumb and easy}
+\begin{figure}[h]
+  \begin{tikzpicture}[scale=2.8,auto]
+\uncover<1-2>{\node [autoblock] (start) {\scriptsize Start: $[p]_0$};}
+\uncover<2->{\node [block, below of=start, color=blue] (gen) {\scriptsize Generate Event with $[p]_N$: E1,E2};}
+\uncover<3-10,12->{\node [autoblock, right of=gen] (bhwide) {\scriptsize BHWide};}
+\uncover<4-10,13->{\node [autoblock, right of=bhwide] (sim) {\scriptsize Simulation};}
+\uncover<5-10,14->{\node [autoblock, right of=sim] (rec) {\scriptsize Reconstruction};}
+\uncover<6-10,15->{\node [block, below of=rec, color=red] (compare) {\scriptsize Compare with data: $\chi^2$};}
+\uncover<7-10,16->{\node [decision, left of=compare, color=green] (match) {\scriptsize Minimum?};}
+\uncover<8-10,17->{\node [autoblock, below of=match] (done) {\scriptsize Done!};}
+\uncover<9-11,18->{\node [block, below of=gen, color=magenta] (minim) {\scriptsize Minimizer: $[p]_N \rightarrow [p]_{N+1}$};}
+\uncover<1-2>{\path [line] (start) -- (gen);}
+\uncover<3-10,12->{\path [line] (gen) -- (bhwide);}
+\uncover<4-10,13->{\path [line] (bhwide) -- (sim);}
+\uncover<5-10,14->{\path [line] (sim) -- (rec);}
+\uncover<6-10,15->{\path [line] (rec) -- (compare);}
+\uncover<7-10,16->{\path [line] (compare) -- (match);}
+\uncover<8-10,17->{\path [line] (match) -- node [near start] {\scriptsize yes} (done);}
+\uncover<9-10,18->{\path [line] (match) -- node [near start] {\scriptsize no} (minim);}
+\uncover<10-11,19->{\path [line] (minim) -- (gen);}
+%\node (start) at (0,2) [draw] {Start};
+%\node (gen) at (0,1) [draw] {Generate Event with $[P]_N$: E1,E2};
+\end{tikzpicture}
+\end{figure}
+\end{frame}
+
+\section{Second method: Smart and elegant}
+\begin{frame}
+\frametitle{Second method: Smart and elegant}
+%Shown in fig.~\ref{fig:second}
+%begin{figure}[h]
+\begin{tikzpicture}[scale=.8,auto, remember picture]
+\matrix [column sep=5mm,row sep=4mm,ampersand replacement=\&]{
+%row1
+\uncover<1>{\node [autoblock] (start) {\scriptsize Start};} \& 
+~ \& 
+~ \&
+~ \\
+%row2
+\uncover<2->{\node [block, color=blue] (gen) {\scriptsize Generate Event with $[p]_0$: $E1$, $E2$, $P(E1,E2;[p]_0)$};} \&
+\uncover<3-5>{\node [autoblock, node distance=2.7cm] (bhwide) {\scriptsize BHWide};} \&
+\uncover<4-5>{\node [autoblock, node distance=2.5cm] (sim) {\scriptsize Simulation};} \&
+\uncover<5->{\node [autoblock, node distance=2.7cm] (rec) {\scriptsize Reconstruction};} \\
+%row3
+\uncover<6->{\node [block, color=magenta] (minim) {\scriptsize Minimizer: $[p]_N \rightarrow [p]_{N+1}$};} \&
+\uncover<7-13,15->{\node [block, text width=2.2cm, node distance=2.7cm] (compute) {\scriptsize Compute $P(E1,E2;[p]_{N+1})$ for all events};} \&
+\uncover<8-13,16->{\node [autoblock, node distance=2.8cm] (weight) {\scriptsize $w = \frac{P(E1,E2;[p]_{N+1})}{P(E1,E2;[p]_{0})}$};} \&
+\uncover<9-13,17->{\node [block, node distance=2.7cm] (weightrec) {\scriptsize Weight every event with its weight $w$};} \\
+%row4
+~ \& 
+~ \& 
+\uncover<11-13,19->{\node [decision, color=green] (match) {\scriptsize Minimum?};} \&
+\uncover<10-13,18->{\node [block, color=red] (compare) {\scriptsize Compare with data: $\chi^2$};}\\
+%row5
+~ \& 
+~ \& 
+\uncover<12-13,20->{\node [autoblock] (done) {\scriptsize Done!};} \& 
+~ \\
+};
+\begin{scope}
+\uncover<1>{\path [line] (start) -- (gen);}
+\uncover<3-5>{\path [line] (gen) -- (bhwide);}
+\uncover<4-5>{\path [line] (bhwide) -- (sim);}
+\uncover<5>{\path [line] (sim) -- (rec);}
+\uncover<6>{\path [line] (gen) -- (minim);}
+\uncover<7-13,15->{\path [line] (minim) -- (compute);}
+\uncover<8-13,16->{\path [line] (compute) -- (weight);}
+\uncover<9-13,17->{\path [line] (weight) -- (weightrec);}
+\uncover<10-13,18->{\path [line] (weightrec) -- (compare);}
+\uncover<11-13,19->{\path [line] (compare) -- (match);}
+\uncover<12-13,20->{\path [line] (match) -- node [near start] {\scriptsize yes} (done);}
+\uncover<13,21->{\path [line] (match) -| node [very near start] {\scriptsize no} (minim);}
+\uncover<9-13,17->{\path [dline] (rec) -- node [midway] {\scriptsize use} (weightrec); }
+\end{scope}
+\end{tikzpicture}
+%\end{figure}
+\end{frame}
+\end{document}
