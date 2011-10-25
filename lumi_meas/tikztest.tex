@@ -1,10 +1,17 @@
 %\documentclass{article}
 \documentclass{beamer}
-\usepackage{beamerarticle}
+%\usepackage{beamerarticle}
 \usepackage{tikz}
 \usetikzlibrary{arrows,shapes}
 
+\author{S.Poss and S.Sailer}
+\title{Luminosity spectrum measurement}
+\subtitle{First results}
+
 \begin{document}
+\begin{frame}
+\titlepage
+\end{frame}
 \tikzstyle{decision} = [diamond, draw, text badly centered, node distance=2.8cm]
 \tikzstyle{block} = [rectangle, draw, text centered, rounded corners, text width=1.9cm, node distance=2.2cm]
 \tikzstyle{autoblock} = [rectangle, draw, text centered, rounded corners, node distance=2.2cm]
@@ -16,12 +23,14 @@
 \frametitle{Luminosity spectrum}
 Why it's important to know it:
 \begin{itemize}
-\item any cross section measurement
-\item etc.
+\item cross section measurements: Higgs, etc.
+\item mass measurements: slepton analysis, etc.
 \end{itemize}
-What we want to ``measure'': a parametrisation $[p]$ that describes the luminosity spectrum.
+What we want to ``measure'': a parametrisation that describes the luminosity
+spectrum.
 \begin{itemize}
-\item need a correct model (hardest), based on assumptions
+\item need a correct model, based on assumptions and existing Monte Carlo
+samples
 \item need a framework/procedure for parameter estimation
 \item need data 
 \end{itemize}
@@ -55,24 +64,52 @@ What we want to ``measure'': a parametrisation $[p]$ that describes the luminosi
 \section{Chosen model}
 \begin{frame}
 \frametitle{Chosen model}
-Based on the individual components' analysis (BDS and beam strahlung), we use beta functions everywhere. 
-
-~\\
-
-We have 21 free parameters. Need more detail on model.
+Several components to account for:
+\begin{itemize}
+  \item Beam delivery system (BDS)
+  \item Beam strahlung
+\end{itemize}
 \end{frame}
+
+\begin{frame}
+\frametitle{Chosen model: BDS}
+Use BetaFunction as a model:\\
+\begin{tikzpicture}[auto]
+\node[draw, node distance=2.2cm]{\includegraphics[width=10cm]{DeltaE_electron_fit_BetaFunction}};
+\end{tikzpicture}
+\end{frame}
+
+\begin{frame}
+\frametitle{Chosen model: BDS}
+Use BetaFunction as a model:\\
+\begin{tikzpicture}[auto]
+\node[draw, node distance=2.2cm]{\includegraphics[width=10cm]{DeltaE_electron_fit_BetaFunction_regions}};
+\node[block]{Tails modelised by gaussian with fixed width.};
+\end{tikzpicture}
+
+\end{frame}
+
+\begin{frame}
+\frametitle{Chosen model: Beam strahlung}
+Use the same working hypothesis as Andr\'e's thesis: Beta Function. No plot to
+show as data is missing.
+\end{frame}
+
 \section{Methods}
 \begin{frame}
 \frametitle{Methods}
 2 methods are available:
 \begin{itemize}
-\item Direct fit: dumb and easy, obvious method, but not CPU wise,
+\item Simple fit: dumb and easy, obvious method, but not CPU wise,
 \item Reweighting fit: smart and elegant, not so obvious, but clearly affordable CPU wise.
 \end{itemize}
+~\\
+Definition: \alert{$[p]_N$ is a set of parameter values} at the $N^{th}$
+iteration, not a set of parameterization: all iterations use the SAME parametrization.
 \end{frame}
-\section{First method: direct fit}
+\section{First method: Simple fit}
 \begin{frame}
-\frametitle{First method: direct fit}
+\frametitle{First method: Simple fit}
 \begin{figure}[h]
   \begin{tikzpicture}[scale=2.8,auto]
 \uncover<1-2>{\node [autoblock] (start) {\scriptsize Start: $[p]_0$};}
@@ -81,8 +118,8 @@ We have 21 free parameters. Need more detail on model.
 \uncover<4-10,13->{\node [autoblock, right of=bhwide] (sim) {\scriptsize Simulation};}
 \uncover<5-10,14->{\node [autoblock, right of=sim] (rec) {\scriptsize Reconstruction};}
 \uncover<6-10,15->{\node [block, below of=rec, color=red] (compare) {\scriptsize Compare with data: $\chi^2$};}
-\uncover<7-10,16->{\node [decision, left of=compare, color=green] (match) {\scriptsize Minimum?};}
-\uncover<8-10,17->{\node [autoblock, below of=match] (done) {\scriptsize Done!};}
+\uncover<7-10,16->{\node [decision, left of=compare, color=violet] (match)
+{\scriptsize Minimum?};} \uncover<8-10,17->{\node [autoblock, below of=match] (done) {\scriptsize Done!};}
 \uncover<9-11,18->{\node [block, below of=gen, color=magenta] (minim) {\scriptsize Minimizer: $[p]_N \rightarrow [p]_{N+1}$};}
 \uncover<1-2>{\path [line] (start) -- (gen);}
 \uncover<3-10,12->{\path [line] (gen) -- (bhwide);}
@@ -99,7 +136,7 @@ We have 21 free parameters. Need more detail on model.
 \end{figure}
 \end{frame}
 \begin{frame}
-\frametitle{First method: direct fit}
+\frametitle{First method: Simple fit}
 Pros:
 \begin{itemize}
 \item logical
@@ -110,9 +147,29 @@ Cons:
 \item Takes forever
 \item all MC samples need to be reconstructed (1 reco per iteration)
 \end{itemize}
+~\\
+\alert{Need better idea.}
 \end{frame}
 
 \section{Second method: Reweighting fit}
+\begin{frame}
+\frametitle{Understanding the reweighting fit}
+\begin{itemize}
+  \item a \alert{distribution} of an observable $=$ \alert{``probability''} for
+  an event to happen with a given observable value (observable can be e.g. $\{EB1,EB2\}$ for
+  a given event)%, in fact 1 event
+  %$=\{E1,E2,\theta_1,\theta_2,E_{ECAL1},E_{ECAL2}\}$)
+  \item if said distribution is built from a set of parameters' values
+  $[p]$, then probabilities can be computed from that set
+  \item Changing $[p]\to [p]'\Rightarrow$ changes of the probabilities. This
+  change can be seen in the ratio $\frac{P(\{EB1,EB2\},
+  [p]')}{P(\{EB1,EB2\},[p])}$. This is the weight applied to every event.
+  \item One event is not only represented by $\{EB1,EB2\}$ but by
+  $\{EB1,EB2,\theta_1,\theta_2,E_{ECAL1},E_{ECAL2},etc.\}$ where the
+  $\{\theta_1,\theta_2,E_{ECAL1},E_{ECAL2},etc.\}$ set are reconstructed
+  (measured) observables
+\end{itemize}
+\end{frame}
 \begin{frame}
 \frametitle{Second method: reweighting fit}
 %Shown in fig.~\ref{fig:second}
@@ -137,8 +194,8 @@ Cons:
 %row4
 ~ \& 
 ~ \& 
-\uncover<11-13,19->{\node [decision, color=green] (match) {\scriptsize Minimum?};} \&
-\uncover<10-13,18->{\node [block, color=red] (compare) {\scriptsize Compare with data: $\chi^2$};}\\
+\uncover<11-13,19->{\node [decision, color=violet] (match) {\scriptsize
+Minimum?};} \& \uncover<10-13,18->{\node [block, color=red] (compare) {\scriptsize Compare with data: $\chi^2$};}\\
 %row5
 ~ \& 
 ~ \& 
@@ -165,16 +222,18 @@ Cons:
 \end{frame}
 \begin{frame}
 \frametitle{Second method: reweighting fit}
-Pros:
-\begin{itemize}
-\item Need to create only 1 MC sample
-\item Need to reconstruct the MC samples only once
-\end{itemize}
-Cons:
-\begin{itemize}
-\item Not simple to explain and understand, especially why it is correct
-\end{itemize}
+As for the moment, data and MC samples share the same generator, simulation and
+reconstruction, there are no fondamental difference in the behavior: e.g. same
+detector resolution $\Rightarrow$ non need to account for those effects for the
+moment, and one can validate the method by looking only at generator level data.
 \end{frame}
+
+\section{Generated samples}
+\begin{frame}
+\frametitle{Generated samples: BDS distribution}
+\includegraphics[width=10cm]{MCBeamSpread}
+\end{frame}
+
 \section{So far}
 \begin{frame}
 \frametitle{So far}
