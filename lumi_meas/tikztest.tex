@@ -7,10 +7,21 @@
 \author{S.Poss and S.Sailer}
 \title{Luminosity spectrum measurement}
 \subtitle{First results}
-
+\AtBeginSection[]
+{
+\begin{frame}<beamer>
+\frametitle{Outline}
+\tableofcontents[currentsection,currentsubsection]
+\end{frame}
+}
 \begin{document}
 \begin{frame}
 \titlepage
+\end{frame}
+\begin{frame}
+\frametitle{Outline}
+\tableofcontents
+% You might wish to add the option [pausesections]
 \end{frame}
 \tikzstyle{decision} = [diamond, draw, text badly centered, node distance=2.8cm]
 \tikzstyle{block} = [rectangle, draw, text centered, rounded corners, text width=1.9cm, node distance=2.2cm]
@@ -61,14 +72,21 @@ samples
 \end{tikzpicture}
 \end{figure}
 \end{frame}
-\section{Chosen model}
+
+\section{Chose model}
 \begin{frame}
 \frametitle{Chosen model}
-Several components to account for:
+Depending on if the beams emitted beam strahlung: 
 \begin{itemize}
-  \item Beam delivery system (BDS)
-  \item Beam strahlung
+  \item none (Peak): only BDS effects (2 BetaFunctions)
+  \item one only (Arm1): BDS effects plus spread of 1 beam (+1 BetaFunction)
+  \item other only (Arm2): BDS effects plus spread of the other beam (+1
+  BetaFunction)
+  \item both (Body): BDS effects plus spread of both beams (+2 BetaFunctions)
 \end{itemize}
+Every region is independant and has corresponding probability to happen. One
+event has then a given probability that is the product of the different effect.
+Both BDS are independant.
 \end{frame}
 
 \begin{frame}
@@ -84,16 +102,24 @@ Use BetaFunction as a model:\\
 Use BetaFunction as a model:\\
 \begin{tikzpicture}[auto]
 \node[draw, node distance=2.2cm]{\includegraphics[width=10cm]{DeltaE_electron_fit_BetaFunction_regions}};
-\node[block]{Tails modelised by gaussian with fixed width.};
+\node[block, text width=2.9cm]{Tails obtained by smearing with gaussian with fixed width.};
 \end{tikzpicture}
-
 \end{frame}
-
+\begin{frame}
+\frametitle{Chosen model: BDS generated}
+\includegraphics[width=10cm]{MCBeamSpread}
+\end{frame}
 \begin{frame}
 \frametitle{Chosen model: Beam strahlung}
 Use the same working hypothesis as Andr\'e's thesis: Beta Function. No plot to
 show as data is missing.
 \end{frame}
+
+\begin{frame}
+\frametitle{Chosen model: generated samples E1 vs E2}
+\includegraphics[width=10cm]{E1_vs_E2_gen}
+\end{frame}
+
 
 \section{Methods}
 \begin{frame}
@@ -107,7 +133,8 @@ show as data is missing.
 Definition: \alert{$[p]_N$ is a set of parameter values} at the $N^{th}$
 iteration, not a set of parameterization: all iterations use the SAME parametrization.
 \end{frame}
-\section{First method: Simple fit}
+\section{Fitting}
+\subsection{First method: Simple fit}
 \begin{frame}
 \frametitle{First method: Simple fit}
 \begin{figure}[h]
@@ -151,18 +178,18 @@ Cons:
 \alert{Need better idea.}
 \end{frame}
 
-\section{Second method: Reweighting fit}
+\subsection{Second method: Reweighting fit}
 \begin{frame}
 \frametitle{Understanding the reweighting fit}
 \begin{itemize}
   \item a \alert{distribution} of an observable $=$ \alert{``probability''} for
-  an event to happen with a given observable value (observable can be e.g. $\{EB1,EB2\}$ for
-  a given event)%, in fact 1 event
+  an event to happen with a given observable value. Observable can be e.g.
+  $\{EB1,EB2\}$ for a given event%, in fact 1 event
   %$=\{E1,E2,\theta_1,\theta_2,E_{ECAL1},E_{ECAL2}\}$)
   \item if said distribution is built from a set of parameters' values
   $[p]$, then probabilities can be computed from that set
   \item Changing $[p]\to [p]'\Rightarrow$ change of the probabilities. This
-  change can be seen in the ratio $\frac{P(\{EB1,EB2\},
+  change is accounted by the ratio $\frac{P(\{EB1,EB2\},
   [p]')}{P(\{EB1,EB2\},[p])}$. This is the weight applied to every event.
   \item One event is not only represented by $\{EB1,EB2\}$ but by
   $\{EB1,EB2,\theta_1,\theta_2,E_{ECAL1},E_{ECAL2},etc.\}$ where the
@@ -220,47 +247,30 @@ Minimum?};} \& \uncover<10-13,18->{\node [block, color=red] (compare) {\scriptsi
 \end{tikzpicture}
 %\end{figure}
 \end{frame}
+\subsection{Status}
 \begin{frame}
-\frametitle{Second method: reweighting fit}
+\frametitle{Current status}
+Procedure for MC generation is there.\\
+~\\
 Data and MC samples share 
 \begin{itemize}
   \item generator (BHWide)
-  \item simulation
-  \item reconstruction
+  \item simulation (Mokka)
+  \item reconstruction (Marlin)
 \end{itemize}
-$\to$ no fondamental difference in the behavior: e.g. same
-detector resolution $\Rightarrow$ no need to account for those effects for the
-moment, and one can validate the method by looking only at generator level data.
+$\to$ Forget about simu/reco effects for the moment, they will only smear
+the distributions (systematics).\\
+~\\
+Fine tunning of fitting needed as there are many parameters (20): number of
+bins, parameter ranges, etc.
 \end{frame}
 
-\section{Generated samples}
-\begin{frame}
-\frametitle{Generated samples: procedure}
-Depending on if the beams emitted beam strahlung: 
-\begin{itemize}
-  \item none (Peak): only BDS effects (2 BetaFunctions)
-  \item one only (Arm1): BDS effects plus spread of 1 beam (+1 BetaFunction)
-  \item other only (Arm2): BDS effects plus spread of the other beam (+1
-  BetaFunction)
-  \item both (Body): BDS effects plus spread of both beams (+2 BetaFunctions)
-\end{itemize}
-Every region is independant and has corresponding probability to happen. One
-event has then a given probability that is the product of the different effect.
-Both BDS are independant.
-\end{frame}
-\begin{frame}
-\frametitle{Generated samples: BDS distribution}
-\includegraphics[width=10cm]{MCBeamSpread}
-\end{frame}
-\begin{frame}
-\frametitle{Generated samples: E1 vs E2}
-\includegraphics[width=10cm]{E1_vs_E2_gen}
-\end{frame}
 
 \section{Fit results}
 \begin{frame}
 \frametitle{Fit results so far}
-\includegraphics[width=8cm]{HistoGrams}\\
+\centering
+\includegraphics[width=9cm]{HistoGrams}\\
 Tail well modelized, peak not perfect yet.
 \end{frame}
 
@@ -277,16 +287,15 @@ $\Rightarrow$ statistics should not be an issue.\\
 ~\\
 Will start simulation and reconstruction of MC and data samples.
 \end{frame}
-\section{Syustematic effects}
+\section{Systematic effects}
 \begin{frame}
 \frametitle{Expected systematic effects}
 From Model:
 \begin{itemize}
-  \item BDS: gaussian smearing is fixed $\Rightarrow$ Study effect of
-  fluctuation
-  \item BDS: use Beta Function only, while ``wiggles'' are visible $\Rightarrow$
-  ultimately use right model
+  \item BDS: gaussian smearing is fixed
+  \item BDS: validity range of BetaFunctions is fixed
 \end{itemize}
+  $\Rightarrow$ Study effect of fluctuation\\
 \pause
 From Simulation/reconstruction:
 \begin{itemize}
@@ -303,4 +312,17 @@ Physics effects:
   \item detector resolution $\Rightarrow$ ??
 \end{itemize}
 \end{frame}
+\section{Conclusion}
+\begin{frame}
+\frametitle{Conclusion}
+\begin{itemize}
+  \item Framework is set up
+  \item MC samples are created, need to be BHWided, Mokkaed, and Marlined
+  \item Idem for data sample
+  \item Fit on existing samples show good progress
+  \item Systematics will need more thoughts
+\end{itemize}
+
+\end{frame}
+
 \end{document}
