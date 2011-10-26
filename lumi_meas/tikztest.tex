@@ -161,7 +161,7 @@ Cons:
   %$=\{E1,E2,\theta_1,\theta_2,E_{ECAL1},E_{ECAL2}\}$)
   \item if said distribution is built from a set of parameters' values
   $[p]$, then probabilities can be computed from that set
-  \item Changing $[p]\to [p]'\Rightarrow$ changes of the probabilities. This
+  \item Changing $[p]\to [p]'\Rightarrow$ change of the probabilities. This
   change can be seen in the ratio $\frac{P(\{EB1,EB2\},
   [p]')}{P(\{EB1,EB2\},[p])}$. This is the weight applied to every event.
   \item One event is not only represented by $\{EB1,EB2\}$ but by
@@ -222,34 +222,85 @@ Minimum?};} \& \uncover<10-13,18->{\node [block, color=red] (compare) {\scriptsi
 \end{frame}
 \begin{frame}
 \frametitle{Second method: reweighting fit}
-As for the moment, data and MC samples share the same generator, simulation and
-reconstruction, there are no fondamental difference in the behavior: e.g. same
-detector resolution $\Rightarrow$ non need to account for those effects for the
+Data and MC samples share 
+\begin{itemize}
+  \item generator (BHWide)
+  \item simulation
+  \item reconstruction
+\end{itemize}
+$\to$ no fondamental difference in the behavior: e.g. same
+detector resolution $\Rightarrow$ no need to account for those effects for the
 moment, and one can validate the method by looking only at generator level data.
 \end{frame}
 
 \section{Generated samples}
 \begin{frame}
+\frametitle{Generated samples: procedure}
+Depending on if the beams emitted beam strahlung: 
+\begin{itemize}
+  \item none (Peak): only BDS effects (2 BetaFunctions)
+  \item one only (Arm1): BDS effects plus spread of 1 beam (+1 BetaFunction)
+  \item other only (Arm2): BDS effects plus spread of the other beam (+1
+  BetaFunction)
+  \item both (Body): BDS effects plus spread of both beams (+2 BetaFunctions)
+\end{itemize}
+Every region is independant and has corresponding probability to happen. One
+event has then a given probability that is the product of the different effect.
+Both BDS are independant.
+\end{frame}
+\begin{frame}
 \frametitle{Generated samples: BDS distribution}
 \includegraphics[width=10cm]{MCBeamSpread}
 \end{frame}
-
-\section{So far}
 \begin{frame}
-\frametitle{So far}
-We have:
+\frametitle{Generated samples: E1 vs E2}
+\includegraphics[width=10cm]{E1_vs_E2_gen}
+\end{frame}
+
+\section{Fit results}
+\begin{frame}
+\frametitle{Fit results so far}
+\includegraphics[width=8cm]{HistoGrams}\\
+Tail well modelized, peak not perfect yet.
+\end{frame}
+
+\section{Next step: Bhabha events}
+\begin{frame}
+\frametitle{Bhabha events}
+After discussions with JJ:
 \begin{itemize}
-\item framework
-\item MC production tools: generator level
-\item Guinea pig level data: generator level
+  \item Bhabha events at large angles ($\theta > 7\deg$): cross section is
+  10~pb.
+  \item Corresponds to $\approx 40,000$ events reconstructible per day
 \end{itemize}
-Simulation and reconstruction will be done later, when some results are obtained. 
-
+$\Rightarrow$ statistics should not be an issue.\\
 ~\\
-
-What we don't have yet:
+Will start simulation and reconstruction of MC and data samples.
+\end{frame}
+\section{Syustematic effects}
+\begin{frame}
+\frametitle{Expected systematic effects}
+From Model:
 \begin{itemize}
-\item a model that works on generator level data.
+  \item BDS: gaussian smearing is fixed $\Rightarrow$ Study effect of
+  fluctuation
+  \item BDS: use Beta Function only, while ``wiggles'' are visible $\Rightarrow$
+  ultimately use right model
+\end{itemize}
+\pause
+From Simulation/reconstruction:
+\begin{itemize}
+  \item for the moment, same generator is used for data and MC: real life is
+  another story $\Rightarrow$ use different generator
+  \item same thing for the simulation: if the detector is different between
+  simu and reality (and it's a fact), so are the MC/data. $\Rightarrow$ use
+  different detector model
+\end{itemize}
+\pause
+Physics effects:
+\begin{itemize}
+  \item effect of background contamination $\Rightarrow$ change levels
+  \item detector resolution $\Rightarrow$ ??
 \end{itemize}
 \end{frame}
 \end{document}
