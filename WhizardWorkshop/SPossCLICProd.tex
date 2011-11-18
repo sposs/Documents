@@ -3,15 +3,19 @@
 %\usepackage{beamerarticle}
 \usepackage{tikz}
 \usetikzlibrary{arrows,shapes}
+\usepackage{heppennames}
+\usepackage{hepnicenames}
 
-\author{S. Poss}
-\title{Use of Whizard for the mass production of CLIC CDR volume 2}
+\newcommand{\whizard}{WHIZARD\xspace}
+
+\author{S. Poss for the LCD group}
+\title{Use of \whizard for the mass production of CLIC CDR volume 2}
 %\subtitle{Update}
 \institute[CERN]
 {
   CERN
 }
-\date{22/11/11}
+\date{November 22nd, 2011}
 \mode<presentation>
 {
    \setbeamertemplate{navigation symbols}{}
@@ -46,27 +50,179 @@
 
 \begin{frame}
 \frametitle{Introduction}
-
-\end{frame}
-\section{Motivation for the CDR}
-\begin{frame}
-\frametitle{Motivation for the CDR}
+CLIC studies use ILC as baseline: \alert{use common tools}. For generation,
+linear collider common generator tools group: use \whizard1.95 as proved to be
+good for ILC LOIs.\\
+~\\
+CLIC detector studies to be presented in the Conceptual Design Report (CDR):
+study 6 physics channels to assess detector performance.\\
+~\\
+This presentation:
+\begin{itemize}
+  \item Channels studied
+  \item Tools developed for mass production
+  \item Limitations
+\end{itemize}
 \end{frame}
 
 \section{Samples considered}
 \begin{frame}
 \frametitle{Physics channels studied}
-
+6 benchmark channels to assess detector performance:
+\begin{itemize}
+\item $\Pep\Pem \to \Ph \Pgne \Pagne, \Ph \to \mu^+\mu^-, \Ph \to
+\Pbottom\APbottom$,
+\item  $\Pep\Pem \to \PHp \PHm$, $\Pep\Pem \to \PHz \PA$, 
+\item $\Pep\Pem \to \PSq_R \PaSq_R$, 
+\item $\Pep\Pem \to \PSl \PaSl \,(\ell = \Pe,\Pgm)$, 
+\item $\Pep\Pem \to \PSgxpm_i \PSgxmp_j,\, \Pep\Pem \to \PSgxz_i \PSgxz_j$,
+\item  $\Pep\Pem \to \Pqt \Paqt$ (500~GeV).
+\end{itemize}
+2 different SUSY models, 2 different energies (beam spectra), many background
+samples, millions of events needed
 \end{frame}
-\section{Tools used and developped}
 
 \begin{frame}
-\frametitle{Tools developped}
+\frametitle{Examples of results}
+\begin{center}
+\includegraphics[width=5cm]{xsec_vs_Hmass_sqrts3000}
+\includegraphics[width=5cm]{ee_h_mumu_mass_mh120GeV}\\
+\includegraphics[width=5cm]{MassPlot2D}
+\includegraphics[width=5cm]{205_H1LPADC4}
+\end{center}
 
+\end{frame}
+
+\section{Mods needed and Tools developped}
+\begin{frame}
+\frametitle{Modifications needed}
+ILC LOIs used \whizard.\\
+~\\
+Several tweaks implemented (T.~Barklow, M.~Berggren, A.~Miyamoto):
+\begin{itemize}
+  \item Installation tools
+  \item Specific support for beam spectra: chose between ILC, CLIC, etc.
+  \item TAUOLA support
+  \item Stdhep output
+  \item 6 fermions final state handling (for ILC LOIs): $\Ptop\APtop$
+  reconstruction
+  \item Color flow (for DBD studies)
+\end{itemize}
+\end{frame}
+
+\begin{frame}
+\frametitle{Production framework}
+CLIC detector studies uses the {\color{blue} GRID} for mass production: need to
+run many applications in heterogeneous context: \alert{ILCDIRAC}
+\begin{itemize}
+  \item Based on DIRAC: grid solution developed initially for the LHCb
+  experiment. {\color{blue}PYTHON} based.
+  \item Comes with production system: define task and leave the system create
+  and monitor the jobs.
+\end{itemize}
+~\\
+Needed to interface \whizard in ILCDIRAC:
+\begin{itemize}
+  \item Run configuration: ILCDIRAC configuration is PYTHON
+  \item Process selection: Make sure all relevant files (e.g. LesHouches files)
+  are available
+\end{itemize}
+\end{frame}
+
+\begin{frame}
+\frametitle{Running \whizard in ILCDIRAC}
+Problem: how to tell \whizard what to do when not called directly?
+\begin{itemize}
+  \item Need to  configure a workflow object with set of instructions
+  \item Call \whizard after setting whizard.in accordingly
+\end{itemize}
+~\\
+Problem: How to prevent users from running non existent channels?
+\begin{itemize}
+  \item Store the content of the whizard.prc in a file that can be used at
+  submission time by DIRAC
+  \item Keep relation between \whizard version and channels (SM vs SUSY)
+\end{itemize}
+~\\
+Problem: How to reduce configuration issues?
+\begin{itemize}
+  \item Catch all errors before the job is submitted,
+  \item New functionality from last week: all \whizard options are wrapped in a
+  XML file, also holds default values and types
+\end{itemize}
+\end{frame}
+
+\begin{frame}
+\frametitle{Running \whizard in the production}
+\begin{itemize}
+  \item Framework is global: generation, simulation and reconstruction of events
+  done using same tool (ILCDIRAC)
+  \item Account for simulation/reconstruction CPU time constrains on the GRID
+  (24 hours max on average)
+  \item Account for optimal file sizes: Storage Element access is the most
+  problematic
+\end{itemize}
+$\Rightarrow$ \alert{need to generate $10-1000$ events per job} depending on the
+channel.
+\end{frame}
+\section{Limitations met}
+\begin{frame}
+\frametitle{Limitations met}
+\begin{itemize}
+  \item Impossible to generate specific final states with width: $\Ptop\APtop$,
+  WW, ZZ. {\color{blue}Used PYTHIA standalone} for those. For Higgs processes
+  assume width to be 0.\\
+  ~\\
+  \item Would have been useful to be able to {\color{blue}kill diagrams
+  explicitely}\\
+  ~\\
+  \item Generator level cut interface not easily generalized: had to
+  {\color{blue}add extra filtering programs} to run after \whizard.\\
+  ~\\
+  \item Process selection for people not compiling \whizard: Adding a
+  {\color{blue}new process requires compiling a \whizard executable}, not easy
+  from scratch
+\end{itemize}
+\end{frame}
+\section{The future}
+\begin{frame}
+\frametitle{Using \whizard 2.0}
+Using analysis framework of \whizard2:
+\begin{center}
+\includegraphics[width=7cm]{model3}
+\end{center}
+Includes CLIC 3TeV luminosity spectrum.
 \end{frame}
 \section{Conclusion}
 \begin{frame}
 \frametitle{Conclusion}
+For the CDR:
+\begin{itemize}
+  \item Very complete software
+  \item Accurate cross sections
+  \item Efficient event generation
+  \item Lightweight to run on the GRID once compiled
+  \item Compilation is tricky
+  \item Some channels could not be done ($\Ptop\APtop$, WW, ZZ)
+\end{itemize}
+For \whizard 2.0:
+\begin{itemize}
+  \item Process selection
+  \item Run configuration
+  \item 8 fermions final states (ILC DBD studies)?
+\end{itemize}
+\end{frame}
 
+\appendix
+\begin{frame} 
+\frametitle{Backup slides}
+\end{frame}
+\begin{frame}
+\frametitle{Requests for the future}
+\begin{itemize}
+  \item Kill diagrams
+  \item Do not depend on compiler at run time
+  \item Interface to other languages (e.g. XML)
+\end{itemize}
 \end{frame}
 \end{document}
