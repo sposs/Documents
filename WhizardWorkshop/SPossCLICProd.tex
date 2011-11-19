@@ -8,7 +8,7 @@
 
 \newcommand{\whizard}{WHIZARD\xspace}
 
-\author{S. Poss for the LCD group}
+\author{S. Poss for the PH-LCD group}
 \title{Use of \whizard for the mass production of CLIC CDR volume 2}
 %\subtitle{Update}
 \institute[CERN]
@@ -50,11 +50,11 @@
 
 \begin{frame}
 \frametitle{Introduction}
-CLIC studies use ILC as baseline: \alert{use common tools}. For generation,
-linear collider common generator tools group: use \whizard1.95 as proved to be
-good for ILC LOIs.\\
+CLIC detector studies use ILC concepts as baseline: \alert{use common tools}.\\
+For generation, linear collider common generator tools group:\\
+use \whizard1.95 as proved to be good for ILC LOIs.\\
 ~\\
-CLIC detector studies to be presented in the Conceptual Design Report (CDR):
+CLIC detector studies as presented in the Conceptual Design Report (CDR):
 study 6 physics channels to assess detector performance.\\
 ~\\
 This presentation:
@@ -78,9 +78,16 @@ This presentation:
 \item $\Pep\Pem \to \PSgxpm_i \PSgxmp_j,\, \Pep\Pem \to \PSgxz_i \PSgxz_j$,
 \item  $\Pep\Pem \to \Pqt \Paqt$ (500~GeV).
 \end{itemize}
-2 different SUSY models, 2 different energies (beam spectra), many background
-samples, millions of events needed
+2 different SUSY models, 2 different energies (luminosity spectra), many
+background samples (SUSY and SM), millions of events needed
 \end{frame}
+%\begin{frame}
+%\frametitle{Examples of results}
+%\begin{center}
+%\includegraphics[width=6cm]{Squark2All}
+%\includegraphics[width=6cm]{Squark2tight}
+%\end{center}
+%\end{frame}
 
 \begin{frame}
 \frametitle{Examples of results}
@@ -93,7 +100,7 @@ samples, millions of events needed
 
 \end{frame}
 
-\section{Mods needed and Tools developped}
+\section{Modifications needed and Tools developed}
 \begin{frame}
 \frametitle{Modifications needed}
 ILC LOIs used \whizard.\\
@@ -101,7 +108,7 @@ ILC LOIs used \whizard.\\
 Several tweaks implemented (T.~Barklow, M.~Berggren, A.~Miyamoto):
 \begin{itemize}
   \item Installation tools
-  \item Specific support for beam spectra: chose between ILC, CLIC, etc.
+  \item Specific support for luminosity spectra: chose between ILC, CLIC, etc.
   \item TAUOLA support
   \item Stdhep output
   \item 6 fermions final state handling (for ILC LOIs): $\Ptop\APtop$
@@ -112,18 +119,19 @@ Several tweaks implemented (T.~Barklow, M.~Berggren, A.~Miyamoto):
 
 \begin{frame}
 \frametitle{Production framework}
-CLIC detector studies uses the {\color{blue} GRID} for mass production: need to
-run many applications in heterogeneous context: \alert{ILCDIRAC}
+CLIC detector studies use the {\color{blue} GRID} for mass production.\\
+Need to  run many applications in heterogeneous context: \alert{ILCDIRAC}
 \begin{itemize}
   \item Based on DIRAC: grid solution developed initially for the LHCb
   experiment. {\color{blue}PYTHON} based.
-  \item Comes with production system: define task and leave the system create
+  \item Comes with production system: define task and let the system create
   and monitor the jobs.
 \end{itemize}
 ~\\
 Needed to interface \whizard in ILCDIRAC:
 \begin{itemize}
-  \item Run configuration: ILCDIRAC configuration is PYTHON
+  \item Run configuration: ILCDIRAC configuration is in PYTHON $\to$ convert to
+  whizard.in
   \item Process selection: Make sure all relevant files (e.g. LesHouches files)
   are available
 \end{itemize}
@@ -137,7 +145,7 @@ Problem: how to tell \whizard what to do when not called directly?
   \item Call \whizard after setting whizard.in accordingly
 \end{itemize}
 ~\\
-Problem: How to prevent users from running non existent channels?
+Problem: How to prevent users from trying non-existent channels?
 \begin{itemize}
   \item Store the content of the whizard.prc in a file that can be used at
   submission time by DIRAC
@@ -146,18 +154,18 @@ Problem: How to prevent users from running non existent channels?
 ~\\
 Problem: How to reduce configuration issues?
 \begin{itemize}
-  \item Catch all errors before the job is submitted,
-  \item New functionality from last week: all \whizard options are wrapped in a
+  \item Catch all errors before the job is submitted
+  \item New functionality: all \whizard options are wrapped in a
   XML file, also holds default values and types
 \end{itemize}
 \end{frame}
 
 \begin{frame}
-\frametitle{Running \whizard in the production}
+\frametitle{Running \whizard in the production for the CLIC CDR}
 \begin{itemize}
   \item Framework is global: generation, simulation and reconstruction of events
   done using same tool (ILCDIRAC)
-  \item Account for simulation/reconstruction CPU time constrains on the GRID
+  \item Account for simulation/reconstruction CPU time constraints on the GRID
   (24 hours max on average)
   \item Account for optimal file sizes: Storage Element access is the most
   problematic
@@ -173,7 +181,7 @@ channel.
   WW, ZZ. {\color{blue}Used PYTHIA standalone} for those. For Higgs processes
   assume width to be 0.\\
   ~\\
-  \item Would have been useful to be able to {\color{blue}kill diagrams
+  \item Would have been useful to be able to {\color{blue}disable diagrams
   explicitely}\\
   ~\\
   \item Generator level cut interface not easily generalized: had to
@@ -207,8 +215,8 @@ For the CDR:
 \end{itemize}
 For \whizard 2.0:
 \begin{itemize}
-  \item Process selection
-  \item Run configuration
+  \item Easier process selection
+  \item Work on run configuration
   \item 8 fermions final states (ILC DBD studies)?
 \end{itemize}
 \end{frame}
