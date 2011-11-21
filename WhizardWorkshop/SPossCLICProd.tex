@@ -5,7 +5,7 @@
 \usetikzlibrary{arrows,shapes}
 \usepackage{heppennames}
 \usepackage{hepnicenames}
-
+\usepackage{listings}
 \newcommand{\whizard}{WHIZARD\xspace}
 
 \author{S. Poss for the PH-LCD group}
@@ -134,6 +134,10 @@ Needed to interface \whizard in ILCDIRAC:
   \item Process selection: Make sure all relevant files (e.g. LesHouches files)
   are available
 \end{itemize}
+\end{frame}
+\begin{frame}
+\frametitle{Example of job definition}
+\lstinputlisting[language=python,basicstyle=\scriptsize]{./WhizardExample.py}
 \end{frame}
 
 \begin{frame}
