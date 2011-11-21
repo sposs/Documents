@@ -138,8 +138,19 @@ Needed to interface \whizard in ILCDIRAC:
 \begin{frame}
 \frametitle{Example of job definition}
 \lstinputlisting[language=python,basicstyle=\scriptsize]{./WhizardExample.py}
+Sets the \whizard version to install.
 \end{frame}
-
+\begin{frame}
+\frametitle{What happens on the grid node}
+\begin{enumerate}
+  \item Install software if not available
+  \item Get files: user whizard.in, LesHouches file
+  \item Set whizard.in if needed
+  \item Set the environment: read the lumi spectra, set the library path
+  \item Run \whizard
+  \item Treat output: rename according to user convention
+\end{enumerate}
+\end{frame}
 \begin{frame}
 \frametitle{Running \whizard in ILCDIRAC}
 Problem: how to tell \whizard what to do when not called directly?
@@ -243,5 +254,16 @@ Join the signatories here:\\
   \item Do not depend on compiler at run time
   \item Interface to other languages (e.g. XML)
 \end{itemize}
+\end{frame}
+\begin{frame}
+\frametitle{Making \whizard2.0 and ILCDIRAC play well with each other}
+\begin{itemize}
+  \item Install \whizard2.0 on an ILCDIRAC server
+  \item Interface properly in ILCDIRAC
+  \item Make the central installation compile the process on the fly
+  \item Register that \whizard version as a new application
+  \item Run the user job against this version when compilation is done
+\end{itemize}
+Needs to hold on some DB the processes (can use some checksum mechanism)
 \end{frame}
 \end{document}
