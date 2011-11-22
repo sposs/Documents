@@ -65,6 +65,20 @@ This presentation:
 \end{itemize}
 \end{frame}
 
+\begin{frame}
+\frametitle{A short word on CLIC}
+CLIC is
+\begin{itemize}
+  \item an $\Pep\Pem$ linear collider
+  \item operating nominally at 3TeV cme
+  \item 2 detector concepts (ILD and SiD) based on ILC concepts
+\end{itemize}
+\begin{center}
+\includegraphics[width=5.5cm]{./CLIC_ILD_xz_box_view1.pdf}
+\includegraphics[width=5cm]{./CLIC_SiD_xz.pdf}
+\end{center}
+\end{frame}
+
 \section{Samples considered}
 \begin{frame}
 \frametitle{Physics channels studied}
@@ -154,12 +168,6 @@ Defines the \whizard executable to install.
 \end{frame}
 \begin{frame}
 \frametitle{Running \whizard in ILCDIRAC}
-Problem: how to tell \whizard what to do when not called directly?
-\begin{itemize}
-  \item Need to  configure a workflow object with set of instructions
-  \item Call \whizard after setting whizard.in accordingly
-\end{itemize}
-~\\
 Problem: How to prevent users from trying non-existent channels?
 \begin{itemize}
   \item Store the content of the whizard.prc in a file that can be used at
@@ -169,7 +177,7 @@ Problem: How to prevent users from trying non-existent channels?
 ~\\
 Problem: How to reduce configuration issues?
 \begin{itemize}
-  \item Catch all errors before the job is submitted
+  \item Catch all errors before the job is submitted	
   \item New functionality: all \whizard options are wrapped in a
   XML file, also holds default values and types
 \end{itemize}
@@ -197,7 +205,7 @@ channel.
   processes assume width to be 0.\\
   ~\\
   \item Would have been useful to be able to {\color{blue}disable diagrams
-  explicitly}\\
+  explicitly} to have pure signal samples\\
   ~\\
   \item Generator level cut interface not easily generalized: had to
   {\color{blue}add extra filtering programs} to run after \whizard.\\
