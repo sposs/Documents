@@ -138,17 +138,18 @@ Needed to interface \whizard in ILCDIRAC:
 \begin{frame}
 \frametitle{Example of job definition}
 \lstinputlisting[language=python,basicstyle=\scriptsize]{./WhizardExample.py}
-Sets the \whizard version to install.
+Defines the \whizard executable to install.
 \end{frame}
 \begin{frame}
 \frametitle{What happens on the grid node}
 \begin{enumerate}
   \item Install software if not available
   \item Get files: user whizard.in, LesHouches file
-  \item Set whizard.in if needed
+  \item Set whizard.in as needed
   \item Set the environment: read the lumi spectra, set the library path
   \item Run \whizard
-  \item Treat output: rename according to user convention
+  \item Treat output: rename according to user convention and upload to Storage
+  Element
 \end{enumerate}
 \end{frame}
 \begin{frame}
@@ -192,8 +193,8 @@ channel.
 \frametitle{Limitations met}
 \begin{itemize}
   \item Impossible to generate specific final states with width: $\Ptop\APtop$,
-  WW, ZZ. {\color{blue}Used PYTHIA standalone} for those. For Higgs processes
-  assume width to be 0.\\
+  WW, ZZ, HH, HA. {\color{blue}Used PYTHIA standalone} for those. For SM Higgs
+  processes assume width to be 0.\\
   ~\\
   \item Would have been useful to be able to {\color{blue}disable diagrams
   explicitly}\\
@@ -225,7 +226,7 @@ For the CDR:
   \item Efficient event generation
   \item Lightweight to run on the GRID once compiled
   \item Compilation is tricky
-  \item Some channels could not be done ($\Ptop\APtop$, WW, ZZ)
+  \item Some channels could not be done ($\Ptop\APtop$, WW, ZZ, HH, HA)
 \end{itemize}
 For \whizard 2.0:
 \begin{itemize}
@@ -250,20 +251,23 @@ Join the signatories here:\\
 \begin{frame}
 \frametitle{Requests for the future}
 \begin{itemize}
-  \item Kill diagrams
-  \item Do not depend on compiler at run time
-  \item Interface to other languages (e.g. XML)
+  \item Mechanism to suppress explicit contributions in processes
+  \item Do not depend on compiler at run time (More or less OK if I understand)
+  \item Interface to other languages (e.g. XML, PYTHON)
 \end{itemize}
 \end{frame}
 \begin{frame}
 \frametitle{Making \whizard2.0 and ILCDIRAC play well with each other}
 \begin{itemize}
   \item Install \whizard2.0 on an ILCDIRAC server
-  \item Interface properly in ILCDIRAC
-  \item Make the central installation compile the process on the fly
-  \item Register that \whizard version as a new application
+  \item Interface properly in ILCDIRAC (.sin content)
+  \item Make the central installation compile the process on the fly (Request
+  mechanism)
+  \item Register that \whizard version as a new application and install it on
+  the sites
   \item Run the user job against this version when compilation is done
 \end{itemize}
-Needs to hold on some DB the processes (can use some checksum mechanism)
+Needs to hold on some database the processes (can use some checksum mechanism)
+and the versions.
 \end{frame}
 \end{document}
