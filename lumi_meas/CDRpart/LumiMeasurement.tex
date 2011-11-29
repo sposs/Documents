@@ -1,0 +1,61 @@
+\documentclass{article}
+
+\begin{document}
+\section{Luminosity measurement at CLIC}
+In order to assess the systematic error on the measurements described later in
+this document, it is mandatory to provide an estimate of the luminosity
+spectrum. For this purpose, a procedure based on a so-called reweighting fit \cite{andre}
+was developed. The fit is performed against a sample produced using Guinea
+Pig\cite{guineaspig}, that will be refered to as ``data'' in the rest of this
+section. The advantage of such fitting method is that it does not require to
+simulate and reconstruct many times a given sample, as it only changes the individual event weights.
+
+The measurements performed has three steps. 
+
+Firsly, one generates a set of pairs of beam energies assuming a model.
+  This model is defined by analysing the different contributions that enter the
+  luminosity spectrum, namely the beam energy spread and the beamstrahlung. The
+  former is shown in figure while the later is modeled using the same hypothesis
+  as in \cite{andre}. To account for the different components visible in fig.
+  they are individually mathematically described using several beta functions.
+  The final combinaison is given in \cite{lumimeas_toappear} and has 20 free
+  parameters. The fit is then performed against the Guinea Pig sample. 
+  
+Secondly, the previously generated sample is used as input to BHWide,
+  the large angle Bhabha scattering generator \cite{bhwide}, to produce bhabha
+  events. The relevant quantities considered are the energies of the electron
+  and positron, and the acollinearity. Those quantitites are represented in fig. 
+  
+Finaly, due to time constrains for the publication of this report, it
+  was chosen not to perform the full simulation/reconstruction chain, but
+  instead smear the energy of the reconstructible leptons, according to the
+  formula REF. The distributions of the energy with and without smearing are
+  given in fig.
+
+
+ Use reweighting method (Andre et al.) 
+
+MC sample created assuming some model
+
+1) Fit of the MC sample vs GP
+
+2) Looking at reconstructible final states: BHWide as generator for Bhabha
+scattering at large angles
+
+3) energy smearing, assumed 15\%/sqrt(E) 
+
+Model description: Beta function for the tails (plot?) and beta function + gauss
+smearing for the peak (plot)
+
+2D plots for E1vsE2 at MC level/ GP
+
+3plots e1,e2, effsqrt for BHWide sample
+
+4 final plots spectra/peakonly/diffvsGP/peakonly
+
+
+
+\begin{thebibliography}{99}
+\bibitem{andre}{Andre Sailer's diploma thesis}
+\end{thebibliography}
+\end{document}
