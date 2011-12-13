@@ -71,7 +71,7 @@ class Application(object):
     #Module name and description: Not to be set by the users, internal call only, used to get the Module objects
     self._modulename = ''
     self._moduledescription = ''
-    self._importLocation = "ILCDIRAC.Workflow.Modules"
+    self._importLocation = "modules"
         
     #System Configuration: comes from Job definition
     self._systemconfig = ''

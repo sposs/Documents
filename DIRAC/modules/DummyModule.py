@@ -18,8 +18,10 @@ class DummyModule(ModuleBase):
   """
   def __init__(self):
     ModuleBase.__init__(self)
-    self.resutl = S_ERROR()
+    self.result = S_ERROR()
     self.log = gLogger.getSubLogger( "DummyModuleChecking" )
+    self.something = '' #This is the same as the parameter name "something" in TestApp
+    self.somethingelse = '' #This is the same as the parameter name "somethingelse" in TestApp
     
   def applicationSpecificInputs(self):
     for key,val in self.workflow_commons.items():
@@ -28,5 +30,8 @@ class DummyModule(ModuleBase):
 
   def execute(self):
     self.result = self.resolveInputVariables()
+    #self.something and self.somethingelse are defined when the module is created by the workflow.
+    self.log.info("Something = %s"%self.something)
+    self.log.info("Somethingelse = %s"%self.somethingelse)
     return S_OK()  
   

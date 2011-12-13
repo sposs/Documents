@@ -6,7 +6,7 @@ class TestApp(Application):
         self.somethingelse = ''
         Application.__init__(self, paramdict)
 
-        self._modulename = "MyTestModule"
+        self._modulename = "DummyModule"
         self.appname = self._modulename
         self._moduledescription = 'Some test module'
     
