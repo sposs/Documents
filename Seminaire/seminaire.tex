@@ -1,0 +1,109 @@
+\documentclass{beamer}
+%\usepackage{beamerarticle}
+\usepackage{heppennames}
+\usepackage{hepnicenames}
+\usepackage{graphicx} 
+\usepackage{multirow}
+\usepackage{amsbsy,amsmath,amssymb}
+\usepackage{booktabs}
+% ********** Styl prezentacji **********
+\mode<presentation>
+{
+	\usetheme{Singapore}
+  \setbeamercovered{transparent}
+   \setbeamertemplate{footline}[frame number] 
+  \setbeamertemplate{navigation symbols}{ 
+  \insertslidenavigationsymbol
+  \insertframenavigationsymbol
+  \insertsubsectionnavigationsymbol
+  \insertsectionnavigationsymbol
+  \insertdocnavigationsymbol
+  \insertbackfindforwardnavigationsymbol
+  \hskip 0.3cm
+  %\insertframenumber / \inserttotalframenumber  % <<< frame #
+  %\insertpagenumber / \insertpresentationendpage % <<< page #
+} 
+}
+
+\usepackage[english]{babel}
+\usepackage[latin1]{inputenc}
+
+% font definitions, try \usepackage{ae} instead of the following
+% three lines if you don't like this look
+\usepackage{mathptmx}
+\usepackage[scaled=.90]{helvet}
+\usepackage{courier}
+
+
+\usepackage[T1]{fontenc}
+
+\author{S. Poss for the CERN LCD group}
+\institute[CERN]{CERN}
+
+\subject{CLICCDR}
+\AtBeginSection[]
+{
+	\begin{frame}<beamer>
+		\frametitle{Outline}
+		\tableofcontents[currentsection,currentsubsection]
+	\end{frame}
+}
+
+\title[]{CLIC Physics CDR}
+%%\subtitle{Our experience}
+
+\date{\today}
+
+\begin{document}
+
+\begin{frame}
+	\titlepage
+\end{frame}
+
+\begin{frame}
+\frametitle{Outline}
+\tableofcontents
+% You might wish to add the option [pausesections]
+\end{frame}
+
+\section{Motivations for a CLIC machine}
+
+\section{Physics Potential}
+\subsection{Higgs}
+\subsection{SUSY}
+\subsection{Other models and studies}
+
+\section{Machine}
+\subsection{Technology}
+\subsection{Backgrounds}
+
+\section{Detectors}
+\subsection{Required performance}
+\subsection{Generalities}
+\subsection{Vertex detector design}
+\subsection{Tracking: SiD}
+\subsection{Tracking: ILD}
+\subsection{ECAL design}
+\subsection{HCAL}
+\subsection{CALICE results}
+
+\section{Physics Results}
+\subsection{Higgs}
+\subsection{Squarks}
+\subsection{Sleptons}
+\subsection{Gauginos}
+\subsection{Heavy Higgs}
+
+\section{Conclusion}
+\subsection{Overview}
+\subsection{Signatory list}
+
+\appendix
+\section{Software}
+\subsection{Generation}
+\subsection{Simulation}
+\subsection{Reconstruction}
+\subsection{ILCDIRAC}
+
+
+\end{document}
