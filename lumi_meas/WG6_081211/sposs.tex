@@ -52,9 +52,9 @@ Today:
 \frametitle{Issues found}
 \begin{itemize}
   \item GuineaPig files were sorted, now use the unsorted ones
-  \item One normalization parameter was too much
+  \item One normalization parameter unnecessary removed
   \item For the 2D spectrum: not enough statistics when producing the files
-  $\to$ unphysical file contents (Phillip)
+  $\to$ unphysical file contents (Philipp)
 \end{itemize}
 \end{frame}
 
@@ -140,10 +140,43 @@ $\frac{\sigma(E)}{E}=20\%/\sqrt{E}\oplus0.5\%$}
   \item ``Bump'' in peak enhanced: 44\% deviation for 5GeV, other bins 
   $\sim10\%$ deviation
 \end{itemize}
-This requires additional modifications in model.
+This requires additional modifications in model. 
 \end{frame}
 
-
+\section{Simplifying the model}
+\begin{frame}
+\frametitle{Simplify the model: assume symmetrical beams}
+Why?
+\begin{itemize}
+  \item Because both beams are produced using the same simulation software
+  \item Because many parameters and few events don't go well together: Not
+  visible on 1D plots, but fitted beams are asymmetrical. For Philipp, this is
+  essential
+\end{itemize}
+Realistic?
+\begin{itemize}
+  \item No! In ``real life'' the 2 beams will be sensibly different
+  \item Statistics will not be a problem 
+\end{itemize}
+~\\
+Exercise done with energy smearing: $\sigma(E)/E = 15\%/\sqrt{E}$.
+\end{frame}
+\begin{frame}
+\frametitle{Simplify the model: assume symmetrical beams}
+\includegraphics[width=9cm,page=1]{Spectra_all_BHWide_BHWideTuples_3e5sym.pdf}
+\end{frame}
+\begin{frame}
+\frametitle{Simplify the model: assume symmetrical beams}
+\includegraphics[width=9cm,page=2]{Spectra_all_BHWide_BHWideTuples_3e5sym.pdf}
+\end{frame}
+\begin{frame}
+\frametitle{Simplify the model: assume symmetrical beams}
+\includegraphics[width=9cm,page=4]{Spectra_all_BHWide_BHWideTuples_3e5sym.pdf}
+\end{frame}
+\begin{frame}
+\frametitle{Simplify the model: assume symmetrical beams}
+\includegraphics[width=9cm,page=3]{Spectra_all_BHWide_BHWideTuples_3e5sym.pdf}
+\end{frame}
 
 \section{Conclusion}
 \begin{frame}
