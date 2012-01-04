@@ -12,17 +12,17 @@
 	\usetheme{Singapore}
   \setbeamercovered{transparent}
    \setbeamertemplate{footline}[frame number] 
-  \setbeamertemplate{navigation symbols}{ 
-  \insertslidenavigationsymbol
-  \insertframenavigationsymbol
-  \insertsubsectionnavigationsymbol
-  \insertsectionnavigationsymbol
-  \insertdocnavigationsymbol
-  \insertbackfindforwardnavigationsymbol
-  \hskip 0.3cm
-  %\insertframenumber / \inserttotalframenumber  % <<< frame #
-  %\insertpagenumber / \insertpresentationendpage % <<< page #
-} 
+%   \setbeamertemplate{navigation symbols}{ 
+%   \insertslidenavigationsymbol
+%   \insertframenavigationsymbol
+%   \insertsubsectionnavigationsymbol
+%   \insertsectionnavigationsymbol
+%   \insertdocnavigationsymbol
+%   \insertbackfindforwardnavigationsymbol
+%   \hskip 0.3cm
+%   %\insertframenumber / \inserttotalframenumber  % <<< frame #
+%   %\insertpagenumber / \insertpresentationendpage % <<< page #
+% } 
 }
 
 \usepackage[english]{babel}
@@ -42,15 +42,16 @@
 
 \subject{CLICCDR}
 \AtBeginSection[]
+{   
 {
-\usebackgroundtemplate{\includegraphics[width=\paperwidth]{background.png}}
+    \usebackgroundtemplate{\includegraphics[width=\paperwidth]{background.png}}
 	\begin{frame}<beamer>
 		\frametitle{Outline}
 		\tableofcontents[currentsection,currentsubsection]
 	\end{frame}
 }
-
-\title[]{CLIC Physics CDR}
+}
+\title[]{CLIC Physics and detectors CDR}
 %%\subtitle{Our experience}
 
 \date{\today}
@@ -71,47 +72,152 @@
 \end{frame}
 }
 
-\section{Motivations for a CLIC machine}%1slide
+\section[Motivations for CLIC]{Motivations for a CLIC machine}%1slide
+\begin{frame}
+ \frametitle{Motivations for a CLIC machine}
+ CLIC: Compact LInear Collider, 3TeV design energy
+ \begin{itemize}
+   \item Complementary to LHC
+   \item In case of discoveries: precision Higgs physics, SUSY studies, etc.
+ \end{itemize}
+ 
+\end{frame}
 
 \section{Physics Potential}
-\subsection{Higgs}%2slides
-\subsection{SUSY}%2-3
-\subsection{Other models and studies}%1slide
+\begin{frame}
+\frametitle{SM Higgs}
 
-\section{Machine}
-\subsection{Technology}%2-3slides
-\subsection{MDI}%QD0 1slide
-\subsection{Backgrounds}%2-3slides
+\end{frame}
+\begin{frame}
+\frametitle{BSM Higgs}
+\end{frame}
+\begin{frame}
+\frametitle{SUSY}
+\end{frame}
+\begin{frame}
+\frametitle{Other studies and summary}
 
-\section{Detectors}
-\subsection{Required performance}%1
-\subsection{Generalities}%1
-\subsection{Vertex detector design}%1-2
-\subsection{Tracking: SiD}%1
-\subsection{Tracking: ILD}%1
-\subsection{ECAL design}%1
-\subsection{HCAL design}%1
-\subsection{CALICE results}%2
+\end{frame}
+
+\section[CLIC]{The CLIC Machine}
+\begin{frame}
+\frametitle{Technology}
+
+\end{frame}
+\begin{frame}
+\frametitle{Machine properties}
+
+\end{frame}
+\begin{frame}
+\frametitle{Machine Detector Integration}
+QD0 is IN the detector, stabilization
+\end{frame}
+
+\begin{frame}
+\frametitle{Machine induced backgrounds}
+
+\end{frame}
+
+\section[Detectors]{The Detectors}
+\begin{frame}
+\frametitle{Required perfomance}
+
+\end{frame}
+\begin{frame}
+\frametitle{Overview}
+\end{frame}
+\begin{frame}
+\frametitle{Vertex detector optimization}
+\end{frame}
+
+\begin{frame}
+\frametitle{Tracking in SiD}
+
+\end{frame}
+\begin{frame}
+\frametitle{Tracking in ILD}
+\end{frame}
+\begin{frame}
+\frametitle{ECAL}
+\end{frame}
+\begin{frame}
+\frametitle{HCAL}
+Use tungsten for lower depth
+\end{frame}
+\begin{frame}
+\frametitle{CALICE results}
+\end{frame}
+
+\section[Bkg treatment]{Dealing with the machine induced background}
+\begin{frame}
+\frametitle{Timing cuts}
+\end{frame}
+\begin{frame}
+\frametitle{Jet reconstruction}
+\end{frame}
 
 \section{Physics Results}
-\subsection{Dealing with backgrounds}%4
-\subsection{Higgs}%2
-\subsection{Squarks}%2
-\subsection{Sleptons}%2
-\subsection{Gauginos}%2
-\subsection{Heavy Higgs}%2
-\subsection{Top physics at 500GeV}%3
+\begin{frame}
+ \frametitle{Benchmark channels}
+\end{frame}
+\begin{frame}
+\frametitle{SM Higgs}
+\end{frame}
+\begin{frame}
+\frametitle{SM Higgs}
+\end{frame}
+\begin{frame}
+\frametitle{Squarks}
+\end{frame}
+\begin{frame}
+\frametitle{Squarks}
+\end{frame}
+\begin{frame}
+\frametitle{Sleptons}
+\end{frame}
+\begin{frame}
+\frametitle{Sleptons}
+\end{frame}
+\begin{frame}
+\frametitle{Gauginos}
+\end{frame}
+\begin{frame}
+\frametitle{Gauginos}
+\end{frame}
+\begin{frame}
+\frametitle{Heavy Higgs}
+\end{frame}
+\begin{frame}
+\frametitle{Top physics at 500GeV: vertex detector}
+\end{frame}
+\begin{frame}
+\frametitle{Top physics at 500 GeV: compare with ILC}
+\end{frame}
 
 \section{Conclusion}
-\subsection{Overview}%1-2
-\subsection{Signatory list}%1
-
+\begin{frame}
+\frametitle{Overview}
+\end{frame}
+\begin{frame}
+\frametitle{Signatory list}
+\end{frame}
 \appendix
-\section{Software}
-\subsection{Generation}
-\subsection{Simulation}
-\subsection{Reconstruction}
-\subsection{ILCDIRAC}
 
+\section{Software}
+\begin{frame}
+\frametitle{Generation}
+\end{frame}
+\begin{frame}
+\frametitle{Simulation}
+\end{frame}
+\begin{frame}
+\frametitle{Handling background in the software}
+\end{frame}
+\begin{frame}
+\frametitle{Reconstruction}
+\end{frame}
+\begin{frame}
+\frametitle{Using the GRID: ILCDIRAC}
+\end{frame}
 
 \end{document}
