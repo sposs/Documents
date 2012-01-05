@@ -6,6 +6,8 @@
 \usepackage{multirow}
 \usepackage{amsbsy,amsmath,amssymb}
 \usepackage{booktabs}
+\usepackage{tikz}
+
 % ********** Styl prezentacji **********
 \mode<presentation>
 {
@@ -94,48 +96,80 @@ CLIC physics potential:
 \section{Physics Potential}
 \begin{frame}
 \frametitle{SM Higgs}
-High precision measurement of its fundamental properties: mass, total decay
-width, spin-parity quantum numbers, couplings to fermions and gauge bosons and
-self couplings
-\includegraphics[width=4cm]{../SIDWorkshop/xsec_vs_cme.pdf}
+High precision measurement of its fundamental properties: mass,
+total decay width, spin-parity quantum numbers, couplings to fermions and gauge bosons and
+self couplings\\
+\begin{columns}[c]
+\column{6cm}
+\includegraphics[width=6cm]{../SIDWorkshop/xsec_vs_cme.pdf}
+\column{6cm}
+\begin{center}
+\includegraphics[width=3cm]{../SIDWorkshop/ee_h_bb_mass_mh120GeV.pdf}
+\includegraphics[width=3cm]{../SIDWorkshop/ee_h_mumu_mass_mh120GeV.pdf}\\
 \begin{tabular}{cc}
-gHbb & 2\%\\
-gHcc & 3\% \\
-$gH\mu\mu$ & 15\%
-\end{tabular}
-\includegraphics[width=4cm]{../SIDWorkshop/ee_h_bb_mass_mh120GeV.pdf}
-\includegraphics[width=4cm]{../SIDWorkshop/ee_h_mumu_mass_mh120GeV.pdf}
-Ongoing studies for tri linear couplings $\lambda_{HHH}$.
-\end{frame}
-\begin{frame}
-\frametitle{BSM Higgs}
-Produced with $\Pep\Pem \to \PA+\Ph/\PH$, $\PA$ and $\PH$ are degenerate in
-mass at studied point (tan b = 30, mA approx 750 GeV). $\PA\to bb$ and $\PH \to
-bb$
-
-$\Pep\Pem \to \PHp\PHm$, $\PHp\to tb$
-\includegraphics[width=5cm]{../SIDWorkshop/HAMass742_Bkg_CKFM_00BX_FJ.pdf}
-\includegraphics[width=5cm]{../SIDWorkshop/Hpm_Mass742_Bkg_CKFM_00BX_FJ.pdf}
-\begin{tabular}{ccc}
-\toprule
-~ & mass & width\\
+Coupling & Stat. precision\\
 \midrule
-A/H & 0.002 & 0.10\\
-Hpm & 0.005 & 0.15\\
+$g_{\PH\to\Pbottom\APbottom}$ & 2\%\\
+$g_{\PH\to\Pcharm\APcharm}$ & 3\% \\
+$g_{\PH\to\mu\mu}$ & 15\%\\
 \bottomrule
 \end{tabular}
-relative deternmination of tan b $<$ 0.06
+\end{center}
+\begin{tikzpicture}[remember picture, overlay, transform shape, rotate=45,]
+\node<2>[inner sep=0pt, scale=1.5] at (4.5,0.) {% 
+      {\Huge \alert{More later !}}%
+    };%
+\end{tikzpicture}
+\end{columns}
+Ongoing studies for self coupling $\lambda_{HHH}$.
+\end{frame}
+
+\begin{frame}
+\frametitle{BSM Higgs}
+\begin{columns}[c]
+\column{6cm}
+$\Pep\Pem \to \PH\PA \to \Pbottom\APbottom\Pbottom\APbottom$\\
+\includegraphics[width=5cm]{HAMass742_Bkg_CKFM_00BX_FJ.pdf}
+\column{6cm}
+$\Pep\Pem \to \PHp\PHm \to \Ptop\APbottom\APtop\Pbottom$
+\includegraphics[width=5cm]{Hpm_Mass742_Bkg_CKFM_00BX_FJ.pdf}
+\end{columns}
+\begin{center}
+\begin{tabular}{ccc}
+\toprule
+~ & $\sigma(m)/m$ & $\sigma(\Gamma)/\Gamma$\\
+\midrule
+$\PA/\PH$ & 0.002 & 0.10\\
+$\PHpm$ & 0.005 & 0.15\\
+\bottomrule
+\end{tabular}
+\end{center}
+$\Rightarrow$ determination of $\sigma(\tan \beta)/\tan \beta <$ 0.06.
+\begin{tikzpicture}[remember picture, overlay, transform shape, rotate=45,
+scale=2] \node<2>[inner sep=0pt] at (current page.center) {%
+        {\Huge \alert{More later !}}%
+    };%
+\end{tikzpicture}
+\end{frame}
+
+\begin{frame}
+\frametitle{SUSY}
+\begin{center}
+\includegraphics[width=9cm]{../SIDWorkshop/susy_model2.png}
+\end{center}
+Study chargino and neutralino masses by measuring kinematic endpoints of the
+energy distributions, in channels like $\PSgxzii \to \Ph \PSgxzi$
+\begin{tikzpicture}[remember picture, overlay, transform shape, rotate=45,
+scale=2] \node<2>[inner sep=0pt] at (current page.center) {%
+        {\Huge \alert{More later !}}%
+    };%
+\end{tikzpicture}
+
 \end{frame}
 \begin{frame}
 \frametitle{SUSY}
-\includegraphics[width=5cm]{../SIDWorkshop/susy_model2.png}
-
-Study chargino and neutralino masses by measuring kinematic endpoints of the
-energy distributions, in channels like $neu2\to \Ph neu1$ Shown later in great
-detail
-
-Susy breaking models:
-\includegraphics[width=5cm]{../SIDWorkshop/GvM.png}
+Susy breaking models separation capability:
+\includegraphics[width=10cm]{../SIDWorkshop/GvM.png}
 \end{frame}
 \begin{frame}
 \frametitle{Other studies}
@@ -146,7 +180,6 @@ Susy breaking models:
   \item Z'
   \item Contact interaction
   \item Extra dimensions
-  \item 
 \end{itemize}
 \end{frame}
 \begin{frame}
@@ -176,8 +209,8 @@ Higgs compos. scale [TeV] & 5-7 & 9-12 & 45 & 60\\
  \end{center}
  CLIC can 
  \begin{itemize}
-   \item extend the \textit{discovery reach} of LHC,
-   \item offer the opportunity of \textit{precise measurements} of masses and
+   \item extend the \alert{discovery reach} of LHC,
+   \item offer the opportunity of \alert{precise measurements} of masses and
  couplings.
  \end{itemize}
 \end{frame}
@@ -185,41 +218,49 @@ Higgs compos. scale [TeV] & 5-7 & 9-12 & 45 & 60\\
 
 \section[CLIC]{The CLIC Machine}
 \begin{frame}
-\frametitle{CLIC machine CDR}
+\frametitle{CLIC machine Conceptual Design Report}
 \begin{itemize}
   \item Released later in 2012
   \item Presents the different technical aspects of a CLIC machine
   \item Details the machine properties
 \end{itemize}
-Here: overview of those properties
+Here: brief overview of those properties
 \end{frame}
 \begin{frame}
-\frametitle{Technology}
+\frametitle{CLIC Technology}
+\begin{columns}[c]
+\column{6cm}
 2 beam acceleration scheme: drive beam and main beam
 \begin{itemize}
   \item Gradient 100 MV/m
   \item Energy: from few-hundred GeV upgradable in steps up to 3 TeV; R\&D has
   focused on 3 TeV
 \end{itemize}
-\includegraphics[width=5cm]{clicacceleration.png}
+\column{6cm}
+\includegraphics[width=6cm]{clicacceleration.png}
+\end{columns}
 \end{frame}
+
 \begin{frame}
-\frametitle{Machine properties}
-lumi, beam structure, compare to LHC/ILC, beam induced background
+\frametitle{CLIC properties}
+compare to LHC/ILC
+\begin{center}
 \begin{tabular}{ccc}
  & ILC 0.5TeV & CLIC 3TeV\\
- \hline
+ \midrule
 L [$\textrm{cm}^{-2}\,\textrm{s}^{-1}$] & $2\times 10^{34}$&$5.9\times 10^{34}$ \\
-\hline
-Bunch crossing separation  & 700 ns & 0.5 ns\\
-\hline
-Bunch crossings per train & 2670 & 312\\
-\hline
+\midrule
+Bunch crossing separation  & 700 ns & \alert{0.5 ns}\\
+\midrule
+Bunch crossings per train & 2670 & \alert{312}\\
+\midrule
 Train repetition rate  & 5 Hz & 50 Hz\\
-\hline
+\midrule
 Crossing angle & 14mrad & 20mrad\\
-\hline
+\bottomrule
 \end{tabular}
+\end{center}
+\alert{Whole bunch train in 156ns.}
 \end{frame}
 \begin{frame}
 \frametitle{Machine Detector Interface}
@@ -228,13 +269,18 @@ Push-Pull system:\\
 \end{frame}
 \begin{frame}
 \frametitle{Machine Detector Interface}
-\includegraphics[width=10cm]{Figure_13_14.pdf}\\
-Last accelerator element is IN the detector: alignment issue
+\begin{center}
+\begin{tikzpicture}[scale=1] 
+\node[] (0.0, -0.3) {\includegraphics[width=10cm,clip,trim= 0 0 0
+0]{Figure_13_14.pdf}}; 
+\draw<1>[<-,ultra thick, red] (-1.0,0.0)  to[] (-1.0,-3.5);
+\end{tikzpicture}
+\alert{Last accelerator element is IN the detector}
+\end{center}
 \end{frame}
 
 \begin{frame}
 \frametitle{Machine induced backgrounds}
-gg had, pairs, occupancy
 \begin{tabular}{ccc}
  & ILC 0.5TeV & CLIC 3TeV\\
 \hline
@@ -244,7 +290,19 @@ Nb incoherant pairs/BX & $1\times 10^5$ & \alert{$3\times10^5$}\\
 \hline
 Nb coherent pairs/BX & $<10^2$ & $7\times 10^8$\\
 \hline
-\end{tabular}
+\end{tabular}\\
+~\\
+\alert{Very large machine induced background rates!}\\
+\begin{itemize}
+  \item Coherent pairs very forward
+  \item Incoherent pairs mostly forward
+\end{itemize}
+$\to$ impact on the very forward detectors design\\
+~\\
+\begin{itemize}
+  \item $\gamma\gamma\to\textrm{hadrons}$ all over the detector acceptance.
+\end{itemize}
+\alert{Need to deal with those}
 \end{frame}
 
 \section[Detectors]{The Detectors}
@@ -271,7 +329,21 @@ $\sigma(E_j)/E_j = 3.5\%-5\%$ for $E_j = 50\textrm{GeV}-1\textrm{TeV}$
 \end{itemize}
 \end{frame}
 \begin{frame}
-\frametitle{Particle Flow}
+\frametitle{Particle Flow Paradigm}
+Jet energy:
+\begin{itemize}
+  \item 60\% carried by charged particles
+  \item 30\% by photons
+  \item 10\% by long-lived neutral hadrons
+\end{itemize}
+Particle Flow: reconstruction of the \alert{4-momenta of all visible
+particles}:
+\begin{itemize}
+  \item momenta measured in the tracking detectors for charged particles
+  \item energy measured in the calorimeters for photons and neutral hadrons
+\end{itemize}
+$\Rightarrow$ need for \alert{high precision tracking and high granularity
+calorimeters}
 \end{frame}
 \begin{frame}
 \frametitle{Overview}
@@ -286,25 +358,53 @@ $\sigma(E_j)/E_j = 3.5\%-5\%$ for $E_j = 50\textrm{GeV}-1\textrm{TeV}$
 \end{frame}
 \begin{frame}
 \frametitle{Vertex detector optimization}
+\begin{center}
 \includegraphics[width=8cm]{VertexDetector.png}
+\end{center}
 \begin{itemize}
   \item $20\times20\mu m$ pixel size
   \item 0.2\% X$_0$ material per layer (very thin)
   \item Time stamping 10ns
   \item Triggerless readout
-  \item radiation level $<10^{11} n_{eq}cm^{-2}year^{-1}  \Leftarrow 10^4$ lower
-  than LHC
+  \item Radiation level $<10^{11} n_{eq}cm^{-2}year^{-1}  \Leftarrow 10^4
+  \times$ lower than LHC
 \end{itemize}
 \alert{Challenging R\&D project}
 \end{frame}
 
 \begin{frame}
-\frametitle{Tracking in SiD}
-\includegraphics[width=5cm]{sid_tracker_zx.pdf}
+\frametitle{Tracking in CLIC\_SiD}
+\begin{columns}[c]
+\column{6cm}
+\begin{center}
+\includegraphics[width=6cm]{sid_tracker_zx.pdf}
+\end{center}
+\column{6cm}
+\begin{itemize}
+  \item All silicon tracking
+  \item Efficiency ($p_{\textrm{T}}>1$GeV): $>99\%$
+  \item Mom. resolution: $\sigma(\Delta(p_{\textrm{T}})/p_{\textrm{T}}^2)<
+  2\cdot10^{-5}/$GeV
+\end{itemize}
+\alert{Compatible with requirements}
+\end{columns}
 \end{frame}
 \begin{frame}
-\frametitle{Tracking in ILD}
-\includegraphics[width=5cm]{CLIC_ILD_tracking_geom.pdf}
+\frametitle{Tracking in CLIC\_ILD}
+\begin{columns}[c]
+\column{6cm}
+\begin{center}
+\includegraphics[width=6cm]{CLIC_ILD_tracking_geom.pdf}
+\end{center}
+\column{6cm}
+\begin{itemize}
+  \item Time Projection Chamber
+  \item Completed by silicon layers
+  \item Efficiency ($p_{\textrm{T}}>1$GeV): $>99\%$
+  \item Mom. resolution: $\sigma(\Delta(p_{\textrm{T}})/p_{\textrm{T}}^2)\sim 2\cdot10^{-5}/$GeV
+\end{itemize}
+\alert{Compatible with requirements}
+\end{columns}
 \end{frame}
 \begin{frame}
 \frametitle{ECAL}
@@ -320,15 +420,112 @@ Use tungsten for lower depth
 
 \section[Bkg treatment]{Dealing with the machine induced background}
 \begin{frame}
-\frametitle{Timing cuts}
+\frametitle{Background properties}
+Main problematic background: $\gamma\gamma\to\textrm{hadrons}$
+\begin{columns}[c]
+\column{6cm}
+\centering
+\includegraphics[width=4cm]{../SIDWorkshop/ggPT}\\
+$\theta>8^\circ$
+\column{6cm}
+Entire bunch train (312BX):
+\begin{itemize}
+  \item 5000 tracks $\to$ total track momentum: \alert{7.3TeV}
+  \item Total calorimetric energy (ECAL+HCAL): \alert{19TeV}
+\end{itemize}
+Mostly low $p_{\textrm{T}}$
+\end{columns}
 \end{frame}
 \begin{frame}
-\frametitle{Jet reconstruction}
+\frametitle{Timing cuts}
+\begin{columns}[c]
+\column{5cm}
+\centering
+\includegraphics[width=5cm]{../SIDWorkshop/hcalTimingSteel.pdf}
+\column{5cm}
+\centering
+\includegraphics[width=5cm]{../SIDWorkshop/hcalTimingTungsten.pdf}
+\end{columns}
+\begin{center}
+\begin{tabular}{lrr}
+Subdetector &Reco. window &hit resolution\\
+ECAL &10 ns &1 ns\\
+HCAL Endcaps &10 ns &1 ns\\
+HCAL Barrel &100 ns &1 ns\\
+Silicon Detectors &10 ns &$10/\sqrt{12}$ ns\\
+TPC & entire bunch train & n/a
+\end{tabular}
+\end{center}
+\end{frame}
+\begin{frame}
+\frametitle{Jet finder}
+$\Pep\Pem\to\PSq_R\PaSq_R\to\Pquark\APquark\PSgxz_1 \PSgxz_1$: 2 jets $+$
+missing energy\\ ~\\
+\begin{columns}[c]
+\column{6cm}
+Durham $k_{\textrm{T}}$ \`a la LEP:\\
+\includegraphics[width=6cm]{../SIDWorkshop/JetFinding_compare_E_vis__FJ_ee_kt_algorithm_ExclusiveNJets_2.pdf}\\
+\column{6cm}
+Hadron collider $k_{\textrm{T}}$:\\
+\includegraphics[width=6cm]{../SIDWorkshop/JetFinding_compare_E_vis__FJ_kt_algorithm_0_7_ExclusiveNJets_2.pdf}\\
+\end{columns}
+\begin{columns}
+\column{6cm}
+{\scriptsize
+\begin{itemize}
+  \item All particle clustered
+  \item Timing cuts effective
+\end{itemize}
+}
+\column{6cm}
+{\scriptsize
+\begin{itemize}
+  \item Much of Bkg clustered with beam axis
+  \item Timing cuts do less work
+  \item Impact depends on event topology
+\end{itemize}
+}
+\end{columns}
+\end{frame}
+\begin{frame}
+\frametitle{Background suppression}
+E.g. $\Pep\Pem\to\PH\PH\to\Ptop\APbottom\Pbottom\APtop$:
+\begin{columns}[c]
+\column{6cm}
+\centering
+\includegraphics[width=6cm]{../SIDWorkshop/HH2.pdf}
+\column{6cm}
+\centering
+\includegraphics[width=6cm]{../SIDWorkshop/HH2tight.pdf}
+\end{columns}
+\begin{columns}[c]
+\column{6cm}
+\centering
+No cuts:\\ \alert{$\sim1.2\textrm{TeV}$}\\
+{\color{blue}{\scriptsize 10ns window}}
+\column{6cm}
+\centering
+Tight timing cuts and jet finding:\\ \alert{$\sim100\textrm{GeV}$}
+\end{columns}
+~\\
+\alert{Using timing cuts and jet finding removes most of the background}
 \end{frame}
 
 \section{Physics Results}
 \begin{frame}
  \frametitle{Benchmark channels}
+The benchmark channels used to assess detector performance:
+\begin{itemize}
+\item $\Pep\Pem \to \Ph \Pgne \Pagne, \Ph \to \mu^+\mu^-, \Ph \to
+\Pbottom\APbottom$ (SID),
+\item  $\Pep\Pem \to \PHp \PHm\to \Ptop\APbottom\APtop\Pbottom$(ILD),\\
+$\Pep\Pem \to \PHz \PA\to\Pbottom\APbottom\Pbottom\APbottom$ (ILD),
+\item $\Pep\Pem \to \PSq_R \PaSq_R\to\Pquark\APquark\PSgxz_1\PSgxz_1$ (ILD), 
+\item $\Pep\Pem \to \PSl \PaSl \,(\ell = \Pe,\Pgm,\Pgne)$ (ILD), 
+\item $\Pep\Pem \to \PSgxpm_1 \PSgxmp_1\to\PWp\PWm\PSgxz_1\PSgxz_1$ (SID),\\
+$\Pep\Pem \to \PSgxz_2 \PSgxz_2\to \Ph\Ph\PSgxz_1\PSgxz_1$ (SID),
+\item  $\Pep\Pem \to \Pqt \Paqt$ (500~GeV, ILD).
+\end{itemize} 
 \end{frame}
 \begin{frame}
 \frametitle{SM Higgs}
@@ -394,7 +591,9 @@ OR / AND\\
 \end{frame}
 
 \appendix
-
+\begin{frame}
+\frametitle{Backup slides}
+\end{frame}
 \section{Software}
 \begin{frame}
 \frametitle{Generation}
