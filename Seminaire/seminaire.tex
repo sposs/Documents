@@ -145,11 +145,11 @@ $\PHpm$ & 0.005 & 0.15\\
 \end{tabular}
 \end{center}
 $\Rightarrow$ determination of $\sigma(\tan \beta)/\tan \beta <$ 0.06.
-\begin{tikzpicture}[remember picture, overlay, transform shape, rotate=45,
-scale=2] \node<2>[inner sep=0pt] at (current page.center) {%
-        {\Huge \alert{More later !}}%
-    };%
-\end{tikzpicture}
+%\begin{tikzpicture}[remember picture, overlay, transform shape, rotate=45,
+%scale=2] \node<2>[inner sep=0pt] at (current page.center) {%
+%        {\Huge \alert{More later !}}%
+%    };%
+%\end{tikzpicture}
 \end{frame}
 
 \begin{frame}
@@ -230,7 +230,7 @@ Here: brief overview of those properties
 \frametitle{CLIC Technology}
 \begin{columns}[c]
 \column{6cm}
-2 beam acceleration scheme: drive beam and main beam
+2 beam acceleration scheme:\\ drive beam and main beam
 \begin{itemize}
   \item Gradient 100 MV/m
   \item Energy: from few-hundred GeV upgradable in steps up to 3 TeV; R\&D has
@@ -243,7 +243,7 @@ Here: brief overview of those properties
 
 \begin{frame}
 \frametitle{CLIC properties}
-compare to LHC/ILC
+%compare to LHC/ILC
 \begin{center}
 \begin{tabular}{ccc}
  & ILC 0.5TeV & CLIC 3TeV\\
@@ -258,9 +258,10 @@ Train repetition rate  & 5 Hz & 50 Hz\\
 \midrule
 Crossing angle & 14mrad & 20mrad\\
 \bottomrule
-\end{tabular}
-\end{center}
+\end{tabular}\\
+~\\
 \alert{Whole bunch train in 156ns.}
+\end{center}
 \end{frame}
 \begin{frame}
 \frametitle{Machine Detector Interface}
@@ -281,16 +282,18 @@ Push-Pull system:\\
 
 \begin{frame}
 \frametitle{Machine induced backgrounds}
+\begin{center}
 \begin{tabular}{ccc}
  & ILC 0.5TeV & CLIC 3TeV\\
-\hline
+\midrule
 Nb $\gamma\gamma\to\textrm{had}$/BX & 0.2 & \alert{3.2}\\
-\hline
+\midrule
 Nb incoherant pairs/BX & $1\times 10^5$ & \alert{$3\times10^5$}\\
-\hline
+\midrule
 Nb coherent pairs/BX & $<10^2$ & $7\times 10^8$\\
-\hline
-\end{tabular}\\
+\bottomrule
+\end{tabular}
+\end{center}
 ~\\
 \alert{Very large machine induced background rates!}\\
 \begin{itemize}
@@ -408,14 +411,68 @@ calorimeters}
 \end{frame}
 \begin{frame}
 \frametitle{ECAL}
-Use tungsten Fine grained for Particle Flow
+\begin{tabular}{ccc}
+    & CLIC\_ILD & CLIC\_SiD\\
+\midrule
+Absorber/Active element & Tungsten / Si Pads & Tungsten / Si Pads\\
+\midrule
+Sampling layers & $30(20\times2.1, 10\times4.2)$ & 
+$30(20\times2.1, 10\times5)$\\
+\midrule
+Cell size ($\textrm{mm}^2$) &$5.1\times 5.1$& $3.5\times 3.5$\\
+\midrule
+$\textrm{X}_0$ and $\lambda_{\textrm{I}}$ & 23 \& 1 & 26 \&1\\
+\bottomrule 
+\end{tabular}
+\begin{columns}[c]
+\column{6cm}
+\begin{tikzpicture}
+\node [] {\includegraphics[width=5cm]{eudetecl.png}};
+\node [rectangle,fill=white,opacity=1] at (-1,-1.) {EUDET ECAL concept};
+\end{tikzpicture}
+\column{6cm}
+SiD design:\\
+\includegraphics[width=6cm]{sid-ecal-drawing.pdf}
+\end{columns}
 \end{frame}
 \begin{frame}
 \frametitle{HCAL}
-Use tungsten for lower depth
+\begin{center}
+\begin{tabular}{cc}
+\toprule
+Absorber (Barrel/Endcap) & Tungsten / Steel \\
+\midrule
+Sampling layers (B/E) & $75\times10$mm/ $60\times20$mm\\
+\midrule
+Cell size ($\textrm{mm}^2$) & $30\times30$ (SiPM), $10\times10$ (RPC)\\
+\midrule
+$\lambda_{\textrm{I}}$ & 7.5\\
+\bottomrule
+\end{tabular}
+\end{center}
+\includegraphics[width=6cm]{Fig817a.pdf}
+\includegraphics[width=5cm]{hcalzoom.png}
 \end{frame}
 \begin{frame}
-\frametitle{CALICE results}
+\frametitle{CALICE results for W-HCAL}
+\alert{Validation of GEANT4 simulation for hadronic showers in tungsten}\\
+\begin{columns}[c]
+\column{5cm}
+\includegraphics[width=5cm]{whcal_model.png}
+\column{4cm}
+\includegraphics[width=4cm]{Fig820b.pdf}
+\column{3cm}
+\includegraphics[width=3cm]{Fig820c.pdf}
+\end{columns}
+\begin{columns}[c]
+\column{5cm}
+Test beam period in 2010-2011\\
+Analysis ongoing
+\column{4cm}
+\includegraphics[width=4cm]{Fig821.pdf}
+\column{4cm}
+\includegraphics[width=4cm]{Fig824.pdf}
+\end{columns}
 \end{frame}
 
 \section[Bkg treatment]{Dealing with the machine induced background}
@@ -489,7 +546,7 @@ Hadron collider $k_{\textrm{T}}$:\\
 \end{frame}
 \begin{frame}
 \frametitle{Background suppression}
-E.g. $\Pep\Pem\to\PH\PH\to\Ptop\APbottom\Pbottom\APtop$:
+E.g. $\Pep\Pem\to\PHp\PHm\to\Ptop\APbottom\Pbottom\APtop$:
 \begin{columns}[c]
 \column{6cm}
 \centering
@@ -511,7 +568,7 @@ Tight timing cuts and jet finding:\\ \alert{$\sim100\textrm{GeV}$}
 \alert{Using timing cuts and jet finding removes most of the background}
 \end{frame}
 
-\section{Physics Results}
+\section{Benchmarking the detectors}
 \begin{frame}
  \frametitle{Benchmark channels}
 The benchmark channels used to assess detector performance:
@@ -528,37 +585,197 @@ $\Pep\Pem \to \PSgxz_2 \PSgxz_2\to \Ph\Ph\PSgxz_1\PSgxz_1$ (SID),
 \end{itemize} 
 \end{frame}
 \begin{frame}
-\frametitle{SM Higgs}
+\frametitle{SM Higgs decays}
+Flavour tagging ($\Ph\to\Pbottom\APbottom$):
+\begin{columns}[c]
+\column{4cm}
+\centering
+\includegraphics[width=4cm]{../SIDWorkshop/Light_Higgs_Flavour_Tag.pdf}
+\column{4cm}
+\centering
+\includegraphics[width=4cm]{../SIDWorkshop/Light_Higgs_Flavour_Tag_C.pdf}
+\end{columns}
+Muon reconstruction efficiency ($\Ph\to\mu\mu$):
+\begin{columns}[c]
+\column{4cm}
+\centering
+\includegraphics[width=4cm]{../SIDWorkshop/MuonEfficiency2.pdf}
+\column{4cm}
+\centering
+%\includegraphics[width=4cm]{}
+\end{columns}
+\end{frame}
+
+\begin{frame}
+\frametitle{SM Higgs decays}
+\begin{columns}[c]
+\column{6cm}
+\centering
+\includegraphics[width=5cm]{../SIDWorkshop/ee_h_mumu_mass_mh120GeV}
+\column{6cm}
+\centering
+\includegraphics[width=5cm]{../SIDWorkshop/ee_h_bb_mass_mh120GeV}
+\end{columns}
+Cross section measurements:
+\begin{itemize}
+  \item
+  $\sigma(\sigma_{\Ph\to\Pbottom\APbottom})/\sigma_{\Ph\to\Pbottom\APbottom} =
+  0.22\%$ stat.
+  \item $\sigma(\sigma_{\Ph\to\Pmuon\APmuon})/\sigma_{\Ph\to\Pmuon\APmuon}
+  = 15.7\%$ stat.
+\end{itemize}
+\end{frame}
+
+\begin{frame}
+\frametitle{Heavy Higgs: $\PH^0\PA\to\Pbottom\APbottom\Pbottom\APbottom$,
+$\PH^+\PH^-\to\Ptop\APbottom\Pbottom\APtop$}
+\centering
+\includegraphics[width=4cm]{../SIDWorkshop/HAMass742_Bkg_CKFM_00BX_FJ.pdf}
+\includegraphics[width=4cm]{../SIDWorkshop/HAMass902_Bkg_CKFM_00BX_FJ.pdf}\\
+\includegraphics[width=4cm]{../SIDWorkshop/Hpm_Mass742_Bkg_CKFM_00BX_FJ.pdf}
+\includegraphics[width=4cm]{../SIDWorkshop/Hpm_Mass902_Bkg_CKFM_00BX_FJ.pdf}\\
+{\scriptsize Statistical accuracy $\sigma(M)/M \sim0.3\%$.}\\
+$\Rightarrow$ Evaluation of \alert{b-tagging and heavy energy jet
+reconstruction}
+\end{frame}
+
+\begin{frame}
+\frametitle{Squarks: $\Pep\Pem \to \PSq_R\PaSq_R\to\Pquark\APquark\PSgxz_1\PSgxz_1$} 
+Used for \alert{jet energy reconstruction} studies (see background treatment)\\
+Measuring $M_{\textrm{C}} = \sqrt{2(E_1E_2+\vec{p_1}.\vec{p_2})}$,
+$M_{\textrm{C}}^{\textrm{max}}=\frac{m_{\PSq}^2 - m_{\chi}^2}{m_{\PSq}}$:
+\begin{columns}[c]
+\column{6cm}
+\begin{center}
+\includegraphics[width=6cm]{BackgroundRejection_MCwithBDTCut.pdf}\\
+Selection cuts applied
+\end{center}
+\column{6cm}
+From template fit using $2\textrm{ab}^{-1}$ ($\approx4$ years):\\
+\begin{tabular}{cc}
+\toprule
+$\sigma(m_{\PSq})/m_{\PSq}$ & $0.5\%$ GeV\\
+$\sigma(\textrm{xsec})/\textrm{xsec}$ & $5\%$ fb\\
+\bottomrule
+\end{tabular}\\
+~\\
+\alert{Very high stat. precision!}
+%\includegraphics{}
+\end{columns}
 \end{frame}
 \begin{frame}
-\frametitle{SM Higgs}
+\frametitle{Sleptons: $\Pep\Pem \to \PSl \PaSl \,(\ell = \Pe,\Pgm,\Pgne)$}
+Used for \alert{lepton ID} and \alert{jet reconstruction at high energy}. 
+\begin{columns}[c]
+\column{3.8cm}
+\begin{center}
+Selectrons\\
+\includegraphics[width=3.8cm]{202_H1LPADC4.pdf}
+\end{center}
+\column{4.6cm}
+\begin{center}
+Smuons\\
+\includegraphics[width=4.6cm]{205_H1LPADC4.pdf}
+\end{center}
+\column{4.6cm}
+\begin{center}
+Sneutrinos\\
+\includegraphics[width=4.6cm]{213_H1LPADC4.pdf}
+\end{center}
+\end{columns}
+~\\
+Mass obtained from the end points
 \end{frame}
 \begin{frame}
-\frametitle{Squarks}
+\frametitle{Sleptons: $\Pep\Pem \to \PSl \PaSl \,(\ell = \Pe,\Pgm,\Pgne)$}
+With $2\textrm{ab}^{-1}$:
+\begin{center}
+\begin{tabular}{ccc}
+process & $\sigma(\textrm{xsec})/\textrm{xsec}$ & $\sigma(m_{\PSl})/m_{\PSl}$\\
+\midrule
+$\Pep\Pem \to \PSgm_R\bar{\PSgm_R} \to \Pep\Pem\PSgxz_1\PSgxz_1$ & 2.8\% &0.6\%\\ 
+$\Pep\Pem \to \PSe_R\bar{\PSe_R} \to \Pep\Pem\PSgxz_1\PSgxz_1$ & 0.8\% & 0.3\%\\
+$\Pep\Pem \to \PSgn_{\textrm{e}}\bar{\PSgn_{\textrm{e}}} \to
+\Pep\Pem\PSgx^+_1\PSgx^-_1$ & $\sim2.4\%$ & $\sim0.4\%$ \\ $\Pep\Pem \to \PSe_L\bar{\PSe_L} \to \Pep\Pem\PSgxz_2\PSgxz_2$ & $\sim7.0\%$ &
+-\\
+\bottomrule
+\end{tabular}
+\end{center}
+\alert{Very high stat. precision!}
 \end{frame}
+
 \begin{frame}
-\frametitle{Squarks}
-\end{frame}
-\begin{frame}
-\frametitle{Sleptons}
-\end{frame}
-\begin{frame}
-\frametitle{Sleptons}
+\frametitle{Gauginos}
+{\footnotesize $\Pep\Pem \to \PSgxpm_1 \PSgxmp_1\to\PWp\PWm\PSgxz_1\PSgxz_1$ and
+$\Pep\Pem \to \PSgxz_2 \PSgxz_2\to \Ph\Ph\PSgxz_1\PSgxz_1$}
+\begin{columns}[c]
+\column{6cm}
+\centering
+\includegraphics[width=6cm]{../SIDWorkshop/W_reconstruction_mass.pdf}
+\column{6cm}
+\includegraphics[width=6cm]{../WhizardWorkshop/MassPlot2D}
+\end{columns}
+\alert{Test of jet energy resolution}
 \end{frame}
 \begin{frame}
 \frametitle{Gauginos}
+\begin{columns}[c]
+\column{4.5cm}
+\centering
+\includegraphics[width=4.5cm]{../SIDWorkshop/NeutralinoSel_E.pdf}\\
+\includegraphics[width=4.5cm]{../SIDWorkshop/CharginoSel_E.pdf}
+\column{4.5cm}
+\centering
+\includegraphics[width=4.5cm]{../SIDWorkshop/NeutralinoSel_M.pdf}\\
+\includegraphics[width=4.5cm]{../SIDWorkshop/CharginoSel_M.pdf}
+\end{columns}
 \end{frame}
 \begin{frame}
 \frametitle{Gauginos}
+\begin{center}
+\begin{tabular}{c c c c}
+       \toprule
+       Parameter 1                & Uncertainty &          Parameter 2 & Uncertainty \\
+       \midrule
+       $M(\tilde{\chi}_{1}^{\pm})$ & $6.3$~GeV & $\sigma(\tilde{\chi}_{1}^{+}\tilde{\chi}_{1}^{-})$  & $2.2$\% \\
+       $M(\tilde{\chi}_{1}^{0})$   & $3.0$~GeV & $\sigma(\tilde{\chi}_{1}^{+}\tilde{\chi}_{1}^{-})$  & $1.8$\% \\
+       $M(\tilde{\chi}_{2}^{0})$   & $7.3$~GeV & $\sigma(\tilde{\chi}_{2}^{0}\tilde{\chi}_{2}^{0})$  & $2.9$\% \\
+\end{tabular}
+\end{center}
 \end{frame}
+
+
+%\begin{frame}
+%\frametitle{Top physics at 500GeV: vertex detector}
+%\end{frame}
 \begin{frame}
-\frametitle{Heavy Higgs}
-\end{frame}
-\begin{frame}
-\frametitle{Top physics at 500GeV: vertex detector}
-\end{frame}
-\begin{frame}
-\frametitle{Top physics at 500 GeV: compare with ILC}
+\frametitle{Top physics at 500 GeV}
+{\footnotesize Needed change in design of the vertex detector region}\\
+~\\
+\begin{columns}[c]
+\column{6cm}
+\centering
+Semi-leptonic decay:\\ 
+\includegraphics[width=5cm]{../SIDWorkshop/FinalFit-SemiLeptonic}\\
+{\scriptsize
+\begin{tabular}{c c }
+\toprule
+Top mass (GeV) & Top width (GeV)\\
+\midrule
+$174.28 \pm 0.09$ &  $1.55 \pm 0.26$
+\end{tabular}}
+\column{6cm}
+\centering
+Fully-hadronic decay:
+\includegraphics[width=5cm]{../SIDWorkshop/FinalFit-FullHadronic}\\
+{\scriptsize
+\begin{tabular}{c c }
+\toprule
+Top mass (GeV) & Top width (GeV)\\
+\midrule
+$174.07 \pm 0.08$ &  $1.33 \pm 0.22$
+\end{tabular}}
+\end{columns}
 \end{frame}
 
 \section{Conclusion}
