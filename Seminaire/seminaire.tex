@@ -104,10 +104,10 @@ self couplings\\
 \includegraphics[width=6cm]{../SIDWorkshop/xsec_vs_cme.pdf}
 \column{6cm}
 \begin{center}
-\includegraphics[width=3cm]{../SIDWorkshop/ee_h_bb_mass_mh120GeV.pdf}
-\includegraphics[width=3cm]{../SIDWorkshop/ee_h_mumu_mass_mh120GeV.pdf}\\
+\includegraphics[width=3cm]{ee_h_mumu_mass_mh120GeV.pdf}
+\includegraphics[width=3cm]{../SIDWorkshop/ee_h_bb_mass_mh120GeV.pdf}\\
 \begin{tabular}{cc}
-Coupling & Stat. precision\\
+Coupling & precision at 3TeV\\
 \midrule
 $g_{\PH\to\Pbottom\APbottom}$ & 2\%\\
 $g_{\PH\to\Pcharm\APcharm}$ & 3\% \\
@@ -221,10 +221,12 @@ Higgs compos. scale [TeV] & 5-7 & 9-12 & 45 & 60\\
 \frametitle{CLIC machine Conceptual Design Report}
 \begin{itemize}
   \item Released later in 2012
+  \item Addresses the 3TeV case, the most difficult
   \item Presents the different technical aspects of a CLIC machine
   \item Details the machine properties
+  \item Demonstrates (with hardware tests) the feasibility of such machine
 \end{itemize}
-Here: brief overview of those properties
+Here: brief overview of the CLIC properties
 \end{frame}
 \begin{frame}
 \frametitle{CLIC Technology}
@@ -246,17 +248,19 @@ Here: brief overview of those properties
 %compare to LHC/ILC
 \begin{center}
 \begin{tabular}{ccc}
- & ILC 0.5TeV & CLIC 3TeV\\
+ & CLIC 0.5TeV & CLIC 3TeV\\
  \midrule
-L [$\textrm{cm}^{-2}\,\textrm{s}^{-1}$] & $2\times 10^{34}$&$5.9\times 10^{34}$ \\
+L [$\textrm{cm}^{-2}\,\textrm{s}^{-1}$] & $2.3\times 10^{34}$&$5.9\times
+10^{34}$
+\\
 \midrule
-Bunch crossing separation  & 700 ns & \alert{0.5 ns}\\
+Bunch crossing separation  & 0.5 ns & \alert{0.5 ns}\\
 \midrule
-Bunch crossings per train & 2670 & \alert{312}\\
+Bunch crossings per train & 354 & \alert{312}\\
 \midrule
-Train repetition rate  & 5 Hz & 50 Hz\\
+Train repetition rate  & 50 Hz & 50 Hz\\
 \midrule
-Crossing angle & 14mrad & 20mrad\\
+Crossing angle & 20mrad & 20mrad\\
 \bottomrule
 \end{tabular}\\
 ~\\
@@ -281,21 +285,21 @@ Push-Pull system:\\
 \end{frame}
 
 \begin{frame}
-\frametitle{Machine induced backgrounds}
+\frametitle{Beam-induced backgrounds}
 \begin{center}
 \begin{tabular}{ccc}
- & ILC 0.5TeV & CLIC 3TeV\\
+ & CLIC 0.5TeV & CLIC 3TeV\\
 \midrule
 Nb $\gamma\gamma\to\textrm{had}$/BX & 0.2 & \alert{3.2}\\
 \midrule
-Nb incoherant pairs/BX & $1\times 10^5$ & \alert{$3\times10^5$}\\
+Nb incoherant pairs/BX & $0.8\times10^{5}$ & \alert{$3\times10^5$}\\
 \midrule
-Nb coherent pairs/BX & $<10^2$ & $7\times 10^8$\\
+Nb coherent pairs/BX & $10^2$ & $3.8\times 10^8$\\
 \bottomrule
 \end{tabular}
 \end{center}
 ~\\
-\alert{Very large machine induced background rates!}\\
+\alert{Very large beam-induced background rates!}\\
 \begin{itemize}
   \item Coherent pairs very forward
   \item Incoherent pairs mostly forward
@@ -327,7 +331,7 @@ $\to$ impact on the very forward detectors design\\
    }~\\ ~\\
   \item Good jet-energy resolution (W/Z separation)\\
   {\scriptsize 
-$\sigma(E_j)/E_j = 3.5\%-5\%$ for $E_j = 50\textrm{GeV}-1\textrm{TeV}$
+$\sigma(E_j)/E_j = 5\%-3.5\%$ for $E_j = 50\textrm{GeV}-1\textrm{TeV}$
   }~\\ ~\\
 \end{itemize}
 \end{frame}
@@ -389,7 +393,8 @@ calorimeters}
   \item Mom. resolution: $\sigma(\Delta(p_{\textrm{T}})/p_{\textrm{T}}^2)<
   2\cdot10^{-5}/$GeV
 \end{itemize}
-\alert{Compatible with requirements}
+\alert{Compatible with requirements}\\
+Hardware development to be carried out to demonstrate this.
 \end{columns}
 \end{frame}
 \begin{frame}
@@ -406,7 +411,8 @@ calorimeters}
   \item Efficiency ($p_{\textrm{T}}>1$GeV): $>99\%$
   \item Mom. resolution: $\sigma(\Delta(p_{\textrm{T}})/p_{\textrm{T}}^2)\sim 2\cdot10^{-5}/$GeV
 \end{itemize}
-\alert{Compatible with requirements}
+\alert{Compatible with requirements}\\
+Hardware development to be carried out to demonstrate this.
 \end{columns}
 \end{frame}
 \begin{frame}
@@ -454,7 +460,7 @@ $\lambda_{\textrm{I}}$ & 7.5\\
 \includegraphics[width=5cm]{hcalzoom.png}
 \end{frame}
 \begin{frame}
-\frametitle{CALICE results for W-HCAL}
+\frametitle{CALICE beam tests for W-HCAL}
 \alert{Validation of GEANT4 simulation for hadronic showers in tungsten}\\
 \begin{columns}[c]
 \column{5cm}
@@ -475,7 +481,7 @@ Analysis ongoing
 \end{columns}
 \end{frame}
 
-\section[Bkg treatment]{Dealing with the machine induced background}
+\section[Bkg treatment]{Suppression of beam-induced background}
 \begin{frame}
 \frametitle{Background properties}
 Main problematic background: $\gamma\gamma\to\textrm{hadrons}$
@@ -513,6 +519,7 @@ Silicon Detectors &10 ns &$10/\sqrt{12}$ ns\\
 TPC & entire bunch train & n/a
 \end{tabular}
 \end{center}
+Additionnal timing cuts applied on reconstructed particles.
 \end{frame}
 \begin{frame}
 \frametitle{Jet finder}
@@ -562,7 +569,7 @@ No cuts:\\ \alert{$\sim1.2\textrm{TeV}$}\\
 {\color{blue}{\scriptsize 10ns window}}
 \column{6cm}
 \centering
-Tight timing cuts and jet finding:\\ \alert{$\sim100\textrm{GeV}$}
+Tight timing cuts:\\ \alert{$\sim100\textrm{GeV}$}
 \end{columns}
 ~\\
 \alert{Using timing cuts and jet finding removes most of the background}
@@ -574,14 +581,16 @@ Tight timing cuts and jet finding:\\ \alert{$\sim100\textrm{GeV}$}
 The benchmark channels used to assess detector performance:
 \begin{itemize}
 \item $\Pep\Pem \to \Ph \Pgne \Pagne, \Ph \to \mu^+\mu^-, \Ph \to
-\Pbottom\APbottom$ (SID),
-\item  $\Pep\Pem \to \PHp \PHm\to \Ptop\APbottom\APtop\Pbottom$(ILD),\\
-$\Pep\Pem \to \PHz \PA\to\Pbottom\APbottom\Pbottom\APbottom$ (ILD),
-\item $\Pep\Pem \to \PSq_R \PaSq_R\to\Pquark\APquark\PSgxz_1\PSgxz_1$ (ILD), 
-\item $\Pep\Pem \to \PSl \PaSl \,(\ell = \Pe,\Pgm,\Pgne)$ (ILD), 
-\item $\Pep\Pem \to \PSgxpm_1 \PSgxmp_1\to\PWp\PWm\PSgxz_1\PSgxz_1$ (SID),\\
-$\Pep\Pem \to \PSgxz_2 \PSgxz_2\to \Ph\Ph\PSgxz_1\PSgxz_1$ (SID),
-\item  $\Pep\Pem \to \Pqt \Paqt$ (500~GeV, ILD).
+\Pbottom\APbottom$ (CLIC\_SID),
+\item  $\Pep\Pem \to \PHp \PHm\to \Ptop\APbottom\APtop\Pbottom$(CLIC\_ILD),\\
+$\Pep\Pem \to \PHz \PA\to\Pbottom\APbottom\Pbottom\APbottom$ (CLIC\_ILD),
+\item $\Pep\Pem \to \PSq_R \PaSq_R\to\Pquark\APquark\PSgxz_1\PSgxz_1$
+(CLIC\_ILD),
+\item $\Pep\Pem \to \PSl \PaSl \,(\ell = \Pe,\Pgm,\Pgne)$ (CLIC\_ILD), 
+\item $\Pep\Pem \to \PSgxpm_1 \PSgxmp_1\to\PWp\PWm\PSgxz_1\PSgxz_1$
+(CLIC\_SID),\\ $\Pep\Pem \to \PSgxz_2 \PSgxz_2\to \Ph\Ph\PSgxz_1\PSgxz_1$
+(CLIC\_SID),
+\item  $\Pep\Pem \to \Pqt \Paqt$ (500~GeV, CLIC\_ILD).
 \end{itemize} 
 \end{frame}
 \begin{frame}
@@ -611,7 +620,7 @@ Muon reconstruction efficiency ($\Ph\to\mu\mu$):
 \begin{columns}[c]
 \column{6cm}
 \centering
-\includegraphics[width=5cm]{../SIDWorkshop/ee_h_mumu_mass_mh120GeV}
+\includegraphics[width=5cm]{ee_h_mumu_mass_mh120GeV.pdf}
 \column{6cm}
 \centering
 \includegraphics[width=5cm]{../SIDWorkshop/ee_h_bb_mass_mh120GeV}
@@ -635,14 +644,14 @@ $\PH^+\PH^-\to\Ptop\APbottom\Pbottom\APtop$}
 \includegraphics[width=4cm]{../SIDWorkshop/Hpm_Mass742_Bkg_CKFM_00BX_FJ.pdf}
 \includegraphics[width=4cm]{../SIDWorkshop/Hpm_Mass902_Bkg_CKFM_00BX_FJ.pdf}\\
 {\scriptsize Statistical accuracy $\sigma(M)/M \sim0.3\%$.}\\
-$\Rightarrow$ Evaluation of \alert{b-tagging and heavy energy jet
+$\Rightarrow$ Evaluation of \alert{b-tagging and high energy jet
 reconstruction}
 \end{frame}
 
 \begin{frame}
 \frametitle{Squarks: $\Pep\Pem \to \PSq_R\PaSq_R\to\Pquark\APquark\PSgxz_1\PSgxz_1$} 
-Used for \alert{jet energy reconstruction} studies (see background treatment)\\
-Measuring $M_{\textrm{C}} = \sqrt{2(E_1E_2+\vec{p_1}.\vec{p_2})}$,
+Used for \alert{jet and missing energy reconstruction} studies (see background
+treatment)\\ Measuring $M_{\textrm{C}} = \sqrt{2(E_1E_2+\vec{p_1}.\vec{p_2})}$,
 $M_{\textrm{C}}^{\textrm{max}}=\frac{m_{\PSq}^2 - m_{\chi}^2}{m_{\PSq}}$:
 \begin{columns}[c]
 \column{6cm}
@@ -654,8 +663,8 @@ Selection cuts applied
 From template fit using $2\textrm{ab}^{-1}$ ($\approx4$ years):\\
 \begin{tabular}{cc}
 \toprule
-$\sigma(m_{\PSq})/m_{\PSq}$ & $0.5\%$ GeV\\
-$\sigma(\textrm{xsec})/\textrm{xsec}$ & $5\%$ fb\\
+$\sigma(m_{\PSq})/m_{\PSq}$ & $0.5\%$\\
+$\sigma(\textrm{xsec})/\textrm{xsec}$ & $5\%$\\
 \bottomrule
 \end{tabular}\\
 ~\\
@@ -665,7 +674,7 @@ $\sigma(\textrm{xsec})/\textrm{xsec}$ & $5\%$ fb\\
 \end{frame}
 \begin{frame}
 \frametitle{Sleptons: $\Pep\Pem \to \PSl \PaSl \,(\ell = \Pe,\Pgm,\Pgne)$}
-Used for \alert{lepton ID} and \alert{jet reconstruction at high energy}. 
+Probe of \alert{lepton ID and reconstruction}
 \begin{columns}[c]
 \column{3.8cm}
 \begin{center}
@@ -693,8 +702,8 @@ With $2\textrm{ab}^{-1}$:
 \begin{tabular}{ccc}
 process & $\sigma(\textrm{xsec})/\textrm{xsec}$ & $\sigma(m_{\PSl})/m_{\PSl}$\\
 \midrule
-$\Pep\Pem \to \PSgm_R\bar{\PSgm_R} \to \Pep\Pem\PSgxz_1\PSgxz_1$ & 2.8\% &0.6\%\\ 
-$\Pep\Pem \to \PSe_R\bar{\PSe_R} \to \Pep\Pem\PSgxz_1\PSgxz_1$ & 0.8\% & 0.3\%\\
+$\Pep\Pem \to \PSgm_R\bar{\PSgm_R} \to \mu^+\mu^-\PSgxz_1\PSgxz_1$ & 2.8\%
+&0.6\%\\ $\Pep\Pem \to \PSe_R\bar{\PSe_R} \to \Pep\Pem\PSgxz_1\PSgxz_1$ & 0.8\% & 0.3\%\\
 $\Pep\Pem \to \PSgn_{\textrm{e}}\bar{\PSgn_{\textrm{e}}} \to
 \Pep\Pem\PSgx^+_1\PSgx^-_1$ & $\sim2.4\%$ & $\sim0.4\%$ \\ $\Pep\Pem \to \PSe_L\bar{\PSe_L} \to \Pep\Pem\PSgxz_2\PSgxz_2$ & $\sim7.0\%$ &
 -\\
