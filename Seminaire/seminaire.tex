@@ -793,8 +793,16 @@ $174.07 \pm 0.08$ &  $1.33 \pm 0.22$
 \begin{itemize}
   \item Introduced the CLIC machine
   \item Presented the CLIC detectors concept
-  \item Shown that it's possible to deal with the machine induced background
-  \item High precision physics possible
+  \item Assessment of the physics potential of a future multi-TeV $\Pep\Pem$
+  collider was made, specificaly at 3TeV
+  \item Physics signals with mass scale $100-1500$GeV can be extracted with good
+  precision
+  \item Shown that it's possible to deal with the beam-induced background
+  \item CDR physics and detector study part of a world-wide effort, broad
+  international participation
+  \item Further in-depth studies and hardware R\&D for the CLIC detectors are
+  forseen: more detailed simulation, different c-m-e studied
+  \item Follow up of LHC results
 \end{itemize}
 \end{frame}
 \begin{frame}
@@ -817,24 +825,331 @@ OR / AND\\
 \end{frame}
 
 \appendix
+\section{Backup}
 \begin{frame}
 \frametitle{Backup slides}
 \end{frame}
 \section{Software}
 \begin{frame}
 \frametitle{Generation}
+Use WHIZARD:
+\begin{itemize}
+  \item Computes proper matrix elements at tree level (OMEGA)
+  \item Explicit up to 6 fermion final states
+  \item Handles SUSY (LesHouches)
+  \item Writes out stdhep (format used for simulation)
+  \item Common for the 2 detectors
+\end{itemize}
+Use PYTHIA for $\Ptop\APtop$, $WW$, $ZZ$ as final states in WHIZARD have no
+width
 \end{frame}
 \begin{frame}
 \frametitle{Simulation}
+2 detectors $\to$ 2 sim software
+\begin{itemize}
+  \item Mokka (ILD): Calls G4, Detector geometry obtained from MySQL DB
+  (\alert{!!})
+  \item SLIC (SiD): wrapper around G4, detector geometry imported using compact
+  XML
+  \item Both use the LCIO event format
+\end{itemize}
+Frameworks are going to be merged eventually, work ongoing
 \end{frame}
 \begin{frame}
 \frametitle{Handling background in the software}
+$\gamma\gamma$ bkg overlayed on top of simulated events\\
+\begin{itemize}
+  \item Simulate the bkg separately
+  \item For 1 signal event, read N events of bkg (Poisson distribution,
+  $\mu=3.2$) $\times$ 60 BX
+  \item Merge the clusters
+  \item Save the resulting collections (containers)
+\end{itemize}
 \end{frame}
 \begin{frame}
 \frametitle{Reconstruction}
+As for simulation: 2 frameworks
+\begin{itemize}
+  \item Marlin (ILD): C++
+  \item \texttt{org.lcsim}: JAVA
+  \item Usual modular algorithm/tools structure (e.g. GAUDI)
+  \item Use the LCIO event format
+\end{itemize}
 \end{frame}
 \begin{frame}
 \frametitle{Using the GRID: ILCDIRAC}
+Grid production tool based on DIRAC
+\begin{itemize}
+  \item Extented to fit the CLIC study use case: application handling, data,
+  etc.
+  \item $>4$million jobs in 1 year
+  \item Now also used for the ILC\_SiD studies
+\end{itemize}
+\end{frame}
+
+\section{CLIC}
+\begin{frame}
+\frametitle{Accelerator complex}
+\includegraphics[width=11cm]{cliccomplex.png}
+\end{frame}
+\begin{frame}
+\frametitle{CLIC numerical properties}
+\begin{center}
+\begin{tabular}{rl}
+Acceleration field & 100MV/m\\
+RF frequency of the main linac & 12GHz\\
+Beam focusing at IP & 68$\mu$m\\
+Charge per bunch & $3.7\times10^9$\\
+Bunch interval & 0.5 ns\\
+Bunch per train & 312\\
+Linac repetition rate & 50Hz\\
+Beam power & 14MW\\
+Normalized vertical emittance & $2\times10^{-8}$mrad\\
+Vertical beam size (IP) & 1nm\\
+Horizontal beam size (IP) & 40nm\\
+Total power consumption & 560MW
+\end{tabular}
+\end{center}
+\end{frame}
+\begin{frame}
+\frametitle{Luminosity spectrum}
+\includegraphics[width=10cm]{Lumi3TeV_fixed_nopeak.pdf}
+Lumi in top 1\%: $2.0\times10^{34}$cm$^{-2}$s$^{-1}$, full lumi
+$5.9\times10^{34}$cm$^{-2}$s$^{-1}$
+\end{frame}
+\begin{frame}
+\frametitle{Beam-induced background}
+\includegraphics[width=5.5cm]{Energy.pdf}
+\includegraphics[width=5.5cm]{Angle.pdf}\\
+Beam halo muons estimated to be $\sim1$ per 20 BX: neglected
+\end{frame}
+\begin{frame}
+\frametitle{Beam Polarization}
+Not studied in this document, planned for volume 3.\\
+Polarized electron beam up to 80\%.\\
+Polarized positron beam $\sim30\%$ planned for a later stage
+\end{frame}
+
+\section{Physics potential}
+\begin{frame}
+\frametitle{Higgs production}
+\begin{center}
+\includegraphics[width=9cm]{higgs_production.pdf}\\
+\includegraphics[width=5cm]{xsec_vs_Hmass_sqrts500.pdf}
+\includegraphics[width=5cm]{xsec_vs_Hmass_sqrts3000.pdf}
+\end{center}
+\end{frame}
+\begin{frame}
+\frametitle{Higgs sensitivity}
+\begin{itemize}
+  \item $g_{\PH\to\mu\mu}$: 15\% for 4 years
+  \item  $g_{\PH\to\Pbottom\APbottom}$: 0.22\% on $\sigma\times B$. Theoretical
+  uncertainties are dominating: $\pm2-4\%$
+  \item $g_{\PH\to\Pcharm\APcharm}$: $3.24\%$ on $\sigma\times B$. With
+  theoretical uncertainty: $\pm3-6\%$
+\end{itemize}
+Other searches:
+\begin{itemize}
+  \item Trilinear couplings: $\Pep\Pem\to\nu_e\bar{\nu_e}HH$ (WW fusion)
+  \item Anomalous Higgs couplings
+\end{itemize}
+\end{frame}
+
+\begin{frame}
+\frametitle{SUSY Models}
+\includegraphics[width=5.5cm]{../SIDWorkshop/susy_model1.png}
+\includegraphics[width=5.5cm]{../SIDWorkshop/susy_model2.png}\\
+Precise measurement of fundamental parameters\\
+Tests of the high-scale structure of the theory (GUT)\\
+Testing the neutralino dark matter hypothesis
+\end{frame}
+
+\section{Detector requirements}
+\begin{frame}
+\frametitle{Track momentum resolution}
+\includegraphics[width=5.5cm]{higgs.pdf}
+\includegraphics[width=5.5cm]{higgs_mumu_momres_dependence_2ab.pdf}
+\end{frame}
+\begin{frame}
+\frametitle{Jet energy resolution}
+\includegraphics[width=5.5cm]{wzSeparation.pdf}
+\includegraphics[width=5.5cm]{SquarkEndpoint.pdf}
+\end{frame}
+
+\section{Detector design}
+\begin{frame}
+\frametitle{Vertex detector}
+\includegraphics[width=5.5cm]{occupancies-barrel.pdf}
+\includegraphics[width=5.5cm]{vtx-ftd-hit-density.pdf}
+\end{frame}
+
+\begin{frame}
+\frametitle{Tracking detectors: ILD TPC}
+\includegraphics[width=5.5cm]{AngularCoverageCLIC_ILD.pdf}
+\includegraphics[width=5.5cm]{CLIC_ILD_X0.pdf}
+\end{frame}
+\begin{frame}
+\frametitle{Occupancy in the TPC}
+\includegraphics[width=5.5cm]{TPCoccupancies.pdf}
+\includegraphics[width=5.5cm]{TPCoccupancies_1mmPads.pdf}
+\end{frame}
+\begin{frame}
+\frametitle{Tracking performance in the TPC}
+\begin{columns}[c]
+\column{8cm}
+\begin{center}
+\includegraphics[width=4cm]{CDRStyle_SingleMuons_MomRes_Vs_PT.pdf}
+\includegraphics[width=4cm]{CDRStyle_SingleMuons_MomRes_Vs_Theta.pdf}\\
+Single muons
+\end{center}
+\column{4cm}
+\begin{center}
+\includegraphics[width=4cm]{pt_resolution_ttbar_LDC_CDR.pdf}\\
+$\Ptop\APtop$ events
+\end{center}
+\end{columns}
+~\\
+~\\
+\begin{columns}[c]
+\column{5cm}
+\begin{displaymath}
+\sigma(\Delta p_{\textrm{T}}/p_{\textrm{T}}^2) = a \oplus \frac{b}{p\sin\theta}
+\end{displaymath}
+\column{5cm}
+\begin{tabular}{c r r}
+\toprule
+  $\theta$ \footnotesize{[$^{\circ}$]} & $a$
+  \footnotesize{$[\mathrm{GeV}^{-1}]$} & $b$ \\\midrule 
+  10 & $8.19\cdot10^{-4}$ & $9.07\cdot10^{-3}$ \\
+        20 & $9.86\cdot10^{-5}$ & $3.83\cdot10^{-3}$ \\
+        30 & $3.87\cdot10^{-5}$ & $1.59\cdot10^{-3}$ \\
+        80 & $1.97\cdot10^{-5}$ & $7.22\cdot10^{-4}$ \\\bottomrule
+\end{tabular}
+\end{columns}
+
+\end{frame}
+
+\begin{frame}
+\frametitle{Tracking detectors: SiD silicon layers}
+\includegraphics[width=5.5cm]{CLIC_SiD_layers.pdf}
+\includegraphics[width=5.5cm]{CGrefe_Fig6.pdf}
+\end{frame}
+\begin{frame}
+\frametitle{Tracking performance in CLIC\_SiD}
+\begin{columns}[c]
+\column{6cm}
+\includegraphics[width=5.5cm]{sid_singleMuonMomentumRes.pdf}
+\column{5cm}
+\begin{tabular}{r r r}\toprule
+$\theta$ \footnotesize{$\left[ ^{\circ}\right]$} & $a$
+\footnotesize{$\left[\mathrm{GeV}^{-1}\right]$} & $b$\\\midrule 90 & $7.3\cdot10^{-6}$ & $2.0\cdot10^{-3}$ \\
+30 & $1.9\cdot10^{-5}$ & $3.8\cdot10^{-3}$ \\
+10 & $4.0\cdot10^{-4}$ & $5.3\cdot10^{-3}$ \\\bottomrule
+\end{tabular}
+\end{columns}
+\end{frame}
+
+\begin{frame}
+\frametitle{Calorimetry}
+\begin{center}
+\begin{tabular}{cccc}\toprule
+Material & $\lambda_{\textrm{I}}$ [cm] & $\textrm{X}_0$ [cm] &
+$\lambda_{\textrm{I}}/\textrm{X}_0$ \\ 
+\midrule Fe       & 16.77             & 1.76       & 9.5\\
+W        & 9.95              & 0.35       & 28.4\\ \bottomrule
+\end{tabular}\\
+~\\
+\includegraphics[width=7cm]{Fig81.pdf}
+\includegraphics[width=4cm]{ildHcal_jetEnergyResolution_vs_hcalLambdaI.pdf}
+\end{center}
+\end{frame}
+
+\begin{frame}
+\frametitle{Timing}
+\includegraphics[width=5.5cm]{timingKL_steel.pdf}
+\includegraphics[width=5.5cm]{timingKL_tungsten.pdf}
+\end{frame}
+
+\begin{frame}
+\frametitle{CALICE results}
+\begin{center}
+\includegraphics[width=7cm]{RPC_Fig1.pdf}\\
+\begin{columns}[c]
+\column{5.5cm}
+\begin{tikzpicture}
+\node [] {\includegraphics[width=5.5cm]{ResolutionFullDet2Curves.pdf}};
+\node [] at (0.7,0.6) {AHCAL/Tungsten};
+\end{tikzpicture}
+\column{5.5cm}
+\begin{tikzpicture}
+\node [] {\includegraphics[width=5.5cm]{RPC_Fig2.pdf}};
+\node [] at (-0.5,-1.0) {DHCAL/Steel};
+\end{tikzpicture}
+\end{columns}
+\end{center}
+\end{frame}
+\begin{frame}
+\frametitle{Calorimeter performance}
+\begin{center}
+\includegraphics[width=4.7cm]{Eres_vsE_ILD.pdf}
+\includegraphics[width=4.7cm]{Eres_vsE_SID.pdf}\\
+\includegraphics[width=4.7cm]{Eres_vsThetaStripped_ILD.pdf}
+\includegraphics[width=4.7cm]{Eres_vsThetaStripped_SID.pdf}
+\end{center}
+\end{frame}
+\begin{frame}
+\frametitle{Resolution vs timing in calorimeter}
+\begin{center}
+\includegraphics[width=7cm]{Eres_Timing_ILD.pdf}
+\end{center}
+\end{frame}
+
+\begin{frame}
+\frametitle{Magnets}
+\begin{center}
+{\scriptsize
+  \begin{tabular}{l c c c c } \toprule
+             & Nominal magnetic field & Free bore & Magnetic length & Cold mass weight \\
+             & (T)                    & (mm)      & (mm)            & (tons)           \\\midrule
+    CLIC\_SiD & 5.0                    & 5480      & 6230            & 170   \\          
+    CLIC\_ILD & 4.0                    & 6850      & 7890            & 210             
+    \\\bottomrule
+  \end{tabular}
+  }
+  \end{center}
+\begin{itemize}
+  \item Similar to the CMS solenoid in design
+  \item Aluminium stabilized superconductor
+  \item Multi-layer and multi-module coil
+  \item Helium cooling
+\end{itemize}
+\end{frame}
+
+\begin{frame}
+\frametitle{Muon system}
+Installed in the return yoke of the magnet
+\begin{center}
+\includegraphics[width=5.5cm]{MS_SiD_HG.pdf}
+\end{center}
+\end{frame}
+\begin{frame}
+\frametitle{Muon system}
+\begin{center}
+\includegraphics[width=11cm]{effPur_MuonsInZbb_and_muonGunE150pm150_defaultCuts.pdf}
+\end{center}
+\end{frame}
+
+\begin{frame}
+\frametitle{Very forward calorimeters: LumiCal and BeamCal}
+\begin{itemize}
+  \item LumiCal: measurement of the luminosity
+  \item BeamCal: fast estimation of the luminosity and tagging of high energy
+  electrons
+\end{itemize}
+Both are electromagnetic sampling calorimeters, using W as absorber
+\begin{center}
+\includegraphics[width=7.5cm]{MDI_layout_v3.pdf}
+\end{center}
 \end{frame}
 
 \end{document}
