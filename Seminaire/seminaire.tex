@@ -1152,4 +1152,93 @@ Both are electromagnetic sampling calorimeters, using W as absorber
 \end{center}
 \end{frame}
 
+\section{Benchmarking the detector}
+\begin{frame}
+\frametitle{Luminosity spectrum measurement}
+\includegraphics[width=5.5cm]{Spectra_BHWide_noEsmearing_full.pdf}
+\includegraphics[width=5.5cm]{Spectra_BHWide_noEsmearing_zoom.pdf}\\
+Impact on physics observable very small.
+\end{frame}
+
+\begin{frame}
+\frametitle{Particle ID performance}
+\begin{columns}[c]
+\column{5.5cm}
+\begin{center}
+\begin{tikzpicture}
+\node [] {\includegraphics[width=4.5cm]{ILDElectronsEffVsEnergy.pdf}};
+\node [] at (0,-1) {Electrons};
+\end{tikzpicture}
+\begin{tikzpicture}
+\node [] {\includegraphics[width=4.5cm]{ILDPionsEffVsEnergy.pdf}};
+\node[] at (0,-1) {Pions};
+\end{tikzpicture}
+\end{center}
+\column{5.5cm}
+\begin{center}
+\begin{tikzpicture}
+\node [] {\includegraphics[width=4.5cm]{ILDGAMMAEffVsEnergy.pdf}};
+\node [] at (0,-1) {Photons};
+\end{tikzpicture}
+\begin{tikzpicture}
+\node [] {\includegraphics[width=4.5cm]{ILDPionsEffVsTheta.pdf}};
+\node[] at (0,-1){Pions};
+\end{tikzpicture}
+\end{center}
+\end{columns}
+\end{frame}
+
+\begin{frame}
+\frametitle{Particle ID performance: Muons}
+\includegraphics[width=5.5cm]{SIDMuonsEffVsEnergy.pdf}
+\includegraphics[width=5.5cm]{SIDMuonsEffVsTheta.pdf}
+\end{frame}
+
+\begin{frame}
+\frametitle{Electron energy resolution}
+Effect of the $\gamma\gamma$ background:
+\includegraphics[width=5.5cm]{213_H1DPVOPV2A_BX060SEL1.pdf}
+\includegraphics[width=5.5cm]{213_H1DPVOPV2A_BX060SEL4.pdf}
+Core: $\Delta E/E^2=\sim 1.5 \times 10^{-5}$GeV$^{-1}$\\
+Tails:  $\Delta E/E^2=5-8 \times 10^{-5}$GeV$^{-1}$\\
+Bump due to failure in recovering the Bremstrahlung and FSR photons
+\end{frame}
+\begin{frame}
+\frametitle{Effect of $\gamma\gamma$ bkg}
+\includegraphics[width=5.5cm]{PFOSelComp_SID_E500_energy_ALL.pdf}
+\includegraphics[width=5.5cm]{WW_Eres_SID.pdf}
+\end{frame}
+\begin{frame}
+\frametitle{Primary vertex position resolution}
+\includegraphics[width=5.5cm]{Primary_Vertex_Position_XY.pdf}
+\includegraphics[width=5.5cm]{Primary_Vertex_Resolution.pdf}
+\end{frame}
+
+\begin{frame}
+\frametitle{Flavour tagging}
+LCFI collaboration, uses ZVTOP vertex finder and multi-variate method (NNET)\\
+\includegraphics[width=5.5cm]{Invariant_Mass_All.pdf}
+\includegraphics[width=5.5cm]{B_Flavour_Tag_Sum.pdf}
+\end{frame}
+\begin{frame}
+\frametitle{Flavour tagging}
+\begin{center}
+\begin{tabular}{l r r}
+        \toprule
+        & \textbf{$\PH\to \Pbottom\APbottom$} & \textbf{$\PH\to
+        \Pcharm\APcharm$}
+        \\
+        \midrule
+%        Signal events       & $311\times10^3$ & $395\times10^1$    \\
+%        Total signal events & $570\times10^3$ & $260\times10^2$     \\
+%        Background events   & $165\times10^3$ & $124\times10^3$\\
+        Signal purity       & 65.4\% & 24.1\%  \\
+        Signal efficiency   & 54.6\% & 15.2\%  \\
+        % Cross section $\sigma_{\PSh\,\to\,\qqbar}$ & 285~fb & 13~fb \\
+        cross section & & \\statistical uncertainty   & 0.22\% & 3.24\% \\
+        \bottomrule
+    \end{tabular}
+    \end{center}
+\end{frame}
+
 \end{document}
