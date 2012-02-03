@@ -1,0 +1,74 @@
+\documentclass{beamer}
+%\usepackage{beamerarticle}
+\usepackage{heppennames}
+\usepackage{hepnicenames}
+\usepackage{graphicx} 
+\usepackage{multirow}
+\usepackage{amsbsy,amsmath,amssymb}
+\usepackage{booktabs}
+% ********** Styl prezentacji **********
+\mode<presentation>
+{
+	\usetheme{Singapore}
+  \setbeamercovered{transparent}
+   \setbeamertemplate{footline}[frame number] 
+  \setbeamertemplate{navigation symbols}{ 
+  \insertslidenavigationsymbol
+  \insertframenavigationsymbol
+  \insertsubsectionnavigationsymbol
+  \insertsectionnavigationsymbol
+  \insertdocnavigationsymbol
+  \insertbackfindforwardnavigationsymbol
+  \hskip 0.3cm
+  %\insertframenumber / \inserttotalframenumber  % <<< frame #
+  %\insertpagenumber / \insertpresentationendpage % <<< page #
+} 
+}
+
+\usepackage[english]{babel}
+\usepackage[latin1]{inputenc}
+
+% font definitions, try \usepackage{ae} instead of the following
+% three lines if you don't like this look
+\usepackage{mathptmx}
+\usepackage[scaled=.90]{helvet}
+\usepackage{courier}
+
+
+\usepackage[T1]{fontenc}
+\author{S. Poss}
+\institute[CERN]{CERN}
+
+\subject{CLICProduction}
+\AtBeginSubsection[]
+{
+	\begin{frame}<beamer>
+		\frametitle{Outline}
+		\tableofcontents[currentsection,currentsubsection]
+	\end{frame}
+}
+
+\title[]{File CatalogS}
+
+\date{\today}
+
+\begin{document}
+
+\begin{frame}
+	\titlepage
+\end{frame}
+
+\begin{frame}
+\franetitle{File Catalogs for LC}
+Currently 2 solutions:
+\begin{itemize}
+  \item DESY FC
+  \item DIRAC FC
+\end{itemize}
+Both have good points: web access for DESY FC, , registration of user
+file/metadata for DIRAC FC, etc.\\
+Both of them have flaws: Cannot register metadata from outside DESY for the DESY
+FC, need to install DIRAC client to get the DIRAC FC
+\end{frame}
+
+\end{document}
