@@ -1,5 +1,5 @@
 \documentclass{beamer}
-\usepackage{beamerarticle}
+%\usepackage{beamerarticle}
 %%\usepackage{heppennames}
 %%\usepackage{hepnicenames}
 \usepackage{graphicx} 
@@ -111,6 +111,7 @@ CERN, Switzerland
   \item Metadata registration: done for every job, very inefficient for the
   FileCatalog
   \item Some metadata missing
+  \item Very few events per job: time constrain
 \end{itemize}
 \end{frame}
 
@@ -121,7 +122,7 @@ CERN, Switzerland
   \item Metadata registration done when production is created: picks the needed
   info from input
   \item Add non-searchable metadata: software used, detector models, steering
-  files
+  files, whatever
   \item Number of events set for every file
 \end{itemize}
 \end{frame}
@@ -131,6 +132,7 @@ CERN, Switzerland
 \begin{itemize}
   \item Lumi spectrum produced: checks ongoing
   \item Tested system: Standard Model and SUSY, Whizard+Mokka
+  \item 1000 events possible, not for all event types though
   \item Simulated $\gamma\gamma \to had$ with Mokka: no problem
   \item Same with SLIC: crash. Reason: the samples contain only final state
   particles, some outside world volume. Mokka brings back all particles to IP.
@@ -141,7 +143,9 @@ CERN, Switzerland
 \frametitle{Finally}
 \begin{itemize}
   \item Can think about defining ALL productions from the beginning: Gen+Sim+Rec
-  \item Need to define all steering files and parameters
+  \item Need to define all steering files and parameters, and cast them in
+  stone. E.g. use QGSP_BERT_HP?
 \end{itemize}
+\alert{What about overlay?}
 \end{frame}
 \end{document}
