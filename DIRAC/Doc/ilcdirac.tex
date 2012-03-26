@@ -1,0 +1,110 @@
+\documentclass[a4paper,12pt]{article}
+
+\usepackage[english]{babel}
+\usepackage{courier}
+
+
+\usepackage[T1]{fontenc}
+
+\usepackage{listings}
+\lstloadlanguages{python}
+\title{ILC DIRAC, a grid solution for the LC community}
+\author{S.~Poss}
+
+\begin{document}
+\maketitle
+\abstract{This document presents the different parts of the ILCDIRAC framework.
+It is not intended as a manual, but as a support for the maintainer. It shows
+the different elements, and details the corresponding code. It is clear that
+this document will also show usage of the different bits, but not thoroughly.}
+
+\section{Setups}
+ILCDIRAC makes use of 2 setups:
+\begin{itemize}
+  \item ILC-Production: Main setup, production and user activity uses that
+  setup. Running on volcd01.cern.ch (most services/agents, web server),
+  volcd02.cern.ch (FileCatalogDB (not the service), overlay system), volcd03.cern.ch (LogSE)
+  \item ILC-Developement: Used for testing new functionnality and new DIRAC
+  releases. Runs on volcd03.cern.ch
+\end{itemize}
+
+\section{General structure}
+The ILCDIRAC framework has the following structure:
+\begin{itemize}
+  \item Core: ILCDIRAC utilities used throughout the code
+  \begin{itemize}
+    \item script: ILCDIRAC specific scripts, detailed later
+    \item Utilitites: Set of utilities used in the Workflow modules, and
+    detailed later
+  \end{itemize}
+  \item Interfaces: Interface to DIRAC (and ILCDIRAC by extension)
+  \begin{itemize}
+    \item API: as it's name suggests
+    \begin{itemize}
+      \item NewInterface
+      \begin{itemize}
+        \item Examples: how to use the new interface
+        \item Code for the new interface, detailed later
+      \end{itemize}
+      \item Examples
+      \item and the old API code not maintained, but kept for backward
+      compatibilty, except the \emph{DiracILC} code, still to be used. Detailed
+      later
+    \end{itemize}
+    \item scripts: Set of scripts using the ILCDIRAC interface, detailed later.
+    Some are obsolete or not maintained. Details follow.
+  \end{itemize}
+  \item OverlaySystem: Control the behavior of the overlay jobs, prevents
+  killing the SRM
+  \begin{itemize}
+    \item Agent: Agent running on volcd03, resets the counters per site. Details
+    below
+    \item Client: Client to connect to the Overlay Service, exposes the
+    functionnality of the server
+    \item DB: Database definition. Schema is shown later
+    \item Service: Service runnign on volcd03: essentially stores how many jobs
+    are downloading the overlay files at a given site, and prevents a job from
+    running in case there are too many. Code details are below.
+  \end{itemize}
+  \item ProcessProductionSystem: As of \today\ still being developed. Aim
+  is to have a service that handles the production to reduce the amount of human work:
+  deploy applications, remove them, store relation between software and
+  production, between data and productions, production details\ldots
+  \begin{itemize}
+    \item Agent: Agents running on one of the VO boxes (only in dev setup for
+    the moment)
+    \begin{itemize}
+      \item DataRecoveryAgent: Recover failed jobs that did not report the File
+      status, typically when pilots are killed.
+      \item ProductionSummaryAgent: Collect the statistics for each production,
+      produce nicely formatted web page containing also the production details
+      \item SoftwareManagementAgent: Install/remove software from all sites,
+      update availability
+    \end{itemize}
+    \item Client: Client for ProcessProductionHandler (service)
+    \item DB: Database holding all the info for this service, detailed later
+    \item Service: As name suggested serves the DB mostly.
+    \item Utilities: Specific module for software management, details later
+  \end{itemize}
+  \item SoftwareManagement: Obsolete, as the functionnality was moved to
+  ProcessProductionSystem, kept here for completeness. Not detailed
+  \item Workflow: What runs on the grid
+  \begin{itemize}
+    \item Modules: they are completely detailed later
+  \end{itemize}
+\end{itemize}
+
+
+\section{Interface}
+
+\section{Workflow Modules}
+
+\section{Core Utilities}
+
+\section{Overlay System}
+
+\section{Process Production System}
+
+\section{Making releases}
+
+\end{document}
