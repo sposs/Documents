@@ -1,0 +1,209 @@
+\documentclass{beamer}
+%\usepackage{beamerarticle}
+%%\usepackage{heppennames}
+%%\usepackage{hepnicenames}
+\usepackage{graphicx} 
+\usepackage{multirow}
+\usepackage{amsbsy,amsmath,amssymb}
+\usepackage{booktabs}
+
+\mode<presentation>
+{
+\usetheme{Singapore}
+  \setbeamercovered{transparent}
+   \setbeamertemplate{footline}[frame number] 
+  \setbeamertemplate{navigation symbols}{ 
+  \insertslidenavigationsymbol
+  \insertframenavigationsymbol
+  \insertsubsectionnavigationsymbol
+  \insertsectionnavigationsymbol
+  \insertdocnavigationsymbol
+  \insertbackfindforwardnavigationsymbol
+  \hskip 0.3cm
+  %\insertframenumber / \inserttotalframenumber  % <<< frame #
+  %\insertpagenumber / \insertpresentationendpage % <<< page #
+} 
+}
+
+\usepackage[english]{babel}
+\usepackage[latin1]{inputenc}
+
+% font definitions, try \usepackage{ae} instead of the following
+% three lines if you don't like this look
+\usepackage{mathptmx}
+\usepackage[scaled=.90]{helvet}
+\usepackage{courier}
+
+
+\usepackage[T1]{fontenc}
+
+\usepackage{listings}
+\lstloadlanguages{bash}
+
+\title{Production status}
+
+\subtitle{Where we are}
+
+% - Use the \inst{?} command only if the authors have different
+%   affiliation.
+%\author{F.~Author\inst{1} \and S.~Another\inst{2}}
+\author{S.~Poss}
+
+% - Use the \inst command only if there are several affiliations.
+% - Keep it simple, no one is interested in your street address.
+\institute[CERN]
+{%
+CERN, Switzerland
+}
+
+\date{\today}
+
+
+% This is only inserted into the PDF information catalog. Can be left
+% out.
+\subject{ILCDIRAC}
+
+
+
+% If you have a file called "university-logo-filename.xxx", where xxx
+% is a graphic format that can be processed by latex or pdflatex,
+% resp., then you can add a logo as follows:
+
+% \pgfdeclareimage[height=0.5cm]{university-logo}{university-logo-filename}
+% \logo{\pgfuseimage{university-logo}}
+
+
+
+% Delete this, if you do not want the table of contents to pop up at
+% the beginning of each subsection:
+\AtBeginSubsection[]
+{
+\begin{frame}<beamer>
+\frametitle{Outline}
+\tableofcontents[currentsection,currentsubsection]
+\end{frame}
+}
+
+% If you wish to uncover everything in a step-wise fashion, uncomment
+% the following command:
+
+%\beamerdefaultoverlayspecification{<+->}
+
+\begin{document}
+
+\begin{frame}
+\titlepage
+\end{frame}
+
+\begin{frame}
+\frametitle{Introduction}
+\begin{itemize}
+  \item New production round is running
+  \item Issues with beam spectrum
+\end{itemize}
+\end{frame}
+
+\begin{frame}
+\frametitle{Status}
+\begin{itemize}
+  \item Samples for Higgs recoil analysis done, validation done by John,
+  analysis ongoing.
+  \item Stau samples done (even the templates), validation done by Astrid.
+  Analysis ongoing.
+  \item Gauginos: Signal samples done, most background done. Only qqqqnunu
+  missing. Templates submitted. Validation done by Philipp, analysis ongoing.
+  \item triple H 1.4Tev: signal submitted and running, as all backgrounds. Need
+  validation of the samples.
+  \item trplie H 3TeV: need the final grid files for the backgrounds. Need
+  validation of the samples.
+  \item Sleptons: produced by JJ Blaising, running. 
+  \item ttbar: Pythia program revived, need input: 350GeV spectrum and
+  gg$\to$had parameters (can probably use the same events as 500GeV).
+\end{itemize}
+\end{frame}
+
+\begin{frame}
+\frametitle{Issues with 1.4TeV beam spectrum}
+\begin{itemize}
+  \item When looking at the templates, Philipp noticed an inconsitency in the
+  cross sections
+  \item tracked down to the fact that most of those used an ``old'' version of
+  the spectrum
+  \item The problem: some sites allow anyone to write in the SharedArea, and the
+  software is not overwritten if present (unless explicitely requested).
+  \item Created the list of files affected by the problem by parsing the log
+  files.
+  \item Next slides give this list of affected productions and the treatment
+  applied.
+\end{itemize}
+\end{frame}
+
+\begin{frame}
+\frametitle{Productions affected and their treatment}
+\begin{center}
+{\scriptsize 
+\begin{tabular}{ccccc}
+    \toprule
+ProdID & Channel & Nb of faulty files & \% affected & treatment \\
+\midrule
+788 & e3e3nn & 2 & 1 & will delete and extend existing\\
+790 & e1e1e3e3\_o & 1  & $<1$ & delete, no need to reproduce\\
+794 & aa\_e3e3\_o  & 1 &$<<1$& delete, no need to reproduce\\
+800& aa\_e3e3nn & 12 & $<1$ & delete and extend existing\\
+805& neu2neu2 & 1 & 1 & delete, no need to reproduce\\
+807& ch1ch1\_nunu & 1 & 4 & delete and extend existing\\
+811& hhnunu & 1 & 4 & delete, no need to reproduce\\
+813& hqqnunu & 6 & 14 & delete and extend existing \\
+831& e3e3 & 226 & 50 & will check with astrid \\
+853& hh\_nunu & 79 & 80 & restart from scratch\\
+860& qqqq\_nunu & 612 &~90& restart from scratch\\
+888& qqqq & 77 & 70 & restart from scratch\\
+890& h\_n1n1 & 1 & 100 & delete and extend existing\\
+892& hh\_nunu & 1 & 50 & delete and extend existing\\
+    \bottomrule
+\end{tabular}
+}
+\end{center}
+\end{frame}
+
+\begin{frame}
+\frametitle{Productions affected and their treatment}
+All templates for the gauginos are concerned, they are all removed and restarted
+from scratch.
+\begin{center}
+{\scriptsize 
+\begin{tabular}{ccccc}
+    \toprule
+ProdID & Channel & Nb of faulty files & \% affected & treatment \\
+\midrule
+987 & stau1stau1 & 13  & 50 &  delete and extend existing\\
+990 & stau1stau1 & 19  & 60 &  delete and extend existing\\
+993 & stau1stau1 & 8 & 40 &  delete and extend existing\\
+996 & stau1stau1 & 13 & 50 &  delete and extend existing\\
+999 & stau1stau1 & 14  & 50 &  delete and extend existing\\
+1002 & stau1stau1 & 15 & 50 &  delete and extend existing\\
+1013 & qqqq\_lnu & 3  & 100 & delete and extend existing\\
+     \bottomrule
+\end{tabular}
+}
+\end{center}
+
+Beam spectra used now cannot 
+
+\end{frame}
+
+\begin{frame}
+\frametitle{Conclusion}
+\begin{itemize}
+  \item Overall, load on servers much less, much higher success rate, faster
+  event production
+  \item Gauginos, Stau, H recoil, Sleptons productions should be done by mid
+  April
+  \item Triple H and ttbar delayed
+\end{itemize}
+
+Consider also cleaning old unused data: please provide me a list of ProdIDs to
+keep. No rush.
+\end{frame}
+
+\end{document}
