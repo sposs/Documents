@@ -12,6 +12,7 @@
 
 \usepackage{listings}
 \lstloadlanguages{python}
+\lstset{language=python,numbers=left,numberstyle=\tiny,emph={self},emphstyle=\color{blue},basicstyle=\footnotesize}
 \title{ILC DIRAC, a grid solution for the LC community}
 \author{S.~Poss}
 
@@ -206,64 +207,363 @@ parameters that are shared between the applications:
 There are other common functionnality that will be detailed later as they are
 use-specific.
 
+\begin{lstlisting}[name=appli]
+from DIRAC.Core.Workflow.Module         import ModuleDefinition
+from DIRAC.Core.Workflow.Parameter      import Parameter
 
-\subsubsection{GenericApplication}\label{genericapp}
+from DIRAC import S_OK,S_ERROR, gLogger
+import inspect, sys, string, types, os
+\end{lstlisting}
+
+The first import statement brings the necessary utilities to build a Module. The
+second is taking care of the Parameter. Both functionalities are related to the
+Workflow mechanism, not discussed here. Without detailing, a module is the base
+element of a workflow, while a parameter is a class holding a parameter (who
+would have guessed?). A Parameter is attached to a Module (like in the
+Application case), to a Step (like in the Job, see later), or to the Workflow
+(see the Job also). 
+
+We also import the usual DIRAC utilities to handle returned values, as well as a
+logger utility.
+
+The last imports are used to check the method calls: the arguments must have a
+specific type, checked. Those check methods are detailed below.
+
+\begin{lstlisting}[name=appli]
+class Application(object):
+  """ General application definition. Any new application 
+  should inherit from this class.
+  """
+\end{lstlisting}
+The application class does not depend on anything else than the base ``object''
+class, from which all python class should inherit.
+
+\subsubsection{The constructor}
+\begin{lstlisting}[name=appli]
+  def __init__(self, paramdict = None):
+\end{lstlisting}
+The constructor takes a dictionary of the parameters of the class. This allows a
+one-line definition of the application. This functionnality was designed to
+allow easy backward compatibility.
+
+~
+
+Most documentation on the content of the constructor can be found in the code
+itself, and thus is not repeated here. One important point to notice: all members that 
+should not be printed when checking the job (see later)
+are private members and therefore start with \_, e.g. 
+\begin{lstlisting}[firstnumber=53,belowskip=0.5cm]
+    self._listofoutput
+\end{lstlisting}
+
+~
+
+The 
+\begin{lstlisting}[firstnumber=71]
+    self.accountInProduction = True    
+\end{lstlisting}
+is necessary to have the application considered in the production jobs, in
+particular in the output data accounting. An exemple for an application where
+this would be set to false is when the same application is to run twice in a
+given job, and only the output of the second call should be stored. A specific
+setter is designed, see later.
+
+~
+
+The most important part of this constructor consists of the following lines:
+\begin{lstlisting}[firstnumber=73]
+    self._modulename = ''
+    self._moduledescription = ''
+    self._importLocation = "ILCDIRAC.Workflow.Modules" 
+\end{lstlisting}
+They are set by each application's constructor and are used by the workflow
+framework to identify the location of the python module to be executed, as well
+as the description of such module. 
+
+~
+
+The following lines
+\begin{lstlisting}[firstnumber=81]
+    self._jobapps = []
+    self._jobsteps = []
+    self._inputapp = []
+    self._linkedidx = None
+    #Needed to link the parameters.
+    self._inputappstep = None
+\end{lstlisting}
+are essential too: they allow the current application to know all about the job.
+This is needed when linking applications together (output of one is to be used
+as input to the next). The linking is described later.
+
+~
+
+The line
+\begin{lstlisting}[firstnumber=93]
+    self._log = gLogger.getSubLogger(self.__class__.__name__)
+\end{lstlisting}
+sets the logger: the application class name is used.
+
+~
+
+Finally, the dictionary passed to the application is used in
+\begin{lstlisting}[firstnumber=97]
+    self._setparams(paramdict)
+\end{lstlisting}
+where the different parameter values are assigned. 
+
+\subsubsection{The methods}
+The following method
+\begin{lstlisting}[firstnumber=99]
+  def __repr__(self):
+    str  = "%s"%self.appname
+    if self.version:
+      str += " %s"%self.version
+    return str
+\end{lstlisting}
+is useful to allow easy dump of the applciation: it allows for 
+"\lstinline[language=python]!print application!", 
+which show on the stdout the application name and version (if defined).
+
+~
+
+The method
+\begin{lstlisting}[firstnumber=105]
+  def _setparams(self,params):
+    if not params:
+      return S_OK()
+    for param,value in params.items():
+      if type(value) in types.StringTypes:
+        value = "'%s'"%value
+      try:
+        exec "self.set%s(%s)"%(param,str(value))
+      except:
+        self._log.error("The %s class does not have 
+                         a set%s method."%(self.__class__.__name__,
+                                           param))
+    return S_OK()  
+\end{lstlisting}
+is called by the constructor takes as argument the dictionnary that was passed
+in the init. This method then calls the setters using the folowing: if an
+application has a setter \lstinline[language=python]!setX(Y)!, 
+then the dictionary to pass to the constructor must be
+\lstinline[language=python]!{"X":Y}!.
+The method checks that the class has the proper setter and returns an error if
+not.
+
+~
+
+The following methods are the setters for the common functionality. Nothing is
+particular about those, so only the def statement is shown.
+\begin{lstlisting}[firstnumber=118,stepnumber=118,numberfirstline=true]
+  def setName(self,name):
+  def setVersion(self,version):
+  def setSteeringFile(self,steeringfile):
+  def setLogFile(self,logfile):
+  def setNbEvts(self,nbevts):
+  def setNumberOfEvents(self,nbevts):
+  def setEnergy(self,energy):
+\end{lstlisting}
+Notice that each method has a call to \lstinline!self._checkArgs! that allows
+for proper type checking of the input values.
+
+~
+
+The following setters are related to the definition of the output data.
+\begin{lstlisting}[firstnumber=187]
+  def setOutputFile(self,ofile, path = None):
+    self._checkArgs({ 'ofile' : types.StringTypes } )
+    
+    self.outputFile = ofile
+    self.prodparameters[ofile]={}
+    if self.detectortype:
+      self.prodparameters[ofile]['detectortype'] = self.detectortype
+    if self.datatype:
+      self.prodparameters[ofile]['datatype']= self.datatype
+    
+    if path:
+      self._checkArgs({ 'path' : types.StringTypes } )
+      self.outputPath = path
+      
+    return S_OK()  
+\end{lstlisting}
+The most striking feature of this method is the fact that there is a dictionary,
+\lstinline!self.prodparameters! that is filled with some info. This dictionary
+is used in the ProductionJob class.
+
+It is also needed to define the Outut Storage Element (SE) for the production
+jobs, and that's done with:
+\begin{lstlisting}[firstnumber=210]  
+  def setOutputSE(self,se):
+    self._checkArgs({ 'se' : types.StringTypes } )
+    self.outputSE = se
+    return S_OK()
+\end{lstlisting}
+
+~
+
+Next, the method for the definition of the input data to the application is
+show:
+\begin{lstlisting}[firstnumber=221]  
+  def setInputFile(self,inputfile):
+    kwargs = {"inputfile":inputfile}
+    if not type(inputfile) in types.StringTypes and 
+       not type(inputfile)==type([]):
+      return self._reportError("InputFile must be string or list of strings",
+                               __name__,**kwargs)
+    if not type(inputfile)==type([]):
+      inputfile = [inputfile]
+    for f in inputfile:
+      if os.path.exists(f) or f.lower().count("lfn:"):
+        self.inputSB.append(f)
+        
+    self.inputfile = string.join(inputfile,";")
+
+    return S_OK()
+\end{lstlisting}
+The relevant part of this method is the fact that if the file specified as
+argument exists locally or starts with ``lfn:'' then it's appended to the
+application input sandbox. This sandbox will be added to the Job's sandbox when
+needed.
+
+~
+
+The next method:
+\begin{lstlisting}[firstnumber=240]  
+  def setForgetAboutInput(self):
+    
+    self.forget_about_Input = True
+    
+    return S_OK()
+\end{lstlisting}
+allows the application to ignore the handling of the input file. To understand
+the motivation of such method, it's necessary to get back to the basics.
+Usually, a user will test locally his/her steering (option) file and will then
+want to use it on a mass production system to process a much larger data set. A
+user usually wants to be able to do that without having to manually change the
+steering file for every job. For that, the modules that run the applications in
+ILCDIRAC handle the input data of the job, and change the steering file
+accordingly. This is not mandatory, and depends on the use case. But sometimes,
+such override of the input data is not needed. An example is that the job uses
+direct access to the disk on the job's running site, and therefore no input
+data resolution is needed. Then the job should use whatever is specified in the
+steering without changing the value. And it should also not complain about
+missing input. This method was designed for that purpose.
+
+~
+
+\begin{lstlisting}[firstnumber=248]  
+  def getInputFromApp(self,application):
+    """ Called to link applications
+    
+    >>> app1 = App1()
+    >>> app2 = App2()
+    >>> app2.getInputFromApp(app1)
+    
+    @param application: Application to link against.
+    @type application: application
+    """
+    self._inputapp.append(application)
+    return S_OK()  
+\end{lstlisting}
+is necessary for the linking of applications: when the second application is
+supposed to be able to take it's input from the output of the first.
+
+~
+
+\begin{lstlisting}[firstnumber=261]  
+  def setDebug(self,debug = True):
+    """ Set the application to debug mode
+    
+    >>> app = Application()
+    >>> app.setDebug()
+    
+    @param debug: Set the application to debug mode. 
+      Default is True when called. If not, then it's false.
+    @type debug: bool
+    """
+    self._checkArgs({ "debug": types.BooleanType} )
+    self.debug = debug
+    return S_OK()
+\end{lstlisting}
+sets a debug flag for the application: allows for on-site verbosity
+adjustements.
+
+~
+
+Finally, the method 
+\begin{lstlisting}[firstnumber=274]  
+  def listAttributes(self):
+    """ Method to list attributes for users. Doesn't list any 
+    private or semi-private attributes
+    """
+    print 'Attribute list :'
+    for key,val in self.__dict__.items():
+      if not key[0]=="_":
+        if not val:
+          val = "Not defined"
+        print "  ",key,":",val
+\end{lstlisting}
+is used when checkling the job. It's called by the Job class, and lists the
+public members' values, for debugging before submission. More on that in the Job
+class description, in Sec.~\ref{job}.
+
+\subsection{GenericApplication}\label{genericapp}
 This application is intended to run a script based on an application. 
 
-\subsubsection{GetSRMFile}\label{getsrmfile}
+\subsection{GetSRMFile}\label{getsrmfile}
 When a file is not in the File Catalog, it can still be access using this
 application.
 
-\subsubsection{RootScript}\label{rootscript}
+\subsection{RootScript}\label{rootscript}
 Run a ROOT based script, shell or python.
 
-\subsubsection{RootMacro}\label{rootmacro}
+\subsection{RootMacro}\label{rootmacro}
 Run a ROOT macro (.C).
 
-\subsubsection{Whizard}\label{whizard}
+\subsection{Whizard}\label{whizard}
 Generate events using Whizard.
 
-\subsubsection{Pythia}\label{pythia}
+\subsection{Pythia}\label{pythia}
 Generate events using PYTHIA standalone.
 
-\subsubsection{PostGenSelection}\label{postgensel}
+\subsection{PostGenSelection}\label{postgensel}
 This utility was created for JJ Blaising, but not used anymore.
 
-\subsubsection{StdhepCut}\label{stdhepcut}
+\subsection{StdhepCut}\label{stdhepcut}
 Used to apply generator level cuts on the final stdhep files. Application code
 written by Lars Weuste, extended by John Marshall and Astrid Munnich. 
 
-\subsubsection{StdHepSplit}\label{stdhepsplit}
+\subsection{StdHepSplit}\label{stdhepsplit}
 Cut a stdhep file in chunks. Mostly used for the SID production
 
-\subsubsection{Mokka}\label{mokka}
+\subsection{Mokka}\label{mokka}
 Run Mokka: ILD simulation
 
-\subsubsection{SLIC}\label{slic}
+\subsection{SLIC}\label{slic}
 Run SLIC: SiD simulation
 
-\subsubsection{OverlayInput}\label{overlay}
+\subsection{OverlayInput}\label{overlay}
 Download the files for the overlay.
 
-\subsubsection{Marlin}\label{marlin}
+\subsection{Marlin}\label{marlin}
 Run Marlin: reconstruction for ILD
 
-\subsubsection{LCSIM}\label{lcsim}
+\subsection{LCSIM}\label{lcsim}
 Run LCSIM: Reconstruction for SiD
 
-\subsubsection{SLICPandora}\label{slicpan}
+\subsection{SLICPandora}\label{slicpan}
 Apply Pandora PFO on SiD reconstructed data
 
-\subsubsection{CheckCollections}\label{checkcoll}
+\subsection{CheckCollections}\label{checkcoll}
 Make sure a set of collection is available in the input file.
 
-\subsubsection{SLCIOConcatenate}\label{slcioconcat}
+\subsection{SLCIOConcatenate}\label{slcioconcat}
 Concatenate many slcio files into one. Useful for the ``Merge'' jobs. 
 
-\subsubsection{SLCIOSplit}\label{slciosplit}
+\subsection{SLCIOSplit}\label{slciosplit}
 Split a slcio file into many chunks. 
 
-\subsubsection{Tomato}\label{tomato}
+\subsection{Tomato}\label{tomato}
 Run the Tomato analysis on an input file.
 
 \subsection{Job}\label{job}
