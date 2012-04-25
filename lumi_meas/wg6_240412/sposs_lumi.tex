@@ -1,0 +1,146 @@
+%\documentclass{article}
+\documentclass[handout]{beamer}
+%\usepackage{beamerarticle}
+\usepackage{tikz}
+\usetikzlibrary{arrows,shapes}
+
+\author{S.Poss and A.Sailer}
+\title{Luminosity spectrum measurement}
+\subtitle{First results}
+
+\mode<presentation>
+{
+   \setbeamertemplate{navigation symbols}{}
+   \setbeamertemplate{footline}[frame number] 
+}
+
+\AtBeginSection[]
+{
+\begin{frame}<beamer>
+\frametitle{Outline}
+\tableofcontents[currentsection,currentsubsection]
+\end{frame}
+}
+
+
+\begin{document}
+\begin{frame}
+\titlepage
+\end{frame}
+\begin{frame}
+\frametitle{Outline}
+\tableofcontents
+% You might wish to add the option [pausesections]
+\end{frame}
+\tikzstyle{decision} = [diamond, draw, text badly centered, node distance=2.8cm]
+\tikzstyle{block} = [rectangle, draw, text centered, rounded corners, text width=1.9cm, node distance=2.2cm]
+\tikzstyle{autoblock} = [rectangle, draw, text centered, rounded corners, node distance=2.2cm]
+\tikzstyle{line} = [draw, -triangle 90]
+\tikzstyle{dline} = [draw, dashed, -triangle 90]
+%\tikzstyle{cloud} = [draw, ellipse,fill=red!20, node distance=3cm,minimum height=2em]
+\section{Introduction}
+\begin{frame}
+\frametitle{Luminosity spectrum}
+Why it's important to know it:
+\begin{itemize}
+\item cross section measurements: Higgs, etc.
+\item mass measurements: slepton analysis, etc.
+\end{itemize}
+What we want to ``measure'': set of parameters that describes the luminosity
+spectrum.
+\begin{itemize}
+\item need a correct model, based on assumptions and existing Monte Carlo
+samples
+\item need a framework/procedure for parameter estimation
+\item need data 
+\end{itemize}
+\end{frame}
+
+\section{Fitting methods}
+\begin{frame}
+\frametitle{Understanding the reweighting fit}
+\begin{itemize}
+  \item A \alert{distribution} of an observable $=$ \alert{``probability''} for
+  an event to happen with a given observable value. Observable can be e.g.
+  $\{EB1,EB2\}$ for a given event%, in fact 1 event
+  %$=\{E1,E2,\theta_1,\theta_2,E_{ECAL1},E_{ECAL2}\}$)
+  \item If said distribution is built from a set of parameters' values
+  $[p]$, then probabilities can be computed from that set
+  \item Changing $[p]\to [p]'\Rightarrow$ change of the probabilities. This
+  change is accounted by the ratio $\frac{P(\{EB1,EB2\},
+  [p]')}{P(\{EB1,EB2\},[p])}$. This weight is applied individually to every
+  event.
+  \item Bhabha events are not only represented by $\{EB1,EB2\}$ but by
+  $\{EB1,EB2,\theta_1,\theta_2,E_{ECAL1},E_{ECAL2},etc.\}$ where the
+  $\{\theta_1,\theta_2,E_{ECAL1},E_{ECAL2},etc.\}$ set are reconstructed
+  (measured) observables
+\end{itemize}
+\end{frame}
+\begin{frame}
+\frametitle{Reweighting fit}
+%Shown in fig.~\ref{fig:second}
+%begin{figure}[h]
+\begin{tikzpicture}[scale=.8,auto, remember picture]
+\matrix [column sep=5mm,row sep=4mm,ampersand replacement=\&]{
+%row1
+\uncover<1>{\node [autoblock] (start) {\scriptsize Start};} \& 
+~ \& 
+~ \&
+~ \\
+%row2
+\uncover<2->{\node [block, color=blue] (gen) {\scriptsize Generate Event with $[p]_0$: $E1$, $E2$, $P(E1,E2;[p]_0)$};} \&
+\uncover<3-5>{\node [autoblock, node distance=2.7cm] (bhwide) {\scriptsize BHWide};} \&
+\uncover<4-5>{\node [autoblock, node distance=2.5cm] (sim) {\scriptsize Simulation};} \&
+\uncover<5->{\node [autoblock, node distance=2.7cm] (rec) {\scriptsize Reconstruction};} \\
+%row3
+\uncover<6->{\node [block, color=magenta] (minim) {\scriptsize Minimizer: $[p]_N \rightarrow [p]_{N+1}$};} \&
+\uncover<7-13,15->{\node [block, text width=2.2cm, node distance=2.7cm] (compute) {\scriptsize Compute $P(E1,E2;[p]_{N+1})$ for all events};} \&
+\uncover<8-13,16->{\node [autoblock, node distance=2.8cm] (weight) {\scriptsize $w = \frac{P(E1,E2;[p]_{N+1})}{P(E1,E2;[p]_{0})}$};} \&
+\uncover<9-13,17->{\node [block, node distance=2.7cm] (weightrec) {\scriptsize Weight every event with its weight $w$};} \\
+%row4
+~ \& 
+~ \& 
+\uncover<11-13,19->{\node [decision, color=violet] (match) {\scriptsize
+Minimum?};} \& \uncover<10-13,18->{\node [block, color=red] (compare) {\scriptsize Compare with data: $\chi^2$};}\\
+%row5
+~ \& 
+~ \& 
+\uncover<12-13,20->{\node [autoblock] (done) {\scriptsize Done!};} \& 
+~ \\
+};
+\begin{scope}
+\uncover<1>{\path [line] (start) -- (gen);}
+\uncover<3-5>{\path [line] (gen) -- (bhwide);}
+\uncover<4-5>{\path [line] (bhwide) -- (sim);}
+\uncover<5>{\path [line] (sim) -- (rec);}
+\uncover<6>{\path [line] (gen) -- (minim);}
+\uncover<7-13,15->{\path [line] (minim) -- (compute);}
+\uncover<8-13,16->{\path [line] (compute) -- (weight);}
+\uncover<9-13,17->{\path [line] (weight) -- (weightrec);}
+\uncover<10-13,18->{\path [line] (weightrec) -- (compare);}
+\uncover<11-13,19->{\path [line] (compare) -- (match);}
+\uncover<12-13,20->{\path [line] (match) -- node [near start] {\scriptsize yes} (done);}
+\uncover<13,21->{\path [line] (match) -| node [very near start] {\scriptsize no} (minim);}
+\uncover<9-13,17->{\path [dline] (rec) -- node [midway] {\scriptsize use} (weightrec); }
+\end{scope}
+\end{tikzpicture}
+%\end{figure}
+\end{frame}
+\subsection{Status}
+\begin{frame}
+\frametitle{Current status}
+Procedure for MC generation exists.\\
+~\\
+Generated MC samples and used Guinea Pig sample.\\
+~\\
+Several bugs found and fixed.
+\end{frame}
+
+\begin{frame}
+\frametitle{Current status}
+Fitting data before BHWide: compare the beam energies generated with our model
+and the ones provided by GP.
+
+\end{frame}
+
+\end{document}
