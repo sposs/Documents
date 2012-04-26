@@ -1,0 +1,611 @@
+\documentclass[a4paper,12pt]{article}
+\usepackage{tikz}
+\usetikzlibrary{arrows,shapes}
+
+\usepackage[english]{babel}
+\usepackage{courier}
+
+
+\usepackage[T1]{fontenc}
+
+\usepackage[pdftex, colorlinks=true]{hyperref}
+
+\usepackage{listings}
+\lstloadlanguages{python}
+\lstset{language=python,numbers=left,numberstyle=\tiny,emph={self},emphstyle=\color{blue},basicstyle=\footnotesize}
+\title{ILC DIRAC, a grid solution for the LC community}
+\author{S.~Poss}
+
+\begin{document}
+\tikzstyle{decision} = [diamond, draw, text badly centered, node distance=2.8cm]
+\tikzstyle{block} = [rectangle, draw, text centered, rounded corners, node distance=2.2cm]
+\tikzstyle{autoblock} = [rectangle, draw, text centered, rounded corners, node distance=2.2cm]
+\tikzstyle{line} = [draw, -triangle 90]
+\tikzstyle{dline} = [draw, dashed, -triangle 90]
+
+\maketitle
+\abstract{This document presents the different parts of the ILCDIRAC framework.
+It is not intended as a manual, but as a support for the maintainer. It shows
+the different elements, and details the corresponding code. It is clear that
+this document will also show usage of the different bits, but not thoroughly.}
+
+\tableofcontents
+
+\section{Setups}
+ILCDIRAC makes use of 2 setups:
+\begin{itemize}
+  \item ILC-Production: Main setup, production and user activity uses that
+  setup. Running on volcd01.cern.ch (most services/agents, web server),
+  volcd02.cern.ch (FileCatalogDB (not the service), overlay system), volcd03.cern.ch (LogSE)
+  \item ILC-Developement: Used for testing new functionnality and new DIRAC
+  releases. Runs on volcd03.cern.ch
+\end{itemize}
+
+\section{General structure}
+The ILCDIRAC framework has the following structure:
+\begin{itemize}
+  \item Core: ILCDIRAC utilities used throughout the code, Sec.~\ref{core}
+  \begin{itemize}
+    \item script: ILCDIRAC specific scripts, detailed later
+    \item Utilitites: Set of utilities used in the Workflow modules, and
+    detailed later, Sec.~\ref{coreutilities}
+  \end{itemize}
+  \item Interfaces: Interface to DIRAC (and ILCDIRAC by
+  extension) Sec.~\ref{interface}
+  \begin{itemize}
+    \item API: as it's name suggests
+    \begin{itemize}
+      \item NewInterface
+      \begin{itemize}
+        \item Examples: how to use the new interface
+        \item Code for the new interface, detailed later, Sec.~\ref{application}
+        and Sec.~\ref{job}
+      \end{itemize}
+      \item Examples
+      \item and the old API code not maintained, but kept for backward
+      compatibilty, except the \emph{DiracILC} code, still to be used.
+      Sec.~\ref{diracilc}
+    \end{itemize}
+    \item scripts: Set of scripts using the ILCDIRAC interface, detailed later.
+    Some are obsolete or not maintained. Sec.~\ref{interfacescripts}
+  \end{itemize}
+  \item OverlaySystem: Control the behavior of the overlay jobs, prevents
+  killing the SRM. Sec.~\ref{overlaysys}
+  \begin{itemize}
+    \item Agent: Agent running on volcd03, resets the counters per site. Details
+    below
+    \item Client: Client to connect to the Overlay Service, exposes the
+    functionnality of the server
+    \item DB: Database definition. Schema is shown later
+    \item Service: Service runnign on volcd03: essentially stores how many jobs
+    are downloading the overlay files at a given site, and prevents a job from
+    running in case there are too many. Code details are below.
+  \end{itemize}
+  \item ProcessProductionSystem (Sec.~\ref{processprodsys}): As of \today\
+  still being developed. Aim is to have a service that handles the production to reduce the amount of human work:
+  deploy applications, remove them, store relation between software and
+  production, between data and productions, production details\ldots
+  \begin{itemize}
+    \item Agent: Agents running on one of the VO boxes (only in dev setup for
+    the moment)
+    \begin{itemize}
+      \item DataRecoveryAgent: Recover failed jobs that did not report the File
+      status, typically when pilots are killed.
+      \item ProductionSummaryAgent: Collect the statistics for each production,
+      produce nicely formatted web page containing also the production details
+      \item SoftwareManagementAgent: Install/remove software from all sites,
+      update availability
+    \end{itemize}
+    \item Client: Client for ProcessProductionHandler (service)
+    \item DB: Database holding all the info for this service, detailed later
+    \item Service: As name suggested serves the DB mostly.
+    \item Utilities: Specific module for software management, details later
+  \end{itemize}
+  \item SoftwareManagement: Obsolete, as the functionnality was moved to
+  ProcessProductionSystem, kept here for completeness. Not detailed
+  \item Workflow: What runs on the grid
+  \begin{itemize}
+    \item Modules: they are completely detailed later, Sec.~\ref{modules}
+  \end{itemize}
+\end{itemize}
+
+
+\section{Interface}\label{interface}
+Here we detail the content of every class in this package. The Examples are
+treated separately, as theyu only use the functionnality exposed here. The order
+is as follows: the job and application classes are presented then the DiracILC
+class. The old API is not presented as not maintained, and will be dropped in one of the future
+releases.
+
+\subsection{General considerations}
+When reviewing the Interface, the motivation was to render ther whole system
+easier to use and to maintain. The first idea is to separate the job and the
+applications that should run in the job. The reason is that it allows for a
+better flexibility, namely a user can predefine a set of applications,
+independantly of the job they run in.
+
+In Fig.~\ref{fig:defdefinejob} the usual process of defining a job is shown. 
+\begin{figure}[h]
+\begin{center}
+\begin{tikzpicture}[scale=0.8,auto]
+\matrix [column sep=7mm, row sep=4mm,ampersand replacement=\&]
+{
+\node [block] (app1) {Define Application 1};\\
+\node [block] (app2) {Define Application 2};\\
+\node [block] (job) {Define Job};\\
+\node [block] (submit) {Submit job};\\
+};
+\path [line] (app1) -- (app2);
+\path [line] (app2) -- (job);
+\path [line] (job) -- (submit);
+\end{tikzpicture}
+\end{center}
+\caption{Usual process of job definition}
+\label{fig:defdefinejob}
+\end{figure}
+In the ILCDIRAC framework, this process is modified to separate the applications
+and the job, as shown in Fig.~\ref{fig:definejob}.
+\begin{figure}[h]
+\begin{center}
+\begin{tikzpicture}[scale=0.8,auto]
+\matrix [column sep=7mm, row sep=4mm,ampersand replacement=\&]
+{
+\node {App definition};\&
+\node {Job definition};\\
+\node [block] (app1) {Application 1};\&
+\node [block] (job) {Define Job};\\
+
+\node [block] (app2) {Application 2};\&
+~\\
+~\&
+\node [block] (submit) {Submit job};\\
+};
+\path [line] (app1) -- (job);
+\path [line] (app2) -- (job);
+\path [line] (job) -- (submit);
+\end{tikzpicture}
+\end{center}
+\caption{ILCDIRAC process of job definition. The arrows between application and
+job stand for job.append(application). This is
+technically explained later.}
+\label{fig:definejob}
+\end{figure}
+
+The applications are ran on the GRID using the DIRAC workflow system. This is
+briefly explained in Sec.~\ref{workflowsys}.
+
+\subsection{Application}\label{application}
+This class is the base application class, all applications must inherit from
+this. 
+
+The general principle in the application class comes from the fact that all
+applications that runs on the grid share a set of parameters. Those are:
+\begin{itemize}
+  \item \emph{Application name}: Name of the application, e.g. marlin, SLIC,
+  lcio, etc.
+  \item \emph{Application version}: As most software uses versionning with e.g.
+  SVN, there are different versions that correspond to a set of functionnality. When
+  willing to run several versions of the software in parallel, this is needed.
+  \item \emph{Options (or steering) file}: All application need to be told what
+  they need to do. 
+  \item \emph{Input file (or none)}: Most application used in HEP are designed
+  to transform a set of data into another. Physics generators are an exception as
+  they only produce files.
+  \item \emph{Output file}: All applications produce something: binary data,
+  text files, logs, etc. Those should be handled.
+  \item \emph{Log file}: To debug, it's needed to keep the stdout of the
+  application.
+\end{itemize}
+As this was designed in the context of ILCDIRAC, there are several other
+parameters that are shared between the applications:
+\begin{itemize}
+  \item \emph{Number of events}: The number of events that will be ran by the
+  application. Depending on the application, this can be omitted.
+  \item \emph{Energy}: The sample's energy. Can be needed to determine which
+  calibration to use, or, in ILC's case, the overlay files to use.
+\end{itemize}
+There are other common functionnality that will be detailed later as they are
+use-specific.
+
+\begin{lstlisting}[name=appli]
+from DIRAC.Core.Workflow.Module         import ModuleDefinition
+from DIRAC.Core.Workflow.Parameter      import Parameter
+
+from DIRAC import S_OK,S_ERROR, gLogger
+import inspect, sys, string, types, os
+\end{lstlisting}
+
+The first import statement brings the necessary utilities to build a Module. The
+second is taking care of the Parameter. Both functionalities are related to the
+Workflow mechanism, not discussed here. Without detailing, a module is the base
+element of a workflow, while a parameter is a class holding a parameter (who
+would have guessed?). A Parameter is attached to a Module (like in the
+Application case), to a Step (like in the Job, see later), or to the Workflow
+(see the Job also). 
+
+We also import the usual DIRAC utilities to handle returned values, as well as a
+logger utility.
+
+The last imports are used to check the method calls: the arguments must have a
+specific type, checked. Those check methods are detailed below.
+
+\begin{lstlisting}[name=appli]
+class Application(object):
+  """ General application definition. Any new application 
+  should inherit from this class.
+  """
+\end{lstlisting}
+The application class does not depend on anything else than the base ``object''
+class, from which all python class should inherit.
+
+\subsubsection{The constructor}
+\begin{lstlisting}[name=appli]
+  def __init__(self, paramdict = None):
+\end{lstlisting}
+The constructor takes a dictionary of the parameters of the class. This allows a
+one-line definition of the application. This functionnality was designed to
+allow easy backward compatibility.
+
+~
+
+Most documentation on the content of the constructor can be found in the code
+itself, and thus is not repeated here. One important point to notice: all members that 
+should not be printed when checking the job (see later)
+are private members and therefore start with \_, e.g. 
+\begin{lstlisting}[firstnumber=53,belowskip=0.5cm]
+    self._listofoutput
+\end{lstlisting}
+
+~
+
+The 
+\begin{lstlisting}[firstnumber=71]
+    self.accountInProduction = True    
+\end{lstlisting}
+is necessary to have the application considered in the production jobs, in
+particular in the output data accounting. An exemple for an application where
+this would be set to false is when the same application is to run twice in a
+given job, and only the output of the second call should be stored. A specific
+setter is designed, see later.
+
+~
+
+The most important part of this constructor consists of the following lines:
+\begin{lstlisting}[firstnumber=73]
+    self._modulename = ''
+    self._moduledescription = ''
+    self._importLocation = "ILCDIRAC.Workflow.Modules" 
+\end{lstlisting}
+They are set by each application's constructor and are used by the workflow
+framework to identify the location of the python module to be executed, as well
+as the description of such module. 
+
+~
+
+The following lines
+\begin{lstlisting}[firstnumber=81]
+    self._jobapps = []
+    self._jobsteps = []
+    self._inputapp = []
+    self._linkedidx = None
+    #Needed to link the parameters.
+    self._inputappstep = None
+\end{lstlisting}
+are essential too: they allow the current application to know all about the job.
+This is needed when linking applications together (output of one is to be used
+as input to the next). The linking is described later.
+
+~
+
+The line
+\begin{lstlisting}[firstnumber=93]
+    self._log = gLogger.getSubLogger(self.__class__.__name__)
+\end{lstlisting}
+sets the logger: the application class name is used.
+
+~
+
+Finally, the dictionary passed to the application is used in
+\begin{lstlisting}[firstnumber=97]
+    self._setparams(paramdict)
+\end{lstlisting}
+where the different parameter values are assigned. 
+
+\subsubsection{The methods}
+The following method
+\begin{lstlisting}[firstnumber=99]
+  def __repr__(self):
+    str  = "%s"%self.appname
+    if self.version:
+      str += " %s"%self.version
+    return str
+\end{lstlisting}
+is useful to allow easy dump of the applciation: it allows for 
+"\lstinline[language=python]!print application!", 
+which show on the stdout the application name and version (if defined).
+
+~
+
+The method
+\begin{lstlisting}[firstnumber=105]
+  def _setparams(self,params):
+    if not params:
+      return S_OK()
+    for param,value in params.items():
+      if type(value) in types.StringTypes:
+        value = "'%s'"%value
+      try:
+        exec "self.set%s(%s)"%(param,str(value))
+      except:
+        self._log.error("The %s class does not have 
+                         a set%s method."%(self.__class__.__name__,
+                                           param))
+    return S_OK()  
+\end{lstlisting}
+is called by the constructor takes as argument the dictionnary that was passed
+in the init. This method then calls the setters using the folowing: if an
+application has a setter \lstinline[language=python]!setX(Y)!, 
+then the dictionary to pass to the constructor must be
+\lstinline[language=python]!{"X":Y}!.
+The method checks that the class has the proper setter and returns an error if
+not.
+
+~
+
+The following methods are the setters for the common functionality. Nothing is
+particular about those, so only the def statement is shown.
+\begin{lstlisting}[firstnumber=118,stepnumber=118,numberfirstline=true]
+  def setName(self,name):
+  def setVersion(self,version):
+  def setSteeringFile(self,steeringfile):
+  def setLogFile(self,logfile):
+  def setNbEvts(self,nbevts):
+  def setNumberOfEvents(self,nbevts):
+  def setEnergy(self,energy):
+\end{lstlisting}
+Notice that each method has a call to \lstinline!self._checkArgs! that allows
+for proper type checking of the input values.
+
+~
+
+The following setters are related to the definition of the output data.
+\begin{lstlisting}[firstnumber=187]
+  def setOutputFile(self,ofile, path = None):
+    self._checkArgs({ 'ofile' : types.StringTypes } )
+    
+    self.outputFile = ofile
+    self.prodparameters[ofile]={}
+    if self.detectortype:
+      self.prodparameters[ofile]['detectortype'] = self.detectortype
+    if self.datatype:
+      self.prodparameters[ofile]['datatype']= self.datatype
+    
+    if path:
+      self._checkArgs({ 'path' : types.StringTypes } )
+      self.outputPath = path
+      
+    return S_OK()  
+\end{lstlisting}
+The most striking feature of this method is the fact that there is a dictionary,
+\lstinline!self.prodparameters! that is filled with some info. This dictionary
+is used in the ProductionJob class.
+
+It is also needed to define the Outut Storage Element (SE) for the production
+jobs, and that's done with:
+\begin{lstlisting}[firstnumber=210]  
+  def setOutputSE(self,se):
+    self._checkArgs({ 'se' : types.StringTypes } )
+    self.outputSE = se
+    return S_OK()
+\end{lstlisting}
+
+~
+
+Next, the method for the definition of the input data to the application is
+show:
+\begin{lstlisting}[firstnumber=221]  
+  def setInputFile(self,inputfile):
+    kwargs = {"inputfile":inputfile}
+    if not type(inputfile) in types.StringTypes and 
+       not type(inputfile)==type([]):
+      return self._reportError("InputFile must be string or list of strings",
+                               __name__,**kwargs)
+    if not type(inputfile)==type([]):
+      inputfile = [inputfile]
+    for f in inputfile:
+      if os.path.exists(f) or f.lower().count("lfn:"):
+        self.inputSB.append(f)
+        
+    self.inputfile = string.join(inputfile,";")
+
+    return S_OK()
+\end{lstlisting}
+The relevant part of this method is the fact that if the file specified as
+argument exists locally or starts with ``lfn:'' then it's appended to the
+application input sandbox. This sandbox will be added to the Job's sandbox when
+needed.
+
+~
+
+The next method:
+\begin{lstlisting}[firstnumber=240]  
+  def setForgetAboutInput(self):
+    
+    self.forget_about_Input = True
+    
+    return S_OK()
+\end{lstlisting}
+allows the application to ignore the handling of the input file. To understand
+the motivation of such method, it's necessary to get back to the basics.
+Usually, a user will test locally his/her steering (option) file and will then
+want to use it on a mass production system to process a much larger data set. A
+user usually wants to be able to do that without having to manually change the
+steering file for every job. For that, the modules that run the applications in
+ILCDIRAC handle the input data of the job, and change the steering file
+accordingly. This is not mandatory, and depends on the use case. But sometimes,
+such override of the input data is not needed. An example is that the job uses
+direct access to the disk on the job's running site, and therefore no input
+data resolution is needed. Then the job should use whatever is specified in the
+steering without changing the value. And it should also not complain about
+missing input. This method was designed for that purpose.
+
+~
+
+\begin{lstlisting}[firstnumber=248]  
+  def getInputFromApp(self,application):
+    """ Called to link applications
+    
+    >>> app1 = App1()
+    >>> app2 = App2()
+    >>> app2.getInputFromApp(app1)
+    
+    @param application: Application to link against.
+    @type application: application
+    """
+    self._inputapp.append(application)
+    return S_OK()  
+\end{lstlisting}
+is necessary for the linking of applications: when the second application is
+supposed to be able to take it's input from the output of the first.
+
+~
+
+\begin{lstlisting}[firstnumber=261]  
+  def setDebug(self,debug = True):
+    """ Set the application to debug mode
+    
+    >>> app = Application()
+    >>> app.setDebug()
+    
+    @param debug: Set the application to debug mode. 
+      Default is True when called. If not, then it's false.
+    @type debug: bool
+    """
+    self._checkArgs({ "debug": types.BooleanType} )
+    self.debug = debug
+    return S_OK()
+\end{lstlisting}
+sets a debug flag for the application: allows for on-site verbosity
+adjustements.
+
+~
+
+Finally, the method 
+\begin{lstlisting}[firstnumber=274]  
+  def listAttributes(self):
+    """ Method to list attributes for users. Doesn't list any 
+    private or semi-private attributes
+    """
+    print 'Attribute list :'
+    for key,val in self.__dict__.items():
+      if not key[0]=="_":
+        if not val:
+          val = "Not defined"
+        print "  ",key,":",val
+\end{lstlisting}
+is used when checkling the job. It's called by the Job class, and lists the
+public members' values, for debugging before submission. More on that in the Job
+class description, in Sec.~\ref{job}.
+
+\subsection{GenericApplication}\label{genericapp}
+This application is intended to run a script based on an application. 
+
+\subsection{GetSRMFile}\label{getsrmfile}
+When a file is not in the File Catalog, it can still be access using this
+application.
+
+\subsection{RootScript}\label{rootscript}
+Run a ROOT based script, shell or python.
+
+\subsection{RootMacro}\label{rootmacro}
+Run a ROOT macro (.C).
+
+\subsection{Whizard}\label{whizard}
+Generate events using Whizard.
+
+\subsection{Pythia}\label{pythia}
+Generate events using PYTHIA standalone.
+
+\subsection{PostGenSelection}\label{postgensel}
+This utility was created for JJ Blaising, but not used anymore.
+
+\subsection{StdhepCut}\label{stdhepcut}
+Used to apply generator level cuts on the final stdhep files. Application code
+written by Lars Weuste, extended by John Marshall and Astrid Munnich. 
+
+\subsection{StdHepSplit}\label{stdhepsplit}
+Cut a stdhep file in chunks. Mostly used for the SID production
+
+\subsection{Mokka}\label{mokka}
+Run Mokka: ILD simulation
+
+\subsection{SLIC}\label{slic}
+Run SLIC: SiD simulation
+
+\subsection{OverlayInput}\label{overlay}
+Download the files for the overlay.
+
+\subsection{Marlin}\label{marlin}
+Run Marlin: reconstruction for ILD
+
+\subsection{LCSIM}\label{lcsim}
+Run LCSIM: Reconstruction for SiD
+
+\subsection{SLICPandora}\label{slicpan}
+Apply Pandora PFO on SiD reconstructed data
+
+\subsection{CheckCollections}\label{checkcoll}
+Make sure a set of collection is available in the input file.
+
+\subsection{SLCIOConcatenate}\label{slcioconcat}
+Concatenate many slcio files into one. Useful for the ``Merge'' jobs. 
+
+\subsection{SLCIOSplit}\label{slciosplit}
+Split a slcio file into many chunks. 
+
+\subsection{Tomato}\label{tomato}
+Run the Tomato analysis on an input file.
+
+\subsection{Job}\label{job}
+This class is the base Job class, all job types must inherit from this class.
+
+\subsubsection{UserJob}\label{userjob}
+User job class for user jobs\ldots
+
+\subsubsection{ProductionJob}\label{prodjob}
+Production job class. The main different with the previous job class is the fact
+that it's not intended to be submitted to Dirac, but only to the
+TransformationSysten.
+
+\subsubsection{SIDProductionJob}\label{sidprod}
+SIDProductionJob. Same as the previous class, but implementing SiD production
+specific functionnality.
+
+\subsection{DiracILC}\label{diracilc}
+This class is the interface between the Job and DIRAC.
+
+\subsection{scripts}\label{interfacescripts}
+Several scripts are developed to provide specific funtionnality for ILCDIRAC.
+
+\section{Workflow Modules}\label{modules}
+The following are the modules running on the grid, executing the different
+applications.
+
+\section{Core}\label{core}
+Core functionnality.
+\subsection{Utilities}\label{coreutilities}
+The following utilities are used to provide specific functions.
+\subsection{scripts}\label{corescripts}
+The scripts\ldots
+
+\section{Overlay System}\label{overlaysys}
+Make sure the jobs don't kill the disks.
+
+\section{Process Production System}\label{processprodsys}
+Big service\ldots
+
+\section{Making releases}\label{makingrelease}
+Here we detail the manner to create a release.
+
+\section{Workflow mechanism}\label{workflowsys}
+\end{document}

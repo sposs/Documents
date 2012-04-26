@@ -1,0 +1,5 @@
+The linear collider community uses the WHIZARD physics generator to 
+create the physics events needed to assess the detectors performances.
+The generator was recently updated from version 1 to version 2.
+The aim of the summer student project is to ensure the compatibility 
+of the two versions, ensuring the validity of the subsequent analyses.
