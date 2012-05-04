@@ -86,7 +86,7 @@ Central point of the method: compare histograms (MC vs Data) using $\chi^2$. \\
 ~\\
 For the fit itself, 2 methods:
 \begin{itemize}
-  \item Brute force
+  \item Brute force (Backup)
   \item Reweighting fit
 \end{itemize}
 ~\\
@@ -95,59 +95,9 @@ with CLIC 3TeV nominal settings.\\
 
 \end{frame}
 
-\begin{frame}
-\frametitle{First method: brute force fit}
-\begin{figure}[h]
-  \begin{tikzpicture}[scale=2.8,auto]
-\uncover<1-2>{\node [autoblock] (start) {\scriptsize Start: $[p]_0$};}
-\uncover<2->{\node [block, below of=start, color=blue] (gen) {\scriptsize Generate Event with $[p]_N$: E1,E2};}
-\uncover<3-10,12->{\node [autoblock, right of=gen] (bhwide) {\scriptsize
-BHWide};} 
-\uncover<4-10,13->{\node [autoblock, right of=bhwide] (sim) {\scriptsize
-Simulation};} 
-\uncover<5-10,14->{\node [autoblock, right of=sim] (rec) {\scriptsize
-Reconstruction};} 
-\uncover<6-10,15->{\node [block, below of=rec, color=red] (compare) {\scriptsize Compare with data: $\chi^2$};}
-\uncover<7-10,16->{\node [decision, left of=compare, color=violet] (match)
-{\scriptsize Minimum?};} 
-\uncover<8-10,17->{\node [autoblock, below of=match] (done) {\scriptsize Done!};}
-\uncover<9-11,18->{\node [block, below of=gen, color=magenta] (minim)
-{\scriptsize Minimizer: $[p]_N \rightarrow [p]_{N+1}$};}	
-
-\uncover<1-2>{\path [line] (start) -- (gen);}
-\uncover<3-10,12->{\path [line] (gen) -- (bhwide);}
-\uncover<4-10,13->{\path [line] (bhwide) -- (sim);}
-\uncover<5-10,14->{\path [line] (sim) -- (rec);}
-\uncover<6-10,15->{\path [line] (rec) -- (compare);}
-\uncover<7-10,16->{\path [line] (compare) -- (match);}
-\uncover<8-10,17->{\path [line] (match) -- node [near start] {\scriptsize yes} (done);}
-\uncover<9-10,18->{\path [line] (match) -- node [near start] {\scriptsize no} (minim);}
-\uncover<10-11,19->{\path [line] (minim) -- (gen);}
-%\uncover<20>{\path [dline] (gen) -| node [near start] {Model level fit}
-%(compare);}
-%\node (start) at (0,2) [draw] {Start};
-%\node (gen) at (0,1) [draw] {Generate Event with $[P]_N$: E1,E2};
-\end{tikzpicture}
-\end{figure}
-
-\uncover<19>{ This procedure would take $\sim200$ years (see
-slide~\ref{slide:timing}).}
-\end{frame}
 
 \begin{frame}
-\frametitle{Need an other approach}
-\begin{itemize}
-  \item Cannot afford running the procedure for years
-  \item Need proper alternative
-\end{itemize}
-~\\
-\begin{center}
-\alert{Use reweighting fit}
-\end{center}
-\end{frame}
-
-\begin{frame}
-\frametitle{Second approach: reweighting fit}
+\frametitle{Reweighting fit}
 \begin{itemize}
   \item A \alert{distribution} of an observable $=$ \alert{``probability''} for
   an event to happen with a given observable value. Observable can be e.g.
@@ -170,7 +120,7 @@ events, see later)
 \end{frame}
 
 \begin{frame}
-\frametitle{Second approach: reweighting fit}\label{slide:reweightingfit}
+\frametitle{Reweighting fit}\label{slide:reweightingfit}
 %Shown in fig.~\ref{fig:second}
 %begin{figure}[h]
 \begin{tikzpicture}[scale=.8,auto, remember picture]
@@ -491,6 +441,45 @@ Things to add:
 \begin{frame}
 \frametitle{Backup slides}
 \end{frame}
+\begin{frame}
+\frametitle{Brute force fit}
+\begin{figure}[h]
+  \begin{tikzpicture}[scale=2.8,auto]
+\uncover<1-2>{\node [autoblock] (start) {\scriptsize Start: $[p]_0$};}
+\uncover<2->{\node [block, below of=start, color=blue] (gen) {\scriptsize Generate Event with $[p]_N$: E1,E2};}
+\uncover<3-10,12->{\node [autoblock, right of=gen] (bhwide) {\scriptsize
+BHWide};} 
+\uncover<4-10,13->{\node [autoblock, right of=bhwide] (sim) {\scriptsize
+Simulation};} 
+\uncover<5-10,14->{\node [autoblock, right of=sim] (rec) {\scriptsize
+Reconstruction};} 
+\uncover<6-10,15->{\node [block, below of=rec, color=red] (compare) {\scriptsize Compare with data: $\chi^2$};}
+\uncover<7-10,16->{\node [decision, left of=compare, color=violet] (match)
+{\scriptsize Minimum?};} 
+\uncover<8-10,17->{\node [autoblock, below of=match] (done) {\scriptsize Done!};}
+\uncover<9-11,18->{\node [block, below of=gen, color=magenta] (minim)
+{\scriptsize Minimizer: $[p]_N \rightarrow [p]_{N+1}$};}	
+
+\uncover<1-2>{\path [line] (start) -- (gen);}
+\uncover<3-10,12->{\path [line] (gen) -- (bhwide);}
+\uncover<4-10,13->{\path [line] (bhwide) -- (sim);}
+\uncover<5-10,14->{\path [line] (sim) -- (rec);}
+\uncover<6-10,15->{\path [line] (rec) -- (compare);}
+\uncover<7-10,16->{\path [line] (compare) -- (match);}
+\uncover<8-10,17->{\path [line] (match) -- node [near start] {\scriptsize yes} (done);}
+\uncover<9-10,18->{\path [line] (match) -- node [near start] {\scriptsize no} (minim);}
+\uncover<10-11,19->{\path [line] (minim) -- (gen);}
+%\uncover<20>{\path [dline] (gen) -| node [near start] {Model level fit}
+%(compare);}
+%\node (start) at (0,2) [draw] {Start};
+%\node (gen) at (0,1) [draw] {Generate Event with $[P]_N$: E1,E2};
+\end{tikzpicture}
+\end{figure}
+
+\uncover<19>{ This procedure would take $\sim200$ years (see
+slide~\ref{slide:timing}).}
+\end{frame}
+
 \begin{frame}
 \frametitle{Why does it take so long?}\label{slide:timing}
 \begin{itemize}
