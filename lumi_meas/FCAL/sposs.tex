@@ -8,8 +8,9 @@
 \usepackage{booktabs}
 \author{S.Poss and A.Sailer}
 \institute{CERN}
-\title{Luminosity spectrum measurement}
-\subtitle{First results}
+\date{\today}
+\title{Luminosity spectrum at CLIC (3 TeV)}
+\subtitle{Status and Outlook}
 
 \mode<presentation>
 {
@@ -60,12 +61,18 @@ that escape detection.
 What we want to ``measure'': set of parameters that describes the luminosity
 spectrum:
 \begin{center}
-\includegraphics[width=7cm]{E1_E2_spread_strahlung.pdf}
+\includegraphics[width=4cm]{E1_E2_spread_strahlung.pdf}
 \end{center}
 \begin{itemize}
 \item need a \alert{model}, based on assumptions and existing Monte
 Carlo samples
 \item need a framework/procedure for parameter estimation
+\end{itemize}
+
+Why the need for a model? Why not use directly Guinea Pig?
+\begin{itemize}
+  \item Because of the very large number of parameters in GP, input particle
+  distributions, etc.
 \end{itemize}
 \end{frame}
 
@@ -85,12 +92,7 @@ For the fit itself, 2 methods:
 ~\\
 Relies on existing \alert{Data} (MC at this level) set: here Guinea Pig sample
 with CLIC 3TeV nominal settings.\\
-~\\
-Why the need for a model? Why not use directly Guinea Pig?
-\begin{itemize}
-  \item Because of the very large number of parameters in GP, input particle
-  distributions, etc.
-\end{itemize}
+
 \end{frame}
 
 \begin{frame}
@@ -279,38 +281,25 @@ Guinea pig \alert{with} beam spread and \alert{without} beamstrahlung:\\
 \end{tikzpicture}
 \end{columns}
 Assume the same range of the beam spread shape for all regions,
-but different parameter values for the beta distributions (slide~\ref{slide:betadistspreadpeak}).
+but different parameter values for the beta distributions
+(slide~\ref{slide:betadistspreadpeak}). 
 \end{frame}
 
 \begin{frame}
 \frametitle{Beamstrahlung effects}
 Guinea pig \alert{without} beam spread but \alert{with} beamstrahlung:\\
-%\begin{columns}[c]
-%\column{6cm}
-\begin{center}
+\begin{columns}[c]
+\column{6cm}
 \includegraphics[width=6cm]{E1_E2_nospread_with_strahlung.pdf}
-\end{center}
-% \column{6cm}
-% \begin{center}
-% \begin{tabular}{cc}
-% \toprule
-% peak & 30.7\%\\
-% \midrule
-% arm 1 & 23.9\%\\
-% \midrule
-% arm 2 & 23.8\%\\
-% \midrule
-% body & 21.6\%\\
-% \bottomrule
-% \end{tabular}
-% \end{center}
-% \end{columns}
-Beamstrahlung is modeled by diffrent beta distributions for each beam
+ \column{6cm}
+\includegraphics[width=6cm]{E1_E2_nospread_strahlung_zoom.pdf}
+\end{columns}
+Beamstrahlung is modeled by different beta distributions for each beam
 (slide~\ref{slide:betadiststra}).
 \end{frame}
 
 \begin{frame}
-\frametitle{Beam Beam interactions}
+\frametitle{Beam-Beam interactions}
 Guinea pig \alert{with} beam spread and \alert{with} beamstrahlung:\\
 \begin{columns}[c]
 \column{6cm}
@@ -335,22 +324,48 @@ Guinea pig \alert{with} beam spread and \alert{with} beamstrahlung:\\
 \node at (0,-1.5){arm2};
 \end{tikzpicture}
 \column{6cm}
-Back of the beam (see slide~\ref{slide:evsz}) has a higher probability to interact
-with a particle that emitted beamstrahlung.
+\begin{center}
+Arm 2:\\
+\includegraphics[width=6cm]{Arm2.pdf}
+\end{center}
 \end{columns}
-Using slide~\ref{slide:beamspread}, for the arm 1, beam 1 has the following
-model:
-\begin{itemize}
-  \item Beamstrahlung similar to the body and no beam spread
-\end{itemize}
-Beam2 has the following model:
-\begin{itemize}
-  \item No beamstrahlung, beam spread specific to the arm (slide~\ref{slide:betadistspreadarm})
-\end{itemize}
-In arm2, reverse beam1 and beam2 models.
 \end{frame}
 \begin{frame}
+\frametitle{Getting a model for the arms}
+\begin{columns}[c]
+\column{6cm}
+\begin{center}
+Projection on E1:\\
+\includegraphics[width=4.5cm]{Arm2_projX.pdf}\\
+Similar to the back of the beam spread: beta
+distribution, beamstrahlung neglected
+\end{center}
+\column{6cm}
+\begin{center}
+Projection on E2:\\
+\includegraphics[width=4.5cm]{Arm2_projY.pdf}\\
+Beamstrahlung only, beam spread neglected
+\end{center}
+\end{columns}
+~\\
+~\\
+Similar model for the Arm 1, but beam 1 and 2 exchanged.
+\end{frame}
+
+\begin{frame}
 \frametitle{Getting a model for the body}
+\begin{columns}[c]
+\column{6cm}
+\begin{center}
+Projection on E1:\\
+\includegraphics[width=4.5cm]{Body_projX.pdf}
+\end{center}
+\column{6cm}
+\begin{center}
+Projection on E2:\\
+\includegraphics[width=4.5cm]{Body_projY.pdf}
+\end{center}
+\end{columns}
 Body is assumed to be dominated by beamstrahlung effects. The beam spread is
 completely neglected.
 \end{frame}
@@ -388,10 +403,19 @@ Experimental Physics, F. James, p.304}:
 \column{6cm}
 \includegraphics[width=6cm]{Ratio_Fit_vs_GP_FCAL.pdf}
 \column{6cm}
-\includegraphics[width=6cm,page=2]{res_FCAL.pdf}
+\includegraphics[width=6cm]{FullSpectrumFCAL_zoom.pdf}
 \end{columns}
-Agreement between Guinea Pig and Fit parametrization $\pm12\%$
-(slide~\ref{slide:fitres}) in the peak region. Better than 5\% down to 1800GeV.
+\end{frame}
+
+\begin{frame}
+\frametitle{Fit result}\label{slide:fitres}
+\begin{columns}[c]
+\column{6cm}
+\includegraphics[width=6cm,page=1]{FullSpectrumFCAL.pdf}
+\column{6cm}
+\includegraphics[width=6cm,page=3]{res_FCAL.pdf}
+\end{columns}
+See backup for linear scale plots.
 \end{frame}
 
 \begin{frame}
@@ -410,7 +434,8 @@ Use of BHWide to obtain large angle Bhabha events:
 \begin{itemize}
   \item Input energies given either by Guinea Pig or by our model: gives 2
   samples
-  \item Keep only the particles with $\theta>7^\circ$: visible in the detector
+  \item Keep only the particles with $\theta>7^\circ$: visible in the
+  tracking detector
 \end{itemize}
 ~\\
 Until we have the full chain of simulation/reconstruction running, smear the
@@ -521,12 +546,12 @@ $a\sim-0.4, b\sim0.4$
 \end{frame}
 
 \begin{frame}
-\frametitle{Fit result}\label{slide:fitres}
+\frametitle{Model fit results}
 \begin{columns}[c]
 \column{6cm}
-\includegraphics[width=6cm,page=1]{res_FCAL.pdf}
+\includegraphics[width=6cm]{FullSpectrumFCAL_notlog.pdf}
 \column{6cm}
-\includegraphics[width=6cm,page=3]{res_FCAL.pdf}
+\includegraphics[width=6cm]{FullSpectrumFCAL_zoom_notlog.pdf}
 \end{columns}
 \end{frame}
 
