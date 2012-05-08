@@ -1,6 +1,6 @@
 %\documentclass{article}
-%\documentclass[handout]{beamer}
-\documentclass{beamer}
+\documentclass[handout]{beamer}
+%\documentclass{beamer}
 %\usepackage{beamerarticle}
 \usepackage{hepnicenames}
 \usepackage{tikz}
@@ -299,10 +299,11 @@ Arm 2:\\
 \begin{tikzpicture}
 \node{\includegraphics[width=8.5cm]{Arm2_both.pdf}};
 \node [scale = 0.7] at (2,3.5) {Projection on E1:};
-\node [scale = 0.7] at (3,3) {Similar to the back of the beam spread:};
-\node [scale = 0.7] at (3,2.5) {beta distribution, beamstrahlung neglected};
-\node [scale = 0.7] at (2,1.5) {Projection on E2:};
-\node [scale = 0.7] at (3,1.) {Beamstrahlung only: beta distribution,};
+\node [scale = 0.7] at (3.2,3) {Similar to the back of the beam spread
+(sl.\ref{slide:spreadinarms}):}; 
+\node [scale = 0.7] at (3,2.5) {beta distribution, beamstrahlung
+neglected}; \node [scale = 0.7] at (2,1.5) {Projection on E2:};
+\node [scale = 0.7] at (2.9,1.) {Beamstrahlung only: beta distribution,};
 \node [scale = 0.7] at (2,0.5) {beamspread neglected };
 \end{tikzpicture}
 \end{center}
@@ -365,7 +366,8 @@ Experimental Physics, F. James, p.304}:
 \section{Fit Status}
 \begin{frame}
 \frametitle{Fit Status}
-Model level fit: fit directly the beam energies\\
+Model level fit: fit directly the beam energies given by our model against the
+Guinea Pig spectrum\\ 
 ~\\
 Ingredients:
 \begin{itemize}
@@ -579,6 +581,17 @@ Beta distribution : $x^a(1-x)^b$
 \includegraphics[width=9cm]{BetaFunction_beamspreadarms.pdf}\\
 $a\sim-0.4, b\sim0.4$
 \end{center}
+\end{frame}
+
+\begin{frame}
+\frametitle{Why does the beam spread in the arms have this
+shape?}\label{slide:spreadinarms} 
+From slide~\ref{slide:beamspread}, lower side
+of beam spread corresponds to back of the beams\\
+~\\
+For a particle in the back of the beam e.g. beam1 to interact with a particle
+from beam2, the particle in beam2 has to cross the front of beam1, therefore
+be subject to coulomb forces: higher chance to emit beamstrahlung.
 \end{frame}
 
 \begin{frame}
