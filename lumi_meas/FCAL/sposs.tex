@@ -230,13 +230,11 @@ Guinea pig \alert{with} beam spread and \alert{without} beamstrahlung:\\
 \node {\includegraphics[width=6cm]{E1_E2_spread_nostrahlung.pdf}};
 \end{tikzpicture}
 \end{columns}
-Assume the same range of the beam spread shape for all regions,
-but different parameter values for the beta distributions
-(slide~\ref{slide:betadistspreadpeak}). 
+
 \end{frame}
 
 \begin{frame}
-\frametitle{Beamstrahlung effects}
+\frametitle{Beamstrahlung effects}\label{slide:beamstrahlung}
 Guinea pig \alert{without} beam spread but \alert{with} beamstrahlung:\\
 \begin{columns}[c]
 \column{6cm}
@@ -244,8 +242,6 @@ Guinea pig \alert{without} beam spread but \alert{with} beamstrahlung:\\
  \column{6cm}
 \includegraphics[width=6cm]{E1_E2_nospread_strahlung_zoom.pdf}
 \end{columns}
-Beamstrahlung is modeled by different beta distributions for each beam
-(slide~\ref{slide:betadiststra}).
 \end{frame}
 
 \begin{frame}
@@ -259,6 +255,23 @@ Guinea pig \alert{with} beam spread and \alert{with} beamstrahlung:\\
 \end{columns}
 \end{frame}
 
+\begin{frame}
+\frametitle{Getting a model for the peak}
+\begin{center}
+\begin{tikzpicture}
+\node {\includegraphics[width=5cm]{E1_E2_spread_strahlung_zoom.pdf}};
+\node at (0,0) {peak};
+\end{tikzpicture}
+\end{center}
+Using slide~\ref{slide:beamspread} and slide~\ref{slide:beamstrahlung}:
+\begin{itemize}
+  \item Use 1 beta distribution for each beam for the ``box''
+  (slide~\ref{slide:betadistspreadpeak})
+  \item neglect the effect of beamstrahlung: events contributing mostly to the
+  peak did not emit beamstrahlung
+\end{itemize}
+Same range for the beam spread shape for both beams. 
+\end{frame}
 \begin{frame}
 \frametitle{Getting a model for the arms}
 \begin{columns}[c]
@@ -282,24 +295,25 @@ Arm 2:\\
 \end{frame}
 \begin{frame}
 \frametitle{Getting a model for the arms}
-\begin{columns}[c]
-\column{6cm}
 \begin{center}
-Projection on E1:\\
-\includegraphics[width=4.5cm]{Arm2_projX.pdf}\\
-Similar to the back of the beam spread: beta
-distribution, beamstrahlung neglected
+\begin{tikzpicture}
+\node{\includegraphics[width=8.5cm]{Arm2_both.pdf}};
+\node [scale = 0.7] at (2,3.5) {Projection on E1:};
+\node [scale = 0.7] at (3.2,3) {Similar to the back of the beam spread
+(sl.\ref{slide:spreadinarms}):}; 
+\node [scale = 0.7] at (3,2.5) {beta distribution, beamstrahlung
+neglected}; \node [scale = 0.7] at (2,1.5) {Projection on E2:};
+\node [scale = 0.7] at (2.9,1.) {Beamstrahlung only: beta distribution,};
+\node [scale = 0.7] at (2,0.5) {beamspread neglected };
+\end{tikzpicture}
 \end{center}
-\column{6cm}
+\end{frame}
+
+\begin{frame}
+\frametitle{Getting a model for the body}
 \begin{center}
-Projection on E2:\\
-\includegraphics[width=4.5cm]{Arm2_projY.pdf}\\
-Beamstrahlung only, beam spread neglected
+\includegraphics[width=6cm]{Body.pdf}
 \end{center}
-\end{columns}
-~\\
-~\\
-Similar model for the Arm 1, but beam 1 and 2 exchanged.
 \end{frame}
 
 \begin{frame}
@@ -317,7 +331,10 @@ Projection on E2:\\
 \end{center}
 \end{columns}
 Body is assumed to be dominated by beamstrahlung effects. The beam spread is
-completely neglected.
+completely neglected.\\
+~\\
+Beamstrahlung is modeled by different beta distributions
+for each beam (slide~\ref{slide:betadiststra}).
 \end{frame}
 
 \begin{frame}
@@ -348,39 +365,60 @@ Experimental Physics, F. James, p.304}:
 
 \section{Fit Status}
 \begin{frame}
-\frametitle{Model level fit}
+\frametitle{Fit Status}
+Model level fit: fit directly the beam energies given by our model against the
+Guinea Pig spectrum\\ 
+~\\
+Ingredients:
+\begin{itemize}
+  \item Model: see before
+  \item Data: 3\,000\,000 events of Guinea Pig (Data), 3\,000\,000 events of our
+  model (Monte Carlo)
+\end{itemize}
+\end{frame}
+\begin{frame}
+\frametitle{Model level fit results}
+\begin{center}
+\includegraphics[width=9cm]{Ratio_Fit_vs_GP_FCAL.pdf}
+\end{center}
+\end{frame}
+\begin{frame}
+\frametitle{Model level fit results}
 \begin{columns}[c]
 \column{6cm}
-\includegraphics[width=6cm]{Ratio_Fit_vs_GP_FCAL.pdf}
-\column{6cm}
+\includegraphics[width=6cm]{FullSpectrumFCAL.pdf}
+\column{6cm}	
 \includegraphics[width=6cm]{FullSpectrumFCAL_zoom.pdf}
 \end{columns}
+\footnotesize{See slide~\ref{slide:fitresultslin} for linear scale plots.}
 \end{frame}
-
 \begin{frame}
-\frametitle{Fit result}\label{slide:fitres}
+\frametitle{Model level fit results}\label{slide:fitres}
+Relative difference between the fitted parameter set and Guinea Pig:
 \begin{columns}[c]
 \column{6cm}
-\includegraphics[width=6cm,page=1]{FullSpectrumFCAL.pdf}
+\includegraphics[width=6cm]{Relative_diff_Fit_GP.pdf}
 \column{6cm}
-\includegraphics[width=6cm,page=3]{res_FCAL.pdf}
+\includegraphics[width=6cm]{Relative_diff_Fit_GP_zoom.pdf}
 \end{columns}
-See backup for linear scale plots.
 \end{frame}
 
 \begin{frame}
 \frametitle{Partial conclusion}
 Fit at model level not perfect:
 \begin{itemize}
-  \item Need to improve model: what are we missing?
+  \item Need to improve model: beta distributions for the peak and the arms not
+  fully suitable, need \alert{higher order objects} (more parameters)
+  \item For the beamstrahlung, more beta functions may be needed
 \end{itemize} 
-Can in parallel setup framework for Bhabha events.
+~\\
+Meanwhile: can in parallel setup framework for \alert{Bhabha events}.
 \end{frame}
 
 \section{Fit with Bhabha Events}
 \begin{frame}
 \frametitle{Bhabha events}
-Use of BHWide to obtain large angle Bhabha events:
+Using \alert{BHWide} to obtain large angle Bhabha events:
 \begin{itemize}
   \item Input energies given either by Guinea Pig or by our model: gives 2
   samples
@@ -388,8 +426,9 @@ Use of BHWide to obtain large angle Bhabha events:
   tracking detector
 \end{itemize}
 ~\\
-Until we have the full chain of simulation/reconstruction running, smear the
-measured energies to ``simulate'' the energy resolution effects.
+Until we have the full chain of simulation/reconstruction running, \alert{smear}
+the \alert{measurable energies} (electron and positron) to ``simulate'' the
+energy \alert{resolution} effects.
 \end{frame}
 \begin{frame}
 \frametitle{Bhabha events}
@@ -403,8 +442,17 @@ measured energies to ``simulate'' the energy resolution effects.
 
 \begin{frame}
 \frametitle{Fitting the Bhabha events}
-Same method as for the Model level fit, but use 3D histogram to store the
-weights.\\
+Reweighting fit works as long as the input beam energies are kept in the
+generator level (BHWide) file:
+\begin{itemize}
+  \item 1 event is then parametrized by
+  $\{E_{beam1},E_{beam2},E_{p},E_{e},\frac{\sqrt{s'}}{\sqrt{s}}\}$
+  \item Use $\{E_{beam1},E_{beam2}\}$ for the weight computation
+  \item Use $\{E_{p},E_{e},\frac{\sqrt{s'}}{\sqrt{s}}\}$ for Data comparison: 3D
+  histogram needed
+  \item Resolution effect canceled out as long as they are identical between
+  Data and MC (systematics), but more events needed to compensate.
+\end{itemize}
 ~\\
 Issue: defining equiprobability binning in 3D\\
 ~\\
@@ -424,7 +472,7 @@ Nothing to show yet: \alert{work in progress}.
 \frametitle{Conclusion}
 Status:
 \begin{itemize}
-  \item Model level fitting in place, how can we improve?
+  \item Model level fitting in place, need few improvements
   \item Framework setup
   \item Bhabha procedure exists, need improvement in binning
 \end{itemize}
@@ -432,8 +480,9 @@ Status:
 Things to add:
 \begin{itemize}
   \item Full simulation and reconstruction
-  \item Background handling
-  \item Propagation of the errors to the physics measurements and impacts
+  \item Background handling: pairs, $\gamma\gamma \to had$, etc.
+  \item Propagation of the errors on our parameters to the physics measurements
+  and impacts
 \end{itemize}
 \end{frame}
 
@@ -535,7 +584,18 @@ $a\sim-0.4, b\sim0.4$
 \end{frame}
 
 \begin{frame}
-\frametitle{Model fit results}
+\frametitle{Why does the beam spread in the arms have this
+shape?}\label{slide:spreadinarms} 
+From slide~\ref{slide:beamspread}, lower side
+of beam spread corresponds to back of the beams\\
+~\\
+For a particle in the back of the beam e.g. beam1 to interact with a particle
+from beam2, the particle in beam2 has to cross the front of beam1, therefore
+be subject to coulomb forces: higher chance to emit beamstrahlung.
+\end{frame}
+
+\begin{frame}
+\frametitle{Model fit results}\label{slide:fitresultslin}
 \begin{columns}[c]
 \column{6cm}
 \includegraphics[width=6cm]{FullSpectrumFCAL_notlog.pdf}
