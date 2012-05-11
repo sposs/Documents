@@ -1,0 +1,353 @@
+\documentclass[a4paper,12pt]{article}
+\usepackage{tikz}
+\usetikzlibrary{arrows,shapes}
+
+\usepackage{courier}
+
+\usepackage[T1]{fontenc}
+
+\usepackage[pdftex, colorlinks=true]{hyperref}
+
+\usepackage[british]{babel}
+
+\usepackage{listings}
+\lstloadlanguages{python}
+\lstset{language=python,emph={self},emphstyle=\color{blue},basicstyle=\footnotesize}
+\title{FileCatalog structure and Content for the CLIC CDR}
+\author{S.~Poss}
+
+\begin{document}
+
+\tikzstyle{decision} = [diamond, draw, text badly centered, node distance=2.8cm]
+\tikzstyle{block} = [rectangle, draw, text centered, rounded corners, node distance=2.2cm]
+\tikzstyle{autoblock} = [rectangle, draw, text centered, rounded corners, node distance=2.2cm]
+\tikzstyle{line} = [draw, -triangle 90]
+\tikzstyle{dline} = [draw, dashed, -triangle 90]
+
+\maketitle
+\abstract{This document presents how the File Catalog was organized for the
+CLIC CDR. It also gives the searchable meta data information currently
+available.}
+
+\tableofcontents
+
+\section{Introduction}
+The CLIC CDR mass production used the DIRAC File Catalog (FC) as replica and
+meta data catalog. This proved to be an efficient solution, and made bookkeeping
+straight forward for the data manager. 
+
+This File Catalog allows for storing the
+files in different directories, much like any file system. The Logical File
+Names (LFN) allows to obtain the Physical File Names (PFN) by adding the server
+details (srm end point and base path) of one Storage Element containing the
+file. 
+
+As for the meta data, there are two kinds: searchable and non-searchable. Meta
+data can be attached to directories and/or to files, both for searchable and
+non-searchable. Obviously, searchable meta data at the file level is much less
+efficient than at the directory level, therefore non was used for the CLIC CDR.
+Non searchable meta data at the file level was added at a late stage, but holds
+some information related to the file.
+
+The File Catalog also hold ancestor-daughter relationships between the files,
+allowing to navigate easily from one step to the next.
+
+In the following sections, we first show the chosen path and file name
+conventions used, and then we discuss the available searchable meta data.
+
+\section{Organisation}
+This section describes how the path structure of the FC was set up. 
+
+The base element is by convention the VO, in this case ilc. This allows to have
+multiple VOs using the same File Catalog. At CERN, some people from the CALICE
+collaboration are also using DIRAC, and the same setup, and their data appears
+under /calice.
+
+The second level distinguishes ``production'' and ``user'' activities, so their
+paths are the following:
+\begin{itemize}
+  \item /ilc/prod for production,
+  \item /ilc/user for user data.
+\end{itemize} 
+In the following, only the production directories are relevant. 
+
+As two machines are running under the same VO, the next level is the machine,
+ilc or clic.  In the case of the ilc directory, the data structure available
+follows what was produced by Mikael and Akiya for the generation. We will
+discuss this at a later stage.
+
+For the clic structure, the sub directory are organized like this:
+Energy/EvtType/gen/ProdID/000 for generator level, or
+Energy/EvtType/DetectorType/Datatype/ProdID/000
+\begin{itemize}
+  \item Energy: energy of the machine: 3tev, 1.4tev, 500gev, or 350gev
+  \item EvtType: the event type, e.g. ``WW''
+  \item DetectorType: as the mane suggests, either ``ILD'' or ``SID''
+  \item Datatype: either ``SIM'', ``REC'', or ``DST''
+  \item ProdID: the internal production ID of DIRAC, as we are using its
+  Transformation System. It has leading 0 such that the length of the string is
+  8 chars long.
+  \item The last 000 is the taskID\%1000: most Storage Elements and the File
+  Catalog do not like having too many files in the same directory, for
+  optimization reasons. So those sub directories contain at most 1000 files.
+\end{itemize}
+
+So the full path structure is then the following e.g.:\\
+/ilc/prod/clic/1.4tev/ch1ch1/gen/00001186/000/ for generator level data, or \\
+/ilc/prod/clic/1.4tev/ch1ch1/SID/REC/00001189/000/ for REC files produced with
+the SID detector.
+
+~\\
+
+The file names also follow some conventions: The are built using the minimal set
+of information needed to obtain their details: event type, data type, production
+ID, task ID in that production, and, in case of splitting, a sub file index. For example,
+in the files produced in the generator step for the sample above, ch1ch1, the
+file names are e.g.: ch1ch1\_gen\_1186\_96.stdhep. From this file name, one
+can go to the Production Monitoring page, find the production 1186, check it's
+properties, look at the corresponding jobs, and find the task 96 (not the same
+as the job ID) by looking at the job names\footnote{Here the job name is
+00001186\_00000096.}, and obtain the job's details. In some future, log files
+for a particular job should also be made available from the web portal, as the
+functionality is available.
+
+In case of splitting at the lcio level, the file name is e.g.\\
+ch1ch1\_sim\_1188\_98-3-200.slcio. The last part gives the file index in the
+splitting, and the number of events in the file. This is a convention
+coming from the ``lcio split'' utility. 
+
+In case of stdhep split, the convention is different, but we have no files in
+the FC yet produced with the stdhep splitter.
+
+\section{Meta data}
+The meta data is separated in two catagories: searchable and non searchable.
+They are presentesd in the following sections.
+
+\subsection{Searchable meta data}
+The aim of searchable meta data is to obtain efficiently a data set. This data
+set is to be used either as input to productions or for a user to run analysis.
+In both case, a hierarchisation of the information is needed. In practice, it
+was chosen to use mostly the same information as the path structure. Indeed, the
+searchable meta data used is attached to directories. Below is the list of meta
+data keys that can be used for setting and reading:
+\begin{itemize}
+  \item EvtType (string): event type, same as in path
+  \item Datatype (string): data type: gen, SIM, REC, DST, same as in path
+  \item Energy (string): same as in path
+  \item DetectorType (string): same as in path
+  \item Machine (string): same as in path (clic or ilc)
+  \item ProdID (int): same as in path, but the leading 0 removed
+  \item DetectorModel (string): not used yet, but can hold e.g. sidloi3 
+  \item MachineParams (string): not used, but meant to hold ilc machine
+  parameters name (b1\_ws for e.g.)
+  \item NumberOfEvents (int): common number of events in each file in the sub
+  directories. This is used to define some type of productions (Mokka), but is
+  not used in said production, as this number is now stored at the file level
+  (see below).
+  \item Luminosity (int): same as NumberOfEvents, used to obtain the
+  corresponding cross section before is was stored for every file.
+  \item Owner (string): only used for users' files, under /ilc/user
+  \item JobType (string): not used, was meant to store the job type
+  (generation, simulation, reconstruction, etc.) but overlaps with the other
+  metadata
+  \item runnumber (int): not used and not needed (legacy from initial
+  development)
+  \item BXoverlayed (float): not used, was meant to be filled when having
+  overlay, but the overlay info can be obtained from the Transformation system. 
+  \item StartDate (date): not used, but is meant to hold the start date of the
+  production. We do not need it.
+\end{itemize}
+Using this meta data is described in section~\ref{sec:usingfc}.
+
+\subsection{Non searchable meta data}
+This feature was added at a late stage compared to the CLIC CDR mass production
+time scale. Therefore, most data does not use this type of meta data. But the
+data produced for the volume 3 makes use of it. 
+
+Any string meta data can be used, there is simply a restriction in the length of
+the string. File annotations are among the future improvements and they will
+not have size limitations.
+
+As this is non searchable, any key can be attached to any directory/file. As a
+convention, we use the following at directory level:
+\begin{itemize}
+  \item SWPackage: software packages used for a given production, e.g.
+  whizard.SUSY\_V22, or \\lcsim.CLIC\_CDR;SLICPandora.V6;lcsim.CLIC\_CDR
+\end{itemize}
+
+~\\
+
+At the file level, more meta data is available:
+\begin{itemize}
+  \item Luminosity: for whizard files only
+  \item NumberOfEvents: for any file
+  \item AdditionalInfo: any file in principle, we set some only
+  for files that are produced by Whizard, and is by convention a
+  python dictionary: \\ \{'xsection': \{'sum': \{'err\_xsection':
+  0.20100000000000001, \\'xsection': 213.67169000000001, 'fraction': 100.0\}\}\}
+\end{itemize}
+Anything can be added, but because of the string length limitation, only 255
+chars are allowed (important for the last field).
+
+~\\
+
+Additionaly, the ancestor-daughter relationship is stored allowing to obtain the
+full history of a given file. Using this feature will be described in the next
+section.
+
+\section{Interacting with the File Catalog}\label{sec:usingfc}
+There are several ways to interact with the file catalog: the CLI, the API, and
+in a near future, a web client.
+
+\subsection{The CLI}
+The command line interface (CLI) can be invoked by typing in a terminal
+\emph{dirac-dms-filecatalog-cli}. This gives a shell like interface, where
+commands are to be entered, for example:
+\begin{lstlisting}
+FC:/> help
+
+Documented commands (type help <topic>):
+========================================
+add         chgrp      exit  guid meta     replicas  rmreplica 
+ancestor    chmod      find  id   mkdir    replicate size      
+ancestorset chown      get   lcd  pwd      rm        unregister
+cd          descendent group ls   register rmdir     user      
+
+Undocumented commands:
+======================
+help
+\end{lstlisting}
+In this particular case, the ``help'' command was used. It displays help on the
+available functionality. Typing ``help cd'' for e.g. gives the corresponding
+help for the ``cd'' command.
+
+The most useful commands for a regular user and/or production manager are the
+commands:
+\begin{itemize}
+  \item meta: has itself a set of sub commands, like ``show'', ``set'' or
+  ``get''. Type ``help meta'' for additional information. The last argument of
+  thiose commands are either a directory or a file. This command is detailed in
+  sec.~\ref{sec:meta}.
+  \item find: find a data set corresponding to a set of meta data, see
+  sec.~\ref{sec:find}.
+  \item ancestor and descendent: as the names suggests,
+\end{itemize}
+
+Some commands should {\color{red} NEVER} be used when not knowing precisely
+what they do: ``register'', ``unregister'', ``rm'', ``add'', ``rmdir''. Indeed, 
+those commands are misleading: they act only on the File Catalog and not on the
+grid files. This can lead to having orphans on the Storage Elements, very hard if not
+impossible, to recover.
+
+\subsubsection{The meta command}\label{sec:meta}
+The meta commands allow to interact with the meta data information. 
+
+First a word of warning: as of \today, the meta data cannot be changed when set,
+either from the CLI or the API, except from a direct intervention in the data
+base. That means that one has to be careful when setting meta data (using ``meta
+set'').
+
+The same applies for searchable meta data fields and non searchable meta data:
+they cannot be either changed or deleted (``meta index'' command). 
+
+Searchable meta data is defined as follows:
+\begin{itemize}
+  \item meta index SomeMetaName metatype 
+  \item meta set some/path/ SomeMetaName SomeMetaValue (for a directory)
+  \item meta set some/path/file SomeMetaName SomeMetaValue (for a file)
+\end{itemize}
+
+Non searchable meta data is simply set:
+\begin{itemize}
+  \item meta set some/path SomeMetaName SomeMetaValue (for a directory)
+  \item meta set some/path/file SomeMetaName SomeMetaValue (for a file)
+\end{itemize}
+
+~\\
+
+Obtaining the meta data for a file or directory is done by running ``meta get
+some/path'' or ``meta get some/path/file'' and returns something like:
+\begin{lstlisting}
+FC:/> meta get /ilc/prod/clic/1.4tev/ch1ch1/gen/00001186/
+            *EvtType : ch1ch1
+     *NumberOfEvents : 1000
+           *Datatype : gen
+             *Energy : 1.4tev
+          SWPackages : whizard.SUSY_V22
+            *Machine : clic
+             !ProdID : 1186
+\end{lstlisting}
+Three types of meta data are available in tha example directory: 
+\begin{itemize}
+  \item inherited metadata: indicated with *. The meta data is inherited from a
+  parent directory, therefore conflicting meta data setting will be rejected
+  with an error.
+  \item Local meta data: indicated by !. This meta data is given to sub
+  directories
+  \item Non searchable meta data: no specific sign (here SWPackages). This is
+  always inherited. 
+\end{itemize}
+
+~\\
+
+Finding compatible meta data is necessary: having an event type and an energy,
+one might need to obtain e.g. the corresponding production IDs. The
+corresponding call is ``meta tags MetaKey where key1=A key2=B'', like in the example below:
+\begin{lstlisting}
+FC:/> meta tags ProdID where EvtType=ch1ch1 Energy=1.4tev
+Possible values for ProdID:
+803
+804
+834
+\end{lstlisting}
+
+~\\
+
+Showing all available meta data tags is done by ``meta show''.
+
+~\\
+
+Finally, the DIRAC File Catalog comes with the ``metaset'' functionality: defining a
+name for a set of search fields, for quick lookup. See ``help meta'' for more
+information, as there are no such example in our FC.
+
+\subsubsection{The find command}\label{sec:find}
+Here we describe briefly the ``find'' command and output. 
+
+Once one has an idea of the fields that are relevant, finding the corresponding
+set of files is done using e.g.
+\begin{lstlisting}
+FC:/> find ProdID=1186 EvtType=ch1ch1 Datatype=gen
+Query: {'EvtType': 'ch1ch1', 'Datatype': 'gen', 'ProdID': 1186}
+/ilc/prod/clic/1.4tev/ch1ch1/gen/00001186/000/ch1ch1_gen_1186_1.stdhep
+/ilc/prod/clic/1.4tev/ch1ch1/gen/00001186/000/ch1ch1_gen_1186_10.stdhep
+/ilc/prod/clic/1.4tev/ch1ch1/gen/00001186/000/ch1ch1_gen_1186_100.stdhep
+/ilc/prod/clic/1.4tev/ch1ch1/gen/00001186/000/ch1ch1_gen_1186_101.stdhep
+/ilc/prod/clic/1.4tev/ch1ch1/gen/00001186/000/ch1ch1_gen_1186_102.stdhep
+/ilc/prod/clic/1.4tev/ch1ch1/gen/00001186/000/ch1ch1_gen_1186_103.stdhep
+/ilc/prod/clic/1.4tev/ch1ch1/gen/00001186/000/ch1ch1_gen_1186_104.stdhep
+/ilc/prod/clic/1.4tev/ch1ch1/gen/00001186/000/ch1ch1_gen_1186_105.stdhep
+/ilc/prod/clic/1.4tev/ch1ch1/gen/00001186/000/ch1ch1_gen_1186_106.stdhep
+\end{lstlisting}
+
+The ``=`` condition can be replaced by logical comparison, ``>'', ``<'', ``<=``,
+``>=``, ``!=''
+
+Of course, in our FC model, there is redundancy: the ProdID itself is enough
+usually, as it is the last step in the path structure. But one could want to
+obtain ALL files of a given type, despite its production ID. 
+
+\subsection{The API}
+The API (Application Programing Interface) allows to use the File Catalog method
+directly in one's python code. This is used in particular for file registration
+at the end of a production job.
+
+\subsection{The Web client}
+The web interface is being developed and should become available soon. It will
+allow for file browsing and lookup, and even direct download. It will rely on
+the API described above.
+
+\section{Conclusions}
+We have described how the File Catalog was used for the CLIC CDR mass
+production.
+\end{document}
