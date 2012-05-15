@@ -1,0 +1,86 @@
+%
+%------------------------------------------------------------------------------
+% Sets up the title page for a draft, a note, a preprint or a journal
+% article for the Linear Collider Physics & Detector studies group.
+% Adapted from the ATLAS paper template (which itself is adapted from the L3 paper template).
+%
+% The author should supply:
+% \title
+% \author{The ATLAS Collaboration}
+% \journal{Phys. Lett. B}    or wherever is appropriate
+% \clicdetdraft{x.y}   OR 
+% \clicdetnote{number} OR
+% \preprint{number} 
+%------------------------------------------------------------------------------
+%
+\def\lcdnote#1{\def\mydocversion{\begin{center}\large \bf LCD-Note-#1 \end{center}}}
+\def\lcdopennote#1{\def\mydocversion{\begin{center}\large \bf LCD-OPEN-#1 \end{center}}}
+\def\preprint#1{\def\mydocversion{\begin{center}\large \bf #1\end{center}}}
+\def\lcddraft#1{\def\mydocversion{\begin{center}\large \bf Draft Version #1\end{center}}\usepackage{drafthead}}
+\def\mydocversion{}
+\def\@docversion{}
+\def\@presprepend{Presented at:}
+\def\@subprepend{To be submitted to:}
+\def\@journalname{Phys. Lett. B}
+\def\journalname#1{\def\@journalname{#1}}
+\def\journal{\def\@docversion{}             \usepackage{endfig}}
+\def\journaln{\def\@docversion{}}
+%
+% This is the titlepage
+%
+\def\titlepage{\clearpage%
+\setcounter{footnote}{0}\setcounter{page}{1}%
+\thispagestyle{empty}\pagestyle{plain}\pagenumbering{arabic}%
+% CERN title
+\kern1mm\begin{center}
+\mbox{\Large \bf CERN - European Organization for Nuclear Research}
+\mbox{}
+\end{center}
+\vskip3mm\normalsize
+\@docnum\\
+\@docdate}% End of \titlepage tag
+%
+% Document number (flushright) - (for draft versions)
+%
+\def\@docnum#1{\hbox to \hsize{\hskip133mm%
+\ifx\@docversion\@empty\mbox{}%
+\else\hbox{\@docversion}\fi\hss}}
+%
+% Date now somewhere else 
+%
+\def\@docdate{\mbox{}}
+% \def\@docdate{\hbox to \hsize{\hskip60mm%
+% \ifx\@docversion\@empty\mbox{}%
+% \else\hbox{\@date}\fi\hss}}
+% Logo
+\def\logo#1{\vspace{-5mm}\begin{center}
+\includegraphics[height=30mm]{#1}\end{center}\vskip 10mm}
+% Title
+\def\title#1{\vskip 5mm\begin{center}%
+{\LARGE\bf#1\par}\vskip1.5em\end{center}}
+% Affiliations
+\def\affiliated#1{\hbox{$^{\@fnsymbol{#1}}$}}
+\def\affiliation[#1]#2{$^{\@fnsymbol{#1}}$\space #2}
+\def\affiliations#1{\vspace{-8mm}\begin{center}{\it #1}\end{center}\vskip 8mm}
+% Author
+\def\@makefnmark{\hbox{$^{\@thefnmark)}$}}
+\def\author#1{%% Treat the list of authors
+\setcounter{footnote}{0}\def\@currentlabel{}%
+\begingroup\def\thefootnote{\arabic{footnote}}
+\def\@makefnmark{\hbox{$^{\@thefnmark)}$}}
+\global\@topnum\z@ \large\begin{center}{\lineskip.5em
+\begin{tabular}[t]{c}#1\end{tabular}\par}
+\end{center}\par\vskip1.5em\@thanks\endgroup}
+\newenvironment{Authlist}{\begin{center}}{\end{center}}
+% Date
+\def\date#1{\vspace{-8mm}\begin{center}#1\end{center}\vskip 8mm}
+% Abstract
+\def\abstract{\begin{center}%
+{\large\bf Abstract}\end{center}\quotation}
+\def\endabstract{\endquotation}
+% Presented at Conference
+\def\presented#1{\vfill\begin{center}\@presprepend\space {\it #1}\end{center}\vskip 2mm}
+% Submitted to journal
+\def\submitted#1{\vfil\begin{center}\@subprepend\space {\it #1}\end{center}\vskip 2mm}
+% Pagebreak at end of titlepage
+\def\endtitlepage{\pagebreak}

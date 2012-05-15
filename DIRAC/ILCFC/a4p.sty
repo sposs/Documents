@@ -1,0 +1,24 @@
+\def\fileversion{2.1}
+\def\filedate{95/01/26}
+\NeedsTeXFormat{LaTeX2e}
+\ProvidesPackage{a4p}[\filedate\space\fileversion\space (DESY, MG)]
+\typeout{a4p (DINA4) package v\fileversion \space <\filedate> (DESY,MG)}
+\newlength{\dinwidth}
+\newlength{\dinmargin}
+\setlength{\dinwidth}{21.0cm}
+\setlength{\textheight}{23.2cm} 
+\setlength{\textwidth}{16.0cm}
+\setlength{\dinmargin}{\dinwidth}
+  \addtolength{\dinmargin}{-\textwidth}
+\setlength{\dinmargin}{0.5\dinmargin}
+\setlength{\oddsidemargin}{-1.0in}
+  \addtolength{\oddsidemargin}{\dinmargin}
+\setlength{\evensidemargin}{\oddsidemargin}
+\setlength{\marginparwidth}{0.9\dinmargin}
+\setlength{\marginparsep}{8pt}
+\setlength{\marginparpush}{5pt}
+\setlength{\topmargin}{-22pt}
+\setlength{\headheight}{12pt}
+\setlength{\headsep}{30pt}
+\setlength{\footskip}{24pt}
+\endinput
