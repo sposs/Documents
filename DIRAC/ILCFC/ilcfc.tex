@@ -90,9 +90,14 @@ Catalog.}
 \end{titlepage}
 
 \section{Introduction}
-The CLIC CDR mass production used the DIRAC File Catalog (FC)\cite{diracfc} as
-replica and meta data catalog. This proved to be an efficient solution, and made bookkeeping
-straight forward for the data manager. 
+The CLIC Conceptual Design Report required the production of several million
+Monte Carlo events, from generation to reconstruction. In order to facilitate
+the access to the data, the DIRAC File Catalog (FC)~\cite{diracfc} was used.
+This system offers Replica and Meta Data catalog functionnality. The Replica
+catalog stores the location of the files, and of their copies. The Meta Data
+catalog allows to defines a set of tags to document and index files for rapid
+access. The File Catalog proved to be an efficient solution, and made
+bookkeeping straight forward for the data manager.
 
 This File Catalog allows for storing the files in different directories,
 exactly like any file system. The Logical File Names (LFN) allows to obtain the 
@@ -119,7 +124,7 @@ conventions used, and then we discuss the available searchable meta data. The
 last sections are intended to be viewed as a manual.
 
 \section{Organisation of the CLIC CDR data}
-This section describes how the path structure of the FC was designed. 
+This section describes the path structure of the FC. 
 
 The base element is by convention the VO, in this case
 ``\lstinline[language=bash]|/ilc|''. This allows to have multiple VOs using the
@@ -135,7 +140,7 @@ paths are the following:
 \end{itemize} 
 In the following, only the production directories are described. 
 
-As sinmulation for two accelerator concepts are being performed under the same
+As simulation for two accelerator concepts are being performed under the same
 VO, the next level is the machine, ``\lstinline[language=bash]|ilc|'' or
 ``\lstinline[language=bash]|clic|''. In the case of the
 ``\lstinline[language=bash]|ilc|'' directory,  the data structure available
@@ -150,10 +155,10 @@ for simulated and reconstructed data. The individual elements are defined as fol
   \item Energy: energy of the machine: ``\lstinline|3tev|'',
   ``\lstinline|1.4tev|'', ``\lstinline|500gev|'', or ``\lstinline|350gev|'';
   \item EvtType: the event type, like ``\lstinline|WW|'';
-  \item DetectorType: as the mane suggests, either ``\lstinline|ILD|'' or
+  \item DetectorType: as the name suggests, either ``\lstinline|ILD|'' or
   ``\lstinline|SID|'';
-  \item Datatype: either ``\lstinline|SIM|'', ``\lstinline|REC|'', or
-  ``\lstinline|DST|'';
+  \item Datatype: either ``\lstinline|gen|'',``\lstinline|SIM|'',
+  ``\lstinline|REC|'', or ``\lstinline|DST|'';
   \item ProdID: the internal production ID of DIRAC, as we are using its
   Transformation System. It has leading 0 such that the length of the string is
   8 chars long.
@@ -170,40 +175,40 @@ for REC files produced with the SID detector.
 
 ~\\
 
-The file names also follow conventions: They are built using the minimal
-set of information needed to obtain the most important information: event type,
+The following conventions hold for the fioles names: They are built using the
+minimal set of information needed to obtain the most important information: event type,
 data type, production ID, task ID in that production, and, in case of split
 files, a sub file index. For example, in the files produced in the generator
 step for the sample above, ch1ch1, the file names are:
 \lstinline[language=bash]|ch1ch1_gen_1186_96.stdhep|.  From this file name,
 one can go to the Production Monitoring page, find the production 1186, check
-it's properties, look at  the corresponding jobs, and find the task 96 (not the 
-same as the job ID) by looking at  the job names\footnote{Here the job name is 
-00001186\_00000096.}, and obtain the job's details. In some future, log files 
-for a particular job should also be made available from the web portal, as the 
-functionality is available.
+it's properties, look at  the corresponding jobs, and find the task 96 by
+looking at the job names\footnote{Here the job name is 00001186\_00000096.},
+and obtain the job's details. In a future ILCDIRAC version, log files for a
+particular job should also be made available to download from the web portal, as
+the functionality is available.
 
 In case of splitting at the lcio level, the file name is e.g.
-\lstinline[language=bash]|ch1ch1_sim_1188_98-3-200.slcio|. The additional
-elements denote the file index in the splitting and the number of events in the
-file, respectively. This is a convention coming from the ``lcio split'' utility. 
+\lstinline[language=bash]|ch1ch1_sim_1188_98-3-200.slcio|. The 3 and 200
+elements denote respectively the file index in the splitting and the number of
+events in the file, respectively. This is a convention coming from the ``lcio split'' utility. 
 
 In case of stdhep split, the convention is different, as it only adds a split
-file index, as in \lstinline[language=bash]|ch1ch1_gen_1186_96_1.stdhep|. We
-have no files in the FC produced with the stdhep splitter. 
+file index, as in \lstinline[language=bash]|ch1ch1_gen_1186_96_1.stdhep|. 
 
 \section{Meta data used for the CLIC CDR}
 The meta data is separated in two categories: searchable and non searchable.
-They are presentesd in the following sections.
+They are presented in the following sections.
 
 \subsection{Searchable meta data}
 The aim of searchable meta data is to obtain a data set efficiently using
 key=value type identifiers\footnote{See section~\ref{sec:find} for possible
 operators.}. This data set is to be used either as input to productions or for a
-user to run analysis. In both case, a hierarchisation  of the information is needed. In practice, it was chosen to
-use mostly the same information as the path structure. Indeed, the searchable
-meta data used is attached to directories. Below is the list of meta data keys 
-that can be used for setting and reading:
+user to run analysis. In both case, a hierarchisation of the information is
+needed.  In practice, it was chosen to use mostly the same information as the
+path structure. Indeed, the searchable meta data used is attached to
+directories. Below is the list of meta data keys that can be used for setting
+and reading:
 \begin{itemize}
   \item EvtType (string): event type, same as in path
   \item Datatype (string): data type: \lstinline|gen|, \lstinline|SIM|,
@@ -212,26 +217,28 @@ that can be used for setting and reading:
   \item DetectorType (string): same as in path
   \item Machine (string): same as in path (\lstinline|clic| or \lstinline|ilc|)
   \item ProdID (int): same as in path, but the leading 0 removed
-  \item DetectorModel (string): not used yet, but can hold for instance
-  \lstinline|sidloi3|
-  \item MachineParams (string): not used, but meant to hold ilc machine
+  \item DetectorModel (string): should hold for instance \lstinline|sidloi3|
+  \item MachineParams (string): meant to hold ilc machine
   parameters name (\lstinline|b1_ws| for example)
   \item NumberOfEvents (int): common number of events in each file in the sub
   directories. This is used to define some type of productions (Mokka), but is
   not used in said production, as this number is now stored at the file level
   (see below).
-  \item Luminosity (int): same as NumberOfEvents, used to obtain the
+  \item Luminosity (int): as NumberOfEvents, used to obtain the
   corresponding cross section before is was stored for every file.
   \item Owner (string): only used for users' files, under \lstinline|/ilc/user|
-  \item JobType (string): not used, was meant to store the job type
+\end{itemize}
+The following elements are legacy of the development, and cannot be removed yet
+from the File Catalog, and should not be used.
+\begin{itemize}
+  \item JobType (string): meant to store the job type
   (generation, simulation, reconstruction, etc.) but overlaps with the other
   metadata
-  \item runnumber (int): not used and not needed (legacy from initial
-  development)
-  \item BXoverlayed (float): not used, was meant to be filled when having
+  \item runnumber (int): hold a ``run number''.
+  \item BXoverlayed (float): meant to be filled when having
   overlay, but the overlay info can be obtained from the Transformation system. 
-  \item StartDate (date): not used, but is meant to hold the start date of the
-  production. We do not need it.
+  \item StartDate (date): meant to hold the start date of the
+  production.
 \end{itemize}
 Using this meta data is described in section~\ref{sec:usingfc}. 
 
@@ -260,7 +267,7 @@ convention, we use the following at directory level:
 
 At the file level, more meta data is available:
 \begin{itemize}
-  \item Luminosity: for whizard files only
+  \item Luminosity: for files (stdhep) produced by WHIZARD only
   \item NumberOfEvents: for any file
   \item AdditionalInfo: any file in principle, but we set some only
   for files that are produced by Whizard, and is by convention a
@@ -269,10 +276,10 @@ At the file level, more meta data is available:
 'ds10: xsection ds4:sum ds14: err_xsection f0.201es10:
 xsection f213.67169es9: fraction f100.0eeee'
   \end{lstlisting}
-  This utility is found under \lstinline|DIRAC.Core.Utilities.DEncode|.
+  This utility is found under \lstinline|DIRAC.Core.Utilities.DEncode|. It
+  replaces the usual python dictionary, shortens the equivalent string, and
+  prevents SQL injections attacks.
 \end{itemize}
-Anything can be added, but because of the string length limitation, only 255
-chars are allowed (important for the last field).
 
 ~\\
 
@@ -465,7 +472,7 @@ from DIRAC.Resources.Catalog.FileCatalogClient import FileCatalogClient
 fc = FileCatalogClient()
 
 meta = {}
-meta['SomeKey']=somevalue
+meta['ProdID']=1387
 
 #for a directory
 d = '/some/path/' 
@@ -499,15 +506,14 @@ Setting ancestor-daughter relationships is done using the following:
 from DIRAC.Resources.Catalog.FileCatalogClient import FileCatalogClient
 
 fc = FileCatalogClient()
-f = '/some/path/file'
+f1 = '/some/path/file1'
+f2 = '/some/path/file2'
 
-res = fc.addFileAncestors({f:{'Ancestors':list_of_ancestors}})
-if not res["OK"]:
-  print res['Message']
+res =
+fc.addFileAncestors({f1:{'Ancestors':[ancestor1,ancestor2]},
+                     f2:{'Ancestors':[ancestor3,ancestor4]}})
+if not res["OK"]: print res['Message']
 \end{lstlisting}
-
-Of course, since the argument of the function \lstinline|addFileAncestors| is a
-dictionary, multiple files can have their ancestors defined in one call.
 
 \subsubsection{Reading the meta data}
 There are also several API functions to interact with the FC to read
@@ -524,7 +530,7 @@ d = '/some/path/'
 res = fc.getDirectoryMetadata(d)
 if res['OK']:   
   tags= res['Value']
-  print tags['SomeValidKey']
+  print tags['Machine']
 \end{lstlisting}
 This returns the meta data of the directory \lstinline|d| as well as the
 inherited one. One way to distinguish between the different types of meta data
@@ -534,9 +540,9 @@ res = fc.getDirectoryMetadata(d)
 if res['OK']:   
   tags= res['Value']
   metatypes = res['MetadataType']
-  if 'SomeValidKey' in tags and 
-     metatypes['SomeValidKey'] == 'OwnParameter':
-    print "SomeValidKey is a non searchable metadata"
+  if 'SWPackages' in tags and 
+     metatypes['SWPackages'] == 'OwnParameter':
+    print "NumberOfEvents is a non searchable metadata"
 \end{lstlisting}
 
 For the file level meta data, the following returns the complete set, with no
@@ -549,7 +555,7 @@ f = '/some/path/file'
 res = fc.getFileUserMetadata(f)
 if res['OK']:   
   tags = res['Value']
-  print tags['SomeValidKey']
+  print tags['NumberOfEvents']
 \end{lstlisting}
 
 ~\\
@@ -565,13 +571,13 @@ res = fc.getFileAncestors(flist,1)#or 2, or 3, or 4
 if not res['OK']:
   print res['Message']
   exit()
-#otherwise, res has 2 keys 'Successful' and 'Failed'  
+#otherwise, res['Value'] has 2 keys 'Successful' and 'Failed'  
 for item in flist:
   if res['Value']['Successful'].has_key(item):
     ancestors_at_level_N = res['Value']['Successful'][item].keys()
 \end{lstlisting}
-The argument of the function is the depth to search, 1 is the mother, 2, the
-grand mother, 3, the grand grand mother, etc. One can access the ancestor chain
+The argument of the function \lstinline|getFileAncestors| is the depth to
+search, 1 is the mother, 2, the grand mother, 3, the grand grand mother, etc. One can access the ancestor chain
 in one go (e.g. here up to 3):
 \begin{lstlisting}
 from DIRAC.Resources.Catalog.FileCatalogClient import FileCatalogClient
@@ -598,12 +604,11 @@ res = fc.getFileDescendents(flist,[1,2,3])
 Finally, obtaining files corresponding to a set of meta data is done using the
 following:
 \begin{lstlisting}
-\begin{lstlisting}
 from DIRAC.Resources.Catalog.FileCatalogClient import FileCatalogClient
 fc = FileCatalogClient()
 meta = {}
-meta['SomeKey'] = SomeValue
-meta['SomeOtherKey'] = {">=":10}
+meta['ProdID'] = 1387 #equivalent to {"in":[1387]}
+meta['NumberOfEvents'] = {">=":10}
 res = fc.findFilesByMetadata(meta)
 if res['OK']:
   lfns = res['Value']
@@ -646,8 +651,8 @@ res = rm.replicateAndRegister("/ilc/some/path/file","SomeStorage")
 
 ~\\
 
-In the future, the \lstinline|putAndRegister| command will also take the meta
-data information.
+In a later DIRAC version, the \lstinline|putAndRegister| command will also take
+the meta data information.
 
 \section{Conclusions}
 We have described how the File Catalog was used for the CLIC CDR mass
