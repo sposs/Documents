@@ -1,10 +1,9 @@
 \documentclass[a4paper,12pt]{article}
 \usepackage{tikz}
-\usetikzlibrary{arrows,shapes}
-
+\usetikzlibrary{arrows,shapes,matrix}
+\usetikzlibrary{chains}
 \usepackage[english]{babel}
 \usepackage{courier}
-
 
 \usepackage[T1]{fontenc}
 
@@ -12,12 +11,39 @@
 
 \usepackage{listings}
 \lstloadlanguages{python}
-\lstset{language=python,numbers=left,numberstyle=\tiny,emph={self},emphstyle=\color{blue},basicstyle=\footnotesize}
+\lstset{language=python,numbers=left,numberstyle=\tiny,emph={self},emphstyle=\color{blue},basicstyle=\scriptsize}
 \title{ILC DIRAC, a grid solution for the LC community}
 \author{S.~Poss}
 
+% \tikzset{
+% >=stealth',
+%   punktchain/.style={
+%     rectangle, 
+%     rounded corners, 
+%     % fill=black!10,
+%     draw=black, very thick,
+%     text width=10em, 
+%     minimum height=3em, 
+%     text centered, 
+%     on chain},
+%   line/.style={draw, thick, <-},
+%   element/.style={
+%     tape,
+%     top color=white,
+%     bottom color=blue!50!black!60!,
+%     minimum width=8em,
+%     draw=blue!40!black!90, very thick,
+%     text width=10em, 
+%     minimum height=3.5em, 
+%     text centered, 
+%     on chain},
+%   every join/.style={->, thick,shorten >=1pt}
+% }
+
+\tikzset{terminal/.append style={text height=1.5ex,text depth=.25ex}}
+\tikzset{nonterminal/.append style={text height=1.5ex,text depth=.25ex}}
 \begin{document}
-\tikzstyle{decision} = [diamond, draw, text badly centered, node distance=2.8cm]
+\tikzstyle{decision} = [diamond, draw, text badly centered]
 \tikzstyle{block} = [rectangle, draw, text centered, rounded corners, node distance=2.2cm]
 \tikzstyle{autoblock} = [rectangle, draw, text centered, rounded corners, node distance=2.2cm]
 \tikzstyle{line} = [draw, -triangle 90]
@@ -118,7 +144,7 @@ class. The old API is not presented as not maintained, and will be dropped in on
 releases.
 
 \subsection{General considerations}
-When reviewing the Interface, the motivation was to render ther whole system
+When reviewing the Interface, the motivation was to render the whole system
 easier to use and to maintain. The first idea is to separate the job and the
 applications that should run in the job. The reason is that it allows for a
 better flexibility, namely a user can predefine a set of applications,
@@ -568,7 +594,127 @@ Run the Tomato analysis on an input file.
 
 \subsection{Job}\label{job}
 This class is the base Job class, all job types must inherit from this class.
-
+\begin{figure}[h]
+\begin{center}
+\begin{tikzpicture}[point/.style={coordinate},
+                   tip/.style={->,shorten>=1pt}]
+\matrix[matrix of nodes, row sep=4mm]
+{
+  \node [block] (append) {job.append(app)}; & & \\
+  & \node [point] (p0) {};& \\
+  & \node [block] (anajob) {app.\_analyseJob(job)}; & \\ 
+   & \node[decision](p1){}; & \node[block,color=red](e1){return
+   S\_ERROR()};\\ 
+   & \node [block] (appcheck) {app.\_checkConsistency()};  & \\
+   & \node[decision](p2){}; & \node[block,color=red](e2){return
+   S\_ERROR()};\\
+  & \node [block] (jobparams) {job.\_jobSpecificParams(app)}; & \\
+   &\node[decision](p3){}; & \node[block,color=red](e3){return
+   S\_ERROR()};\\
+  & \node [block] (appfincheck){app.\_checkFinalConsistency()}; &  \\
+   &\node[decision](p4){}; & \node[block,color=red](e4){return
+   S\_ERROR()};\\
+  & \node [block] (applistapp){job.applicationlist.append(app)};& \\
+  & \node [block] (inputsb) {add app inputSB to job SB}; & \\
+  &\node [block] (jobworkevts){job.\_addParameter(job.workflow,nb\_events)};&\\
+  & \node [block] (jobaddsoft){job.\_addSoftware(app.appname,app.version)};&\\
+  & \node[point](p5){}; & \node[point](p5e){};\\
+  & \node[block](end){return S\_OK()}; & \\ 
+};
+\path [line] (append) |- (p0) -- (anajob) ;
+\path [line] (anajob) -- (p1);
+\path [line,color=red] (p1) -- (e1);
+\path [line] (p1) -- (appcheck);
+\path [line] (appcheck) -- (p2);
+\path [line,color=red] (p2) -- (e2);
+\path [line] (p2) -- (jobparams);
+\path [line] (jobparams) -- (p3);
+\path [line,color=red] (p3) -- (e3);
+\path [line] (p3) -- (appfincheck);
+\path [line] (appfincheck) -- (p4);
+\path [line,color=red] (p4) -- (e4);
+\path [line] (p4) -- (applistapp);
+\path [line] (applistapp) -- (inputsb);
+\path [line] (inputsb) -- (jobworkevts);
+\path [line] (jobworkevts) -- (jobaddsoft);
+\path [line] (jobaddsoft)--(end);
+\end{tikzpicture}
+\end{center}
+\caption{Append method content.}
+\end{figure}
+\begin{figure}
+\begin{center}
+{\scriptsize
+\begin{tikzpicture}
+\matrix[matrix of nodes, row sep=4mm]
+{
+ \node [block] (jobparams) {job.\_addToWorkflow()}; & & & \\
+ & \node [block] (loop) {For app in job.applicationList}; &  & \\
+ \node [coordinate] (p0a) {};& \node [coordinate] (p0b) {}; & & \\
+ & \node [decision] (done) {Done?}; & & \\
+ & \node [block] (end){return S\_OK()}; & \node [block] (anajob)
+ {app.\_analyseJob(job)}; &\\ 
+ & & \node [decision] (p1) {}; &\node[block,color=red](e1){return
+   S\_ERROR()};\\
+ & & \node [block] (appcheckwork) {app.\_checkWorkflowConsistency()}; & \\
+ & & \node [decision] (p2) {}; &\node[block,color=red](e2){return
+   S\_ERROR()};\\
+ & & \node [block] (stepdef) {stepdefinition = StepDefinition(stepname)}; & \\
+ & & \node [block] (jobsteps) {job.steps.append(stepdefinition)}; & \\
+ & & \node [block] (jobmodules) {job.\_jobSpecificModules(app,stepdefinition)};
+ & \\
+ & & \node [decision] (p3) {}; &\node[block,color=red](e3){return
+   S\_ERROR()};\\
+ & & \node [block] (appstep) {app.\_addParametersToStep(stepdefinition)}; & \\ 
+ & & \node [decision] (p4) {}; &\node[block,color=red](e4){return
+   S\_ERROR()};\\
+ & & \node [block] (jobworkflow) {job.workflow.addStep(stepdefinition)}; & \\
+ & & \node [block] (stepinst) {job.workflow.createStepInstance}; & \\
+ & & \node [block] (appstepins) {app.\_setStepParametersValues(stepInstance)}; &\\
+ & & \node [decision] (p5) {}; &\node[block,color=red](e5){return
+   S\_ERROR()};\\
+ & & \node [block] (link) {app.\_resolveLinkedStepParameters(stepInstance)};
+ & \\ 
+ & & \node [decision] (p6) {}; &\node[block,color=red](e6){return
+   S\_ERROR()};\\
+ & & \node [block] (appadded) {app.\_addedtojob()}; & \\
+ & & \node [block] (countstep){add step number to workflow}; & \\
+ & & \node [coordinate] (p7) {}; &\\
+ };
+\path [line] (jobparams) |- (loop);
+\path [line] (loop) -- (done);
+\path [line] (done) -| node [near start,above] {no} (anajob);
+\path [line] (done) -- (end);
+\path [line] (anajob) -- (p1);
+\path [line] (p1) -- (appcheckwork);
+\path [line] (appcheckwork) -- (p2);
+\path [line] (p2) -- (stepdef);
+\path [line] (stepdef) -- (jobsteps);
+\path [line] (jobsteps) -- (jobmodules);
+\path [line] (jobmodules) -- (p3);
+\path [line] (p3) -- (appstep);
+\path [line] (appstep) -- (p4);
+\path [line] (p4) -- (jobworkflow);
+\path [line] (jobworkflow) -- (stepinst);
+\path [line] (stepinst) -- (appstepins);
+\path [line] (appstepins) -- (p5);
+\path [line] (p5) -- (link);
+\path [line] (link) -- (p6);
+\path [line] (p6) -- (appadded);
+\path [line] (appadded) -- (countstep);
+\path [draw,solid] (countstep) -- (p7);
+\path [line] (p7) -| (p0a) -- (p0b);
+\path [line,color=red] (p1) -- (e1);
+\path [line,color=red] (p2) -- (e2);
+\path [line,color=red] (p3) -- (e3);
+\path [line,color=red] (p4) -- (e4);
+\path [line,color=red] (p5) -- (e5);
+\path [line,color=red] (p6) -- (e6);
+\end{tikzpicture}
+}
+\end{center}
+\caption{When a job is submitted, the workflow is built.}
+\end{figure}
 \subsubsection{UserJob}\label{userjob}
 User job class for user jobs\ldots
 
@@ -586,6 +732,33 @@ This class is the interface between the Job and DIRAC.
 
 \subsection{scripts}\label{interfacescripts}
 Several scripts are developed to provide specific funtionnality for ILCDIRAC.
+
+\subsection{Example}
+This section gives a simple example of the data flow in a job definition.
+\begin{tikzpicture}[point/.style={coordinate},
+                   tip/.style={->,shorten>=1pt}]
+\matrix[matrix of nodes, column sep=4mm, row sep=4mm]
+{
+  \node [block] (whiz) {WHIZARD}; & & \\
+             & \node [block] (mod) {setModel(string)}; & \\
+             &  &\node[block] (whizmod) {self.model};\\
+  \node[point] (pointa) {.}; & & \\
+             & \node [block] (pdict) {setFullParameterDict(dict)}; &\\
+             &  &\node[block] (whizpdict) {self.optionsdict};\\
+  \node[point] (pointb) {.}; & & \\
+  \node[point] (pointc) {.}; & & \\
+  \node [block] (end) {end!}; & & \\
+};
+
+\path [line] (whiz) |- (mod);
+\path [line] (whiz) |- (pdict);
+\path [line,color=blue] (pdict) |- (whizpdict);
+\path [line,color=blue] (mod) |- (whizmod);
+\path [dline] (whizmod) |- (pointa);
+\path [dline] (whizpdict) |- (pointb);
+\path [line] (whiz) -- (end);
+\end{tikzpicture}
+
 
 \section{Workflow Modules}\label{modules}
 The following are the modules running on the grid, executing the different
