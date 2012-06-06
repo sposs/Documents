@@ -11,7 +11,8 @@
 
 \usepackage{listings}
 \lstloadlanguages{python}
-\lstset{language=python,numbers=left,numberstyle=\tiny,emph={self},emphstyle=\color{blue},basicstyle=\scriptsize}
+\lstset{language=python,numbers=left,numberstyle=\tiny,emph={self},
+        emphstyle=\color{blue},basicstyle=\scriptsize}
 \title{ILC DIRAC, a grid solution for the LC community}
 \author{S.~Poss}
 
@@ -200,18 +201,23 @@ technically explained later.}
 The applications are ran on the GRID using the DIRAC workflow system. This is
 briefly explained in Sec.~\ref{workflowsys}.
 
-\begin{figure}
-\begin{center}
-{\scriptsize
-\begin{tikzpicture}
-\matrix[matrix of nodes, row sep=4mm]
-{
-};
-\end{tikzpicture}
-}
-\end{center}
-\caption{Example job script.}
-\end{figure}
+Below is an example of the logic to define a job:
+\begin{lstlisting}[basicstyle=\normalsize]
+dirac = DiracILC()
+
+app = Application()
+app.setVersion("1")
+app.setSteeringFile('somefile.txt')
+
+job = Job()
+job.setInputSandbox("data.slcio")
+res = job.append(app)
+if res['OK']:
+  print job.submit(dirac)
+else:
+  print res['Message'] 
+\end{lstlisting}
+It is not a functional example, but shows all the essential elements for a job definition.
 
 \subsection{Application}\label{application}
 This class is the base application class, all applications must inherit from
