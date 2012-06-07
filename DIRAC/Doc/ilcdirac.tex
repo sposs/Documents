@@ -139,14 +139,13 @@ The ILCDIRAC framework has the following structure:
 
 \section{Interface}\label{interface}
 Here we detail the content of every class in this package. The Examples are
-treated separately, as theyu only use the functionnality exposed here. The order
-is as follows: the job and application classes are presented then the DiracILC
-class. The old API is not presented as not maintained, and will be dropped in one of the future
+treated separately, as they only use the functionnality exposed here. The old
+API is not presented as not maintained, and will be dropped in one of the future
 releases.
 
 \subsection{General considerations}
 When reviewing the Interface, the motivation was to render the whole system
-easier to use and to maintain. The first idea is to separate the job and the
+easier to use and maintain. The first idea is to separate the job and the
 applications that should run in the job. The reason is that it allows for a
 better flexibility, namely a user can predefine a set of applications,
 independantly of the job they run in.
@@ -201,7 +200,8 @@ technically explained later.}
 The applications are ran on the GRID using the DIRAC workflow system. This is
 briefly explained in Sec.~\ref{workflowsys}.
 
-Below is an example of the logic to define a job:
+As a starting point to the description of the framework, the code snippet below
+shows a minimalistic example of the logic for a job creation and submission: 
 \begin{lstlisting}[basicstyle=\normalsize]
 dirac = DiracILC()
 
@@ -218,6 +218,271 @@ else:
   print res['Message'] 
 \end{lstlisting}
 It is not a functional example, but shows all the essential elements for a job definition.
+
+~\\
+
+Because all the application parameters and the job properties are finalized
+when the job is sumitted to DIRAC, we first start by showing the DiracILC class.
+Then we describe the essential elements of the Job class, and finish by the
+application class.
+
+\subsection{DiracILC}\label{diracilc}
+This class is the interface between the Job and DIRAC. This section only details
+the essential parts of the framework, the utilities are not described here, nor
+are the inherited functions.
+
+What has to be remembered is that the Dirac class (from
+\lstinline|DIRAC.Interfaces.API.Dirac|) provides a \lstinline|submit(job)|
+method. This method does all the necessary operations to transmit the job
+description and sandbox to the central server. One of the functions called in
+the \lstinline|submit| method is \lstinline|preSubmissionChecks(self,job,mode)|.
+This method is overloaded in DiracILC to provide ILCDIRAC specific checks. The
+code structure is given in the schema~\ref{fig:diracpresubchecks}.
+\begin{figure}[!hp]
+\begin{center}
+{\scriptsize
+\begin{tikzpicture}[point/.style={coordinate}]
+\matrix[matrix of nodes, row sep=4mm]
+{
+  \node [block] (presubchecks) {dirac.preSubmissionChecks(self,job,mode)}; & &
+  \\ 
+  & \node [point] (p0) {}; & \\
+  & \node [decision] (jobok) {job.oktosubmit}; & \node[block,color=red] (e0)
+  {return S\_ERROR()};\\
+  & \node [block] (docheck) {dirac.\_do\_check(job)}; & \\
+  & \node [decision] (p1) {}; & \node[block,color=red] (e1)
+  {return S\_ERROR()};\\
+  & \node [decision] (checked) {dirac.checked}; & \\
+  & \node [block] (ask) {job.\_askUser()}; & \\
+  & \node [decision] (p3) {}; & \node[block,color=red] (e3)
+  {return S\_ERROR()};\\
+  & \node [block] (checkedok) {dirac.checked = True}; & \\
+  \node [point] (p4) {};& \node [block] (end) {return S\_OK()}; & \\
+};
+\path [line] (presubchecks) |- (p0) -- (jobok);
+\path [line] (jobok) -- (docheck);
+\path [line] (docheck) -- (p1);
+\path [line] (p1) -- (checked);
+\path [line] (checked) -- (ask);
+\path [line] (ask) -- (p3);
+\path [line] (p3) -- (checkedok);
+\path [line] (checkedok) -- (end);
+\path [line] (checked) -| node [near start,above] {yes} (p4) -- (end);
+\path [line,color=red] (jobok) -- (e0);
+\path [line,color=red] (p1) -- (e1);
+\path [line,color=red] (p3) -- (e3);
+\end{tikzpicture}
+}
+\end{center}
+\caption{DiracILC pre submission checks.}\label{fig:diracpresubchecks}
+\end{figure}
+The main method is \lstinline|_do_check(job)|. It is summarized in the
+graph~\ref{fig:diracilccheck}.
+\begin{figure}[!hp]
+\begin{center}
+{\scriptsize
+\begin{tikzpicture}[point/.style={coordinate}]
+\matrix[matrix of nodes, row sep=4mm]
+{
+  \node [block] (docheck) {dirac.\_do\_check(job)}; & &\\
+  & \node [block] (resISB) {Resolve sandbox if needed}; & \\
+  & \node [block] (checkisb) {dirac.checkInputSandboxLFNs(job)}; & \\
+  & \node [decision] (p2) {}; & \node[block,color=red] (e2) {return S\_ERROR()};\\
+  & \node [decision] (apps) {Applications?}; & \\
+  & \node [block] (checkapps) {dirac.\_checkapp(sysconf,app,version)}; & \\
+  & \node [decision] (p3) {}; & \node[block,color=red] (e3) {return S\_ERROR()};\\
+  \node [point] (p1) {};& \node [point] (p1b) {};&\\
+  & \node [decision] (outpupath) {outputpath?}; & \\
+  & \node [block] (checkpath) {dirac.\_checkoutputpath(outputpath)}; & \\ 
+  & \node [decision] (p4) {}; & \node[block,color=red] (e4) {return S\_ERROR()};\\ 
+  \node [point] (p4a) {};& \node [point] (p4b) {};&\\
+  & \node [decision] (useroutputdata) {useroutputdata?}; & \\
+  & \node [block]  (checkdatacons)
+  {dirac.\_checkdataconsistency(useroutputdata,  useroutputsandbox)};& \\ 
+  & \node [decision] (p5) {}; & \node[block,color=red] (e5) {return S\_ERROR()};\\ 
+  \node [point] (p6a) {};& \node [point] (p6) {}; & \\
+  & \node [block] (end){return S\_OK()};&\\
+};
+\path [line] (docheck) |- (resISB);
+\path [line] (resISB) -- (checkisb);
+\path [line] (checkisb) -- (p2);
+\path [line] (p2) -- (apps);
+\path [line] (apps) -- (checkapps);
+\path [line] (apps) -| node [near start,above] {no} (p1) -- (p1b);
+\path [line] (checkapps) -- (p3);
+\path [line] (p3) -- (outpupath);
+\path [line] (outpupath) -- (checkpath);
+\path [line] (checkpath) -- (p4);
+\path [line] (p4) -- (useroutputdata);
+\path [line] (outpupath) -| node [near start,above] {no} (p4a) -- (p4b);
+\path [line] (useroutputdata) -- (checkdatacons);
+\path [line] (checkdatacons) -- (p5);
+\path [line] (p5) -- (end);
+\path [line] (useroutputdata) -| node [near start,above] {no} (p6a) -- (p6);
+
+\path [line,color=red] (p2) -- (e2);
+\path [line,color=red] (p3) -- (e3);
+\path [line,color=red] (p4) -- (e4);
+\path [line,color=red] (p5) -- (e5);
+\end{tikzpicture}
+}
+\end{center}
+\caption{Checking method of the DiracILC class.}\label{fig:diracilccheck}
+\end{figure}
+
+The sandbox resolution uses the default Dirac methods, so it's not described
+here. The \lstinline|checkInputSandboxLFNs| makes sure that all LFNs in the
+input sandbox exist in the File Catalog. The \lstinline|_checkapp| method checks
+in the CS that the specified applications are available for the requested platform (the former
+being specified in the Application classes and the later in the job
+definition). \lstinline|_checkoutputpath| make sure there are no invalid
+characters or sequences (like //) in any output paths for output data. Finally,
+\lstinline|_checkdataconsistency| make sure a file in the output sandbox is not
+also in the output data requirement. Indeed, if it's the case, the job will fail
+as the output data resolution removes physically the file from the disk before
+the output sandbox resolution is done.
+
+The job methods called are detailed in the next section.
+
+\subsection{Job}\label{job}
+This class is the base Job class, all job types must inherit from this class.
+\begin{figure}[hp]
+\begin{center}
+{\scriptsize
+\begin{tikzpicture}[point/.style={coordinate},
+                   tip/.style={->,shorten>=1pt}]
+\matrix[matrix of nodes, row sep=4mm]
+{
+  \node [block] (append) {job.append(app)}; & & \\
+  & \node [point] (p0) {};& \\
+  & \node [block] (anajob) {app.\_analyseJob(job)}; & \\ 
+   & \node[decision](p1){}; & \node[block,color=red](e1){return
+   S\_ERROR()};\\ 
+   & \node [block] (appcheck) {app.\_checkConsistency()};  & \\
+   & \node[decision](p2){}; & \node[block,color=red](e2){return
+   S\_ERROR()};\\
+  & \node [block] (jobparams) {job.\_jobSpecificParams(app)}; & \\
+   &\node[decision](p3){}; & \node[block,color=red](e3){return
+   S\_ERROR()};\\
+  & \node [block] (appfincheck){app.\_checkFinalConsistency()}; &  \\
+   &\node[decision](p4){}; & \node[block,color=red](e4){return
+   S\_ERROR()};\\
+  & \node [block] (applistapp){job.applicationlist.append(app)};& \\
+  & \node [block] (inputsb) {add app inputSB to job SB}; & \\
+  &\node [block] (jobworkevts){job.\_addParameter(job.workflow,nb\_events)};&\\
+  & \node [block] (jobaddsoft){job.\_addSoftware(app.appname,app.version)};&\\
+  & \node[point](p5){}; & \node[point](p5e){};\\
+  & \node[block](end){return S\_OK()}; & \\ 
+};
+\path [line] (append) |- (p0) -- (anajob) ;
+\path [line] (anajob) -- (p1);
+\path [line,color=red] (p1) -- (e1);
+\path [line] (p1) -- (appcheck);
+\path [line] (appcheck) -- (p2);
+\path [line,color=red] (p2) -- (e2);
+\path [line] (p2) -- (jobparams);
+\path [line] (jobparams) -- (p3);
+\path [line,color=red] (p3) -- (e3);
+\path [line] (p3) -- (appfincheck);
+\path [line] (appfincheck) -- (p4);
+\path [line,color=red] (p4) -- (e4);
+\path [line] (p4) -- (applistapp);
+\path [line] (applistapp) -- (inputsb);
+\path [line] (inputsb) -- (jobworkevts);
+\path [line] (jobworkevts) -- (jobaddsoft);
+\path [line] (jobaddsoft)--(end);
+\end{tikzpicture}
+}
+\end{center}
+\caption{Append method content.}
+\end{figure}
+
+\begin{figure}
+\begin{center}
+{\scriptsize
+\begin{tikzpicture}
+\matrix[matrix of nodes, row sep=4mm]
+{
+ \node [block] (jobparams) {job.\_addToWorkflow()}; & & & \\
+ & \node [block] (loop) {For app in job.applicationList}; &  & \\
+ \node [coordinate] (p0a) {};& \node [coordinate] (p0b) {}; & & \\
+ & \node [decision] (done) {Done?}; & & \\
+ & \node [block] (end){return S\_OK()}; & \node [block] (anajob)
+ {app.\_analyseJob(job)}; &\\ 
+ & & \node [decision] (p1) {}; &\node[block,color=red](e1){return
+   S\_ERROR()};\\
+ & & \node [block] (appcheckwork) {app.\_checkWorkflowConsistency()}; & \\
+ & & \node [decision] (p2) {}; &\node[block,color=red](e2){return
+   S\_ERROR()};\\
+ & & \node [block] (stepdef) {stepdefinition = StepDefinition(stepname)}; & \\
+ & & \node [block] (jobsteps) {job.steps.append(stepdefinition)}; & \\
+ & & \node [block] (jobmodules) {job.\_jobSpecificModules(app,stepdefinition)};
+ & \\
+ & & \node [decision] (p3) {}; &\node[block,color=red](e3){return
+   S\_ERROR()};\\
+ & & \node [block] (appstep) {app.\_addParametersToStep(stepdefinition)}; & \\ 
+ & & \node [decision] (p4) {}; &\node[block,color=red](e4){return
+   S\_ERROR()};\\
+ & & \node [block] (jobworkflow) {job.workflow.addStep(stepdefinition)}; & \\
+ & & \node [block] (stepinst) {job.workflow.createStepInstance}; & \\
+ & & \node [block] (appstepins) {app.\_setStepParametersValues(stepInstance)}; &\\
+ & & \node [decision] (p5) {}; &\node[block,color=red](e5){return
+   S\_ERROR()};\\
+ & & \node [block] (link) {app.\_resolveLinkedStepParameters(stepInstance)};
+ & \\ 
+ & & \node [decision] (p6) {}; &\node[block,color=red](e6){return
+   S\_ERROR()};\\
+ & & \node [block] (appadded) {app.\_addedtojob()}; & \\
+ & & \node [block] (countstep){add step number to workflow}; & \\
+ & & \node [coordinate] (p7) {}; &\\
+ };
+\path [line] (jobparams) |- (loop);
+\path [line] (loop) -- (done);
+\path [line] (done) -| node [near start,above] {no} (anajob);
+\path [line] (done) -- (end);
+\path [line] (anajob) -- (p1);
+\path [line] (p1) -- (appcheckwork);
+\path [line] (appcheckwork) -- (p2);
+\path [line] (p2) -- (stepdef);
+\path [line] (stepdef) -- (jobsteps);
+\path [line] (jobsteps) -- (jobmodules);
+\path [line] (jobmodules) -- (p3);
+\path [line] (p3) -- (appstep);
+\path [line] (appstep) -- (p4);
+\path [line] (p4) -- (jobworkflow);
+\path [line] (jobworkflow) -- (stepinst);
+\path [line] (stepinst) -- (appstepins);
+\path [line] (appstepins) -- (p5);
+\path [line] (p5) -- (link);
+\path [line] (link) -- (p6);
+\path [line] (p6) -- (appadded);
+\path [line] (appadded) -- (countstep);
+\path [draw,solid] (countstep) -- (p7);
+\path [line] (p7) -| (p0a) -- (p0b);
+\path [line,color=red] (p1) -- (e1);
+\path [line,color=red] (p2) -- (e2);
+\path [line,color=red] (p3) -- (e3);
+\path [line,color=red] (p4) -- (e4);
+\path [line,color=red] (p5) -- (e5);
+\path [line,color=red] (p6) -- (e6);
+\end{tikzpicture}
+}
+\end{center}
+\caption{When a job is submitted, the workflow is built.}
+\end{figure}
+
+\subsubsection{UserJob}\label{userjob}
+User job class for user jobs\ldots
+
+\subsubsection{ProductionJob}\label{prodjob}
+Production job class. The main different with the previous job class is the fact
+that it's not intended to be submitted to Dirac, but only to the
+TransformationSysten.
+
+\subsubsection{SIDProductionJob}\label{sidprod}
+SIDProductionJob. Same as the previous class, but implementing SiD production
+specific functionnality.
+
 
 \subsection{Application}\label{application}
 This class is the base application class, all applications must inherit from
@@ -552,202 +817,7 @@ is used when checkling the job. It's called by the Job class, and lists the
 public members' values, for debugging before submission. More on that in the Job
 class description, in Sec.~\ref{job}.
 
-\subsection{GenericApplication}\label{genericapp}
-This application is intended to run a script based on an application. 
 
-\subsection{GetSRMFile}\label{getsrmfile}
-When a file is not in the File Catalog, it can still be access using this
-application.
-
-\subsection{RootScript}\label{rootscript}
-Run a ROOT based script, shell or python.
-
-\subsection{RootMacro}\label{rootmacro}
-Run a ROOT macro (.C).
-
-\subsection{Whizard}\label{whizard}
-Generate events using Whizard.
-
-\subsection{Pythia}\label{pythia}
-Generate events using PYTHIA standalone.
-
-\subsection{PostGenSelection}\label{postgensel}
-This utility was created for JJ Blaising, but not used anymore.
-
-\subsection{StdhepCut}\label{stdhepcut}
-Used to apply generator level cuts on the final stdhep files. Application code
-written by Lars Weuste, extended by John Marshall and Astrid Munnich. 
-
-\subsection{StdHepSplit}\label{stdhepsplit}
-Cut a stdhep file in chunks. Mostly used for the SID production
-
-\subsection{Mokka}\label{mokka}
-Run Mokka: ILD simulation
-
-\subsection{SLIC}\label{slic}
-Run SLIC: SiD simulation
-
-\subsection{OverlayInput}\label{overlay}
-Download the files for the overlay.
-
-\subsection{Marlin}\label{marlin}
-Run Marlin: reconstruction for ILD
-
-\subsection{LCSIM}\label{lcsim}
-Run LCSIM: Reconstruction for SiD
-
-\subsection{SLICPandora}\label{slicpan}
-Apply Pandora PFO on SiD reconstructed data
-
-\subsection{CheckCollections}\label{checkcoll}
-Make sure a set of collection is available in the input file.
-
-\subsection{SLCIOConcatenate}\label{slcioconcat}
-Concatenate many slcio files into one. Useful for the ``Merge'' jobs. 
-
-\subsection{SLCIOSplit}\label{slciosplit}
-Split a slcio file into many chunks. 
-
-\subsection{Tomato}\label{tomato}
-Run the Tomato analysis on an input file.
-
-\subsection{Job}\label{job}
-This class is the base Job class, all job types must inherit from this class.
-\begin{figure}[h]
-\begin{center}
-\begin{tikzpicture}[point/.style={coordinate},
-                   tip/.style={->,shorten>=1pt}]
-\matrix[matrix of nodes, row sep=4mm]
-{
-  \node [block] (append) {job.append(app)}; & & \\
-  & \node [point] (p0) {};& \\
-  & \node [block] (anajob) {app.\_analyseJob(job)}; & \\ 
-   & \node[decision](p1){}; & \node[block,color=red](e1){return
-   S\_ERROR()};\\ 
-   & \node [block] (appcheck) {app.\_checkConsistency()};  & \\
-   & \node[decision](p2){}; & \node[block,color=red](e2){return
-   S\_ERROR()};\\
-  & \node [block] (jobparams) {job.\_jobSpecificParams(app)}; & \\
-   &\node[decision](p3){}; & \node[block,color=red](e3){return
-   S\_ERROR()};\\
-  & \node [block] (appfincheck){app.\_checkFinalConsistency()}; &  \\
-   &\node[decision](p4){}; & \node[block,color=red](e4){return
-   S\_ERROR()};\\
-  & \node [block] (applistapp){job.applicationlist.append(app)};& \\
-  & \node [block] (inputsb) {add app inputSB to job SB}; & \\
-  &\node [block] (jobworkevts){job.\_addParameter(job.workflow,nb\_events)};&\\
-  & \node [block] (jobaddsoft){job.\_addSoftware(app.appname,app.version)};&\\
-  & \node[point](p5){}; & \node[point](p5e){};\\
-  & \node[block](end){return S\_OK()}; & \\ 
-};
-\path [line] (append) |- (p0) -- (anajob) ;
-\path [line] (anajob) -- (p1);
-\path [line,color=red] (p1) -- (e1);
-\path [line] (p1) -- (appcheck);
-\path [line] (appcheck) -- (p2);
-\path [line,color=red] (p2) -- (e2);
-\path [line] (p2) -- (jobparams);
-\path [line] (jobparams) -- (p3);
-\path [line,color=red] (p3) -- (e3);
-\path [line] (p3) -- (appfincheck);
-\path [line] (appfincheck) -- (p4);
-\path [line,color=red] (p4) -- (e4);
-\path [line] (p4) -- (applistapp);
-\path [line] (applistapp) -- (inputsb);
-\path [line] (inputsb) -- (jobworkevts);
-\path [line] (jobworkevts) -- (jobaddsoft);
-\path [line] (jobaddsoft)--(end);
-\end{tikzpicture}
-\end{center}
-\caption{Append method content.}
-\end{figure}
-\begin{figure}
-\begin{center}
-{\scriptsize
-\begin{tikzpicture}
-\matrix[matrix of nodes, row sep=4mm]
-{
- \node [block] (jobparams) {job.\_addToWorkflow()}; & & & \\
- & \node [block] (loop) {For app in job.applicationList}; &  & \\
- \node [coordinate] (p0a) {};& \node [coordinate] (p0b) {}; & & \\
- & \node [decision] (done) {Done?}; & & \\
- & \node [block] (end){return S\_OK()}; & \node [block] (anajob)
- {app.\_analyseJob(job)}; &\\ 
- & & \node [decision] (p1) {}; &\node[block,color=red](e1){return
-   S\_ERROR()};\\
- & & \node [block] (appcheckwork) {app.\_checkWorkflowConsistency()}; & \\
- & & \node [decision] (p2) {}; &\node[block,color=red](e2){return
-   S\_ERROR()};\\
- & & \node [block] (stepdef) {stepdefinition = StepDefinition(stepname)}; & \\
- & & \node [block] (jobsteps) {job.steps.append(stepdefinition)}; & \\
- & & \node [block] (jobmodules) {job.\_jobSpecificModules(app,stepdefinition)};
- & \\
- & & \node [decision] (p3) {}; &\node[block,color=red](e3){return
-   S\_ERROR()};\\
- & & \node [block] (appstep) {app.\_addParametersToStep(stepdefinition)}; & \\ 
- & & \node [decision] (p4) {}; &\node[block,color=red](e4){return
-   S\_ERROR()};\\
- & & \node [block] (jobworkflow) {job.workflow.addStep(stepdefinition)}; & \\
- & & \node [block] (stepinst) {job.workflow.createStepInstance}; & \\
- & & \node [block] (appstepins) {app.\_setStepParametersValues(stepInstance)}; &\\
- & & \node [decision] (p5) {}; &\node[block,color=red](e5){return
-   S\_ERROR()};\\
- & & \node [block] (link) {app.\_resolveLinkedStepParameters(stepInstance)};
- & \\ 
- & & \node [decision] (p6) {}; &\node[block,color=red](e6){return
-   S\_ERROR()};\\
- & & \node [block] (appadded) {app.\_addedtojob()}; & \\
- & & \node [block] (countstep){add step number to workflow}; & \\
- & & \node [coordinate] (p7) {}; &\\
- };
-\path [line] (jobparams) |- (loop);
-\path [line] (loop) -- (done);
-\path [line] (done) -| node [near start,above] {no} (anajob);
-\path [line] (done) -- (end);
-\path [line] (anajob) -- (p1);
-\path [line] (p1) -- (appcheckwork);
-\path [line] (appcheckwork) -- (p2);
-\path [line] (p2) -- (stepdef);
-\path [line] (stepdef) -- (jobsteps);
-\path [line] (jobsteps) -- (jobmodules);
-\path [line] (jobmodules) -- (p3);
-\path [line] (p3) -- (appstep);
-\path [line] (appstep) -- (p4);
-\path [line] (p4) -- (jobworkflow);
-\path [line] (jobworkflow) -- (stepinst);
-\path [line] (stepinst) -- (appstepins);
-\path [line] (appstepins) -- (p5);
-\path [line] (p5) -- (link);
-\path [line] (link) -- (p6);
-\path [line] (p6) -- (appadded);
-\path [line] (appadded) -- (countstep);
-\path [draw,solid] (countstep) -- (p7);
-\path [line] (p7) -| (p0a) -- (p0b);
-\path [line,color=red] (p1) -- (e1);
-\path [line,color=red] (p2) -- (e2);
-\path [line,color=red] (p3) -- (e3);
-\path [line,color=red] (p4) -- (e4);
-\path [line,color=red] (p5) -- (e5);
-\path [line,color=red] (p6) -- (e6);
-\end{tikzpicture}
-}
-\end{center}
-\caption{When a job is submitted, the workflow is built.}
-\end{figure}
-\subsubsection{UserJob}\label{userjob}
-User job class for user jobs\ldots
-
-\subsubsection{ProductionJob}\label{prodjob}
-Production job class. The main different with the previous job class is the fact
-that it's not intended to be submitted to Dirac, but only to the
-TransformationSysten.
-
-\subsubsection{SIDProductionJob}\label{sidprod}
-SIDProductionJob. Same as the previous class, but implementing SiD production
-specific functionnality.
-
-\subsection{DiracILC}\label{diracilc}
-This class is the interface between the Job and DIRAC.
 
 \subsection{scripts}\label{interfacescripts}
 Several scripts are developed to provide specific funtionnality for ILCDIRAC.
