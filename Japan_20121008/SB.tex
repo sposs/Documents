@@ -1,6 +1,7 @@
 \documentclass{beamer}
 %\usepackage{beamerarticle}
-\usepackage{pgf} 
+\usepackage{tikz}
+
 \usepackage{heppennames}
 \usepackage{hepnicenames}
 \usepackage{graphicx} 
@@ -278,7 +279,7 @@ the measurement of $\sin(2\phi_1)$\\
   \includegraphics[width=\textwidth]{Detectors.png}
   \column{0.5\textwidth}
 \centering
-  cdr frontpage
+  \includegraphics[width=0.7\textwidth]{CDR_front}
 \end{columns}
 %add front page of CDR
 \end{frame}
@@ -349,6 +350,15 @@ More than {\color{blue}90 million events (ILC and CLIC) processed in 2.5 year}\\
 ~\\
 Users not only at CERN, but also LAL (FR.), MPI (DE.), VINCA (R.S.),
 SLAC (U.S.A), etc.
+\end{frame}
+\begin{frame}
+  \frametitle{Performance of the system}
+\centering
+\begin{tikzpicture}
+  \node {\includegraphics[width=0.8\textwidth]{CumulJobsPerSite}};
+\end{tikzpicture}\\
+Also: \alert{6.3 million files} in the File Catalog, 450TB on
+different distributed storage elements
 \end{frame}
 
 \begin{frame}
