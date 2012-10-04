@@ -8,7 +8,7 @@
 \usepackage{amsbsy,amsmath,amssymb}
 
 
-\usepackage{CJK}
+%\usepackage{CJK}
 
 \mode<presentation>
 {
@@ -98,13 +98,13 @@ Job reference: INPS12-8
 \begin{frame}
 \frametitle{Curriculum}
 \begin{enumerate}
-  \item 2001-2004, Physics Bachelor \\
-    {\scriptsize (Universit\'e de la M\'editerrann\'ee, Marseille, France)}
-  \item 2004-2006, Physics Master \\
-    {\scriptsize(Universit\'e de la M\'editerrann\'ee, Marseille, France)}
+  %\item 2001-2004, Physics Bachelor \\
+  %  {\scriptsize (Universit\'e de la M\'editerrann\'ee, Marseille, France)}
+  %\item 2004-2006, Physics Master \\
+  %  {\scriptsize(Universit\'e de la M\'editerrann\'ee, Marseille, France)}
   \item 2006-2009, PhD. Flavour tagging in LHCb \\
     {\scriptsize(Universit\'e de la M\'editerrann\'ee, Marseille, France)}
-  \item 2010-now, CERN fellowship
+  \item 2010-now, CERN fellowship: Linear Collider studies
 \end{enumerate}
 \end{frame}
  
@@ -236,63 +236,73 @@ the measurement of $\sin(2\phi_1)$\\
 \end{columns}
 \end{frame}
 
-% \begin{frame}
-% \frametitle{PhD.: Using DIRAC in LHCb}
-% Several {\color{blue}millions of events} to analyse + {\color{blue}thousands of
-% toy MC studies}: used DIRAC a lot.
-% \begin{center}
-% \includegraphics[width=8cm]{sposs_user}
-% \end{center}
-% I wanted to \alert{be involved in the development of this tool}.
-% \end{frame}
+ \begin{frame}
+ \frametitle{PhD.: Using DIRAC in LHCb}
+ Several {\color{blue}millions of events} to analyse + {\color{blue}thousands of
+ toy MC studies}: used DIRAC a lot.
+ \begin{center}
+ \includegraphics[width=8cm]{sposs_user}
+ \end{center}
+ I wanted to \alert{be involved in the development of this tool}.
+ \end{frame}
 }
 
 
 {
 \usebackgroundtemplate{\includegraphics[width=10cm]{cern_logo_white}}
-
-\part{Fellowship, 2010-now}
+%%add CLIC logo: instead of ccern
+\part{CERN Fellowship, 2010-now: Linear Collider detectors}
 \begin{frame}
 \partpage
 \end{frame}
 }
 \begin{frame}
-\frametitle{The project}
+\frametitle{ILCDIRAC}
 \begin{itemize}
-  \item Applied for \alert{fellowship at CERN}, emphasis on {\color{blue}DIRAC
-  in LHCb}: distributed analysis
-  \item Develop a \alert{DIRAC client} for the ILC Virtual Organization (ILC and CLIC):\\ 
+  %\item Applied for \alert{fellowship at CERN}, emphasis on {\color{blue}DIRAC
+  %in LHCb}: distributed analysis
+  \item Developed a \alert{DIRAC client} for the ILC Virtual Organization (ILC and CLIC):\\ 
   \begin{itemize}  
-    \item Aim was \alert{mass production of Monte Carlo data} for the CLIC
+    \item \alert{Mass production of Monte Carlo data} for the CLIC
     Conceptual Design Report (CDR): {\color{blue}benchmark of 2 detector
-    concepts}
-    \item Document {\color{blue} finished in 2011}: needed fast solution
-    \item DIRAC was proven by LHCb to be \alert{efficient}
-    \item Should be usable by Linear Collider community
+    concepts}\\~\\
+    %\item Document {\color{blue} finished in 2011}
+    %\item DIRAC was proven by LHCb to be \alert{efficient}
+    \item Used by Linear Collider community
     %\item DIRAC team wanted to show it could be used outside LHCb
   \end{itemize}
 \end{itemize}
+\begin{columns}
+  \column{0.5\textwidth}
+\centering
+  \includegraphics[width=\textwidth]{Detectors.png}
+  \column{0.5\textwidth}
+\centering
+  cdr frontpage
+\end{columns}
+%add front page of CDR
 \end{frame}
 
-\begin{frame}
-\frametitle{Linear Collider detectors}
-\begin{columns}
-\begin{column}{6cm}
-\includegraphics[width=6cm]{Detectors.png}
-\end{column}
-\begin{column}{5cm}
-ILC and CLIC are future Linear Colliders\\
-~\\
-Detectors' design similar to CMS\\
-~\\
-Main difference between concepts: {\color{blue}the tracking system}
-\begin{itemize}
-  \item ILD uses a TPC
-  \item SiD uses silicon layers
-\end{itemize}
-\end{column}
-\end{columns}
-\end{frame}
+% \begin{frame}
+% %group with previous
+% \frametitle{Linear Collider detectors}
+% \begin{columns}
+% \begin{column}{6cm}
+% \includegraphics[width=6cm]{Detectors.png}
+% \end{column}
+% \begin{column}{5cm}
+% ILC and CLIC are future Linear Colliders\\
+% ~\\
+% Detectors' design similar to CMS\\
+% ~\\
+% Main difference between concepts: {\color{blue}the tracking system}
+% \begin{itemize}
+%   \item ILD uses a TPC
+%   \item SiD uses silicon layers
+% \end{itemize}
+% \end{column}
+% \end{columns}
+% \end{frame}
 
 {
 \usebackgroundtemplate{\includegraphics[width=\paperwidth]{DiracVisual}} 
@@ -302,14 +312,27 @@ Main difference between concepts: {\color{blue}the tracking system}
 ILCDIRAC: DIRAC client dedicated to the {\color{blue}linear collider
 community}:
 \begin{itemize}
-  \item ILC and CLIC share the same virtual organisation and same softwares
-  \item \alert{Convenient interface} to handle ILC applications: 12
-different types with different user interfaces
+  \item ILC and CLIC share the same virtual organisation  
+    \begin{itemize}
+    \item CLIC detectors studies use ILC detectors software
+    \end{itemize}
+% ILC made software availalble to us
+  \item \alert{Convenient interface} to handle 12 ILC applications (Mokka, Marlin, SLIC, etc.)
+  \begin{itemize}
+  \item Integration of software frameworks
+  \item Distribution of packages on the GRID
+  \item Users only care about \alert{what to do, not how}.
+  \end{itemize}
 \item Written in {\color{blue}PYTHON} to follow DIRAC framework
-\item \alert{Documentation} to be usable by many others
-\item Now \alert{adopted by the ILC SID community} for their Detailed Baseline
+\item \alert{Documentation/Tutorials} 
+\item Now \alert{used by the ILC SID community} for their Detailed Baseline
   Design document mass production
+  \begin{itemize}
+  \item  ILC studies use CLIC software
+  \end{itemize}
+%ILC uses now CLIC software
 \end{itemize}
+%CLIC is using ILC software
 \end{frame}
 
 \begin{frame}
@@ -321,39 +344,44 @@ ILCDIRAC client was used for:
   \item \alert{Data management: File Catalog} was essential for those activities\\~\\
 \end{itemize}
 ~\\
-More than {\color{blue}6 million jobs processed in 2.5 year}\\
+More than {\color{blue}90 million events (ILC and CLIC) processed in 2.5 year}\\%event number instead
+%%add plot
 ~\\
 Users not only at CERN, but also LAL (FR.), MPI (DE.), VINCA (R.S.),
 SLAC (U.S.A), etc.
 \end{frame}
 
 \begin{frame}
-\frametitle{My current activities}
-ILCDIRAC management:\\
+\frametitle{My responsibilities}
+ILCDIRAC management:
 \begin{itemize}
-  \item Development of \alert{new features}~\\ ~\\
+  \item Development of \alert{new features}
+  \item {\color{blue}Installation and setup} of services (Workload Management, Data Management, Production)
+  \item \alert{Monitoring} of system status: VOBOX and GRID resources
   \item Realisation of \alert{documentation}: tutorial slides, online code
-  documentation~\\ ~\\
-  \item \alert{Monitoring} of system status: VOBOX and grid resources~\\ ~\\
-  \item {\color{blue}Installation and setup} of services
+  documentation
+  \item Interaction with DIRAC main developers
+  \item Student supervision
 \end{itemize}
-\end{frame}
-}
-
-{
-\usebackgroundtemplate{\includegraphics[width=\paperwidth]{prod_mon2}}
-
-\begin{frame} 
-\frametitle{My current activities (Cont'd)}
-Mass Production:\\
+~\\
+Mass Production:
 \begin{itemize}
-  \item \alert{Production manager}: definition of new productions, monitor
-  statuses, produce statistics~\\ ~\\
-  \item {\color{blue}Data manager}: make sure the data is where it's supposed to
-  be, replicate when needed, check availability of resources
+   \item \alert{Production manager}: definition of new productions, monitor
+   statuses, produce statistics
+   \item {\color{blue}Data manager}: make sure the data is where it's supposed to
+   be, replicate when needed, check availability of resources
 \end{itemize}
+
 \end{frame}
 }
+
+% {
+% \usebackgroundtemplate{\includegraphics[width=\paperwidth]{prod_mon2}}
+
+% \begin{frame} 
+% \frametitle{My current activities (Cont'd)}
+% \end{frame}
+% }
 % {
 % \usebackgroundtemplate{\includegraphics[width=\paperwidth]{tt-mass2}} 
 
@@ -366,59 +394,62 @@ Mass Production:\\
 % \end{itemize}
 % \end{frame}
 %  }
-%  {
-% \usebackgroundtemplate{\includegraphics[width=\paperwidth]{predator}} 
+ %  {
+ % \usebackgroundtemplate{\includegraphics[width=\paperwidth]{predator}} 
  
-%  \begin{frame}
-%  \frametitle{Student supervision}
-%  P. Majewski (Master student): 
-%  \begin{itemize}
-%    \item Initial developments of ILCDIRAC
-%  \end{itemize}
-%  ~\\
-%  C.~B.~Lam (Bachelor student):
-% \begin{itemize}
-%   \item Quality control of Production Data
-%   \item Jet energy resolution effects on top quark mass measurements
-%   \item Review of ILCDIRAC user interface
-% \end{itemize}
-% ~\\
-% E. Hidle (Master student):
-% \begin{itemize}
-%   \item GRID job running time predictions, using Case Based Reasoning in the
-%   ILCDIRAC context
-% \end{itemize}
-%  \end{frame}
-% }
+ %  \begin{frame}
+ %  \frametitle{Student supervision}
+ %  P. Majewski (Master student): 
+ %  \begin{itemize}
+ %    \item Initial developments of ILCDIRAC
+ %  \end{itemize}
+ %  ~\\
+ %  C.~B.~Lam (Bachelor student):
+ % \begin{itemize}
+ %   \item Quality control of Production Data
+ %   \item Jet energy resolution effects on top quark mass measurements
+ %   \item Review of ILCDIRAC user interface
+ % \end{itemize}
+ % ~\\
+ % E. Hidle (Master student):
+ % \begin{itemize}
+ %   \item GRID job running time predictions, using Case Based Reasoning in the
+ %   ILCDIRAC context
+ % \end{itemize}
+ %  \end{frame}
+ % }
 
 {
 \usebackgroundtemplate{\includegraphics[width=\paperwidth]{LumiSpectrum}}
   \begin{frame}
-    \frametitle{My current activities (Cont'd)}
+    \frametitle{Additional activities}
     Measurement of the \alert{luminosity spectrum} (at CLIC 3TeV):
     \begin{itemize}
-      \item Needed for {\color{blue}precise cross section} measurements\\ ~\\
-      \item Understand \alert{beam-beam interactions}~\\ ~\\
-      \item Implement models using \alert{Object Oriented principles} (C++)~\\ ~\\
-      \item Provide spectra to users accounting for statistical and
+      \item \alert{Beam-beam interactions}: beamstrahlung, beam-energy spread
+      \item Needed for {\color{blue}precise cross section} measurements
+      \item Provide spectra to users accounting for statistical and %%rephrase
         systematic errors
+      \item Implement models using \alert{Object Oriented principles} (C++)
     \end{itemize}
+FIXME
+%\hskip 0.3\textwidth
+%\includegraphics[with=0.\textwidth]{LumiSpectrum}
   \end{frame}
 }
-\part{Contributions to Belle II}
+\part{Proposed contributions to Belle II}
 {
 \usebackgroundtemplate{\includegraphics[width=\paperwidth]{belle2-logo_transp}}
 \begin{frame}
 \partpage
 \end{frame}
 \begin{frame}
-  \frametitle{Computing}
+  \frametitle{Ideas: Computing}
 Development:
 \begin{itemize}
-\item DIRAC mass {\color{blue}production system}
+\item \alert{User interface}
 \item Data Catalog: \alert{DIRAC File Catalog}
-\item Improve \alert{user interface}
-\item Data management: {\color{blue}popularity}
+\item Data management: {\color{blue}``popularity''}
+\item DIRAC mass {\color{blue}production system}
 \end{itemize}
 ~\\
 Operations:
@@ -431,13 +462,12 @@ Operations:
 \end{frame}
 
 \begin{frame}
-  \frametitle{Physics}
+  \frametitle{Ideas: Physics}
 Data analysis:
   \begin{itemize}
   \item \alert{Flavour tagging} optimization and calibration
   \item Background rejection
-  \item {\color{blue}Luminosity spectrum} measurement: essential for
-    cross section measurements
+  \item {\color{blue}Luminosity spectrum} measurement
   \item $\PB\to \tau \nu$: hints to New Physics
   \item \ldots
   \end{itemize}
@@ -450,8 +480,8 @@ Data analysis:
 \partpage
 \end{frame}
 \begin{frame}
-  \frametitle{Long term work: ILC}
- ILC will need computing infrastructures:
+  \frametitle{The future}
+ ILC detectors will need computing infrastructures:
  \begin{itemize}
   \item High event rate
   \item High event density
@@ -475,7 +505,7 @@ Already familiar with:
  %     ありがとう
  %   \end{CJK}
  %\end{frame}
- \part{Summary in relation to offered position}
+ \part{Summary in relation to announced position}
  \begin{frame}
  \partpage
  \end{frame}
@@ -488,6 +518,7 @@ Already familiar with:
    \item {\color{blue}DIRAC for Belle 2}
    \item {\color{blue}Production} activities
    \item {\color{blue}Simulation and Reconstruction} software frameworks
+   \item Interesting prospects!
    \end{itemize}
    ~\\
  \item \alert{Data} taking and analysis:
@@ -497,7 +528,7 @@ Already familiar with:
    \item Very exciting subject! 
    \end{itemize}
    ~\\
- \item The future: \alert{ILC}
+ \item Open to any future challenges!
  \end{itemize}
 %~\\
 %\hspace{0.6\textwidth} \scriptsize{Japan is a fascinating country!}  
