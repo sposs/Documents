@@ -356,6 +356,10 @@ SLAC (U.S.A), etc.
 \centering
 \begin{tikzpicture}
   \node {\includegraphics[width=0.8\textwidth]{CumulJobsPerSite}};
+  \draw [<->, color=blue](-2.7,1.4) -- node [midway,above]
+  {{\scriptsize CLIC CDR}}(0.,1.4);
+  \draw [<->, color=blue](2.,1.6) -- node [midway,above] {{\scriptsize CLIC CDR}}(3.,1.6);
+  \draw [<->, color=blue](3.5,2.5) -- node [midway,above] {{\scriptsize SID DBD}}(4.2,2.5);
 \end{tikzpicture}\\
 Also: \alert{6.3 million files} in the File Catalog, 450TB on
 different distributed storage elements
@@ -429,8 +433,8 @@ Mass Production:
  %  \end{frame}
  % }
 
-{
-\usebackgroundtemplate{\includegraphics[width=\paperwidth]{LumiSpectrum}}
+%{
+%\usebackgroundtemplate{\includegraphics[width=\paperwidth]{LumiSpectrum}}
   \begin{frame}
     \frametitle{Additional activities}
     Measurement of the \alert{luminosity spectrum} (at CLIC 3TeV):
@@ -441,11 +445,13 @@ Mass Production:
         systematic errors
       \item Implement models using \alert{Object Oriented principles} (C++)
     \end{itemize}
-FIXME
+%FIXME
 %\hskip 0.3\textwidth
-%\includegraphics[with=0.\textwidth]{LumiSpectrum}
-  \end{frame}
-}
+\centering 
+\includegraphics[width=0.5\textwidth]{Refh2}\\
+~\\
+\end{frame}
+%}
 \part{Proposed contributions to Belle II}
 {
 \usebackgroundtemplate{\includegraphics[width=\paperwidth]{belle2-logo_transp}}
@@ -528,14 +534,14 @@ Already familiar with:
    \item {\color{blue}DIRAC for Belle 2}
    \item {\color{blue}Production} activities
    \item {\color{blue}Simulation and Reconstruction} software frameworks
-   \item Interesting prospects!
+   %\item Interesting prospects!
    \end{itemize}
    ~\\
  \item \alert{Data} taking and analysis:
    \begin{itemize}
    \item {\color{blue}CP violation} still has a lot to tell
-   \item {\color{blue}Rare decays} can provide hints on New Physics
-   \item Very exciting subject! 
+   \item {\color{blue}Rare decays}: provide hints on New Physics
+   %\item Very exciting subject! 
    \end{itemize}
    ~\\
  \item Open to any future challenges!
