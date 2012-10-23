@@ -1,0 +1,147 @@
+\documentclass{beamer}
+\usepackage{tikz}
+\mode<presentation>
+{
+\usetheme{Singapore}
+  \setbeamercovered{transparent}
+   \setbeamertemplate{footline}[frame number] 
+  \setbeamertemplate{navigation symbols}{ 
+  \insertslidenavigationsymbol
+  \insertframenavigationsymbol
+  \insertsubsectionnavigationsymbol
+  \insertsectionnavigationsymbol
+  \insertdocnavigationsymbol
+  \insertbackfindforwardnavigationsymbol
+  \hskip 0.3cm
+  %\insertframenumber / \inserttotalframenumber  % <<< frame #
+  %\insertpagenumber / \insertpresentationendpage % <<< page #
+} 
+}
+
+\usepackage[english]{babel}
+\usepackage[latin1]{inputenc}
+\title{ILCDIRAC}
+\author{St\'ephane Poss}
+\institute[CERN]
+{
+ CERN
+}
+\date{\today}
+% This is only inserted into the PDF information catalog. Can be left
+% out.
+\subject{ILCDIRAC}
+
+
+
+% If you have a file called "university-logo-filename.xxx", where xxx
+% is a graphic format that can be processed by latex or pdflatex,
+% resp., then you can add a logo as follows:
+
+% \pgfdeclareimage[height=0.5cm]{university-logo}{university-logo-filename}
+% \logo{\pgfuseimage{university-logo}}
+\AtBeginSubsection[]
+{
+\begin{frame}<beamer>
+\frametitle{Outline}
+\tableofcontents[currentsection,currentsubsection]
+\end{frame}
+}
+
+
+\begin{document}
+\begin{frame}
+\titlepage
+\end{frame}
+
+\begin{frame}
+  \tableofcontents
+\end{frame}
+
+\section{ILCDIRAC context}
+\label{sec:context}
+
+\begin{frame}
+  \frametitle{ILC VO}
+The {\color{blue} ILC VO} is dedicated to the study of \alert{future
+  Linear Colliders: ILC and CLIC}, specifically the study of the
+detectors' concepts: ILD and SID
+
+Members of the VO in DESY (DE), KEK (JP), CERN (CH), SLAC (USA), PNNL
+(USA), LAPP (FR), VINCA (R.S.), etc.
+\end{frame}
+
+\begin{frame}
+  \frametitle{ILCDIRAC motivations and context}
+  \begin{itemize}
+  \item Need for distributed analysis framework for mass production of
+    MC data
+    \begin{itemize}
+    \item CLIC CDR had to be written
+    \item Now SID DBD is being written
+    \end{itemize}
+  \item Evalutation of existing solutions: DIRAC was thought to
+    answer the needs
+  \item Needed framework for supporting the ILC VO applications:
+    generation, simulation and reconstruction for both detector concepts 
+  \item File catalog: metadata and replica information.
+  \end{itemize}
+~\\
+~\\
+\hspace{4cm} 
+\alert{ILCDIRAC was born}
+
+\end{frame}
+
+\section{DIRAC usage}
+\begin{frame}
+  \frametitle{Usage}
+ILCDIRAC uses most services:
+\begin{itemize}
+\item Framework
+\item Data management: File catalog, stager, storage element, etc.
+\item Transformation system: production job management
+\item Request management
+\item Workload management
+\item Accounting
+\end{itemize}
+Not using RSS yet!
+\end{frame}
+
+\section{Performance}
+\begin{frame}
+  \frametitle{Performance achieved}
+Ran 6 million jobs
+\end{frame}
+
+\section{Developments}
+\begin{frame}
+  \frametitle{Developments for ILCDIRAC}
+
+\end{frame}
+
+\section{Interface}
+\label{sec:interface}
+\begin{frame}
+  \frametitle{Redesigning the job interface}
+
+Motivation: separate the job definition form the application
+definition, add flexibility
+
+\end{frame}
+
+\section{Conclusion}
+\label{sec:conclusion}
+\begin{frame}
+  \frametitle{Conclusion}
+Very successful usage of DIRAC
+Very successful collaboration with DIRAC developers
+
+Redesign of the ILCDIRAC job interface in a model that can be used by others
+\end{frame}
+
+
+\end{document}
+
+% Local Variables:
+% TeX-PDF-mode: t
+% End:
