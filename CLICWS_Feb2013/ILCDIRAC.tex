@@ -1,0 +1,173 @@
+\documentclass[10pt,table,dvipsnames]{beamer}
+\usepackage{tikz}
+\usepackage{mathptmx}
+\usepackage[scaled=0.94]{helvet}
+\usepackage[absolute,overlay]{textpos}
+
+\usepackage{hyperref}
+
+\author{S.~Poss}
+\title{ILCDIRAC}
+\subtitle{A grid solution for the ILC community}
+\date{Jan 29, 2013}
+\mode<all>
+\TPGrid{50}{50}
+
+\pgfdeclareimage[width=0.1\paperwidth]{cliclogo}{CLIClogo}
+\newcommand{\ClicLogo}{%
+\begin{textblock}{14}(45., 0.05)
+ \href{http://lcd.web.cern.ch}{\pgfuseimage{cliclogo}}
+\end{textblock}
+}
+
+\setbeamertemplate{footline}
+{%
+  \leavevmode%
+  \hbox{%
+  \begin{beamercolorbox}[wd=.222222\paperwidth,ht=2.25ex,dp=1ex,left]{title in 
+head/foot}%
+    \usebeamerfont{date in head/foot}\insertshortdate{}\hspace*{2em}
+  \end{beamercolorbox}%
+  \begin{beamercolorbox}[wd=.555555\paperwidth,ht=2.25ex,dp=1ex,center]{author 
+in head/foot}%
+    \usebeamerfont{author in head/foot}\insertshortauthor{}:
+    \usebeamerfont{title in head/foot}\insertshorttitle
+  \end{beamercolorbox}%
+  \begin{beamercolorbox}[wd=.222222\paperwidth,ht=2.25ex,dp=1ex,right]{date in 
+head/foot}%
+    \insertframenumber{}/\inserttotalframenumber\hspace*{2ex}
+  \end{beamercolorbox}}%
+  %\vskip0pt%
+  \ClicLogo
+}
+
+\beamertemplatenavigationsymbolsempty
+\setbeamertemplate{blocks}[rectangle]
+\setbeamersize{text margin left=1em,text margin right=1em}
+
+%\setbeamertemplate{headline}[default]
+
+\begin{document}
+\begin{frame}
+\titlepage
+\end{frame}
+
+\begin{frame}
+\frametitle{Outline}
+\tableofcontents
+\end{frame}
+
+\section{Introduction}\label{sec:intro}
+\begin{frame}
+  \frametitle{What is ILCDIRAC ?}
+DIRAC client specific to the ILC community:
+\begin{itemize}
+\item DIRAC is a grid solution initially developed for LHCb
+\item Extended for other communitites: Belle 2, BES, FERMI-LAT,
+  CREATIS, ILC, etc.
+\item Complete solution: Job Management, File cataloging, etc.
+\end{itemize}
+~\\
+ILCDIRAC:
+\begin{itemize}
+\item Enables use of \alert{all ILC software} on the grid in a unified manner
+\item Use of \alert{any} available resource (WLCG, OSG, local batch farms,
+  etc.)
+\item Has a failover mechanism: \alert{produced files cannot be lost}
+\item Comes with a web portal that allows for most operations
+\end{itemize}
+\end{frame}
+
+\section{Job Management}
+\label{sec:jobman}
+
+\subsection{Using the python API}
+\label{sec:api}
+
+\begin{frame}
+  \frametitle{Job Management with the python API}
+Idea: \alert{Users need to care what to run, not how.}
+\begin{itemize}
+\item All ILC applications are configured uniformly thanks to a unified interface
+  \begin{itemize}
+  \item Applications share logical properties like SteeringFile,
+    Version, etc.
+  \item Application specific things (Model, DST file name, etc.) have
+    dedicated setters: they are only available to applications for
+    which they make sense
+  \end{itemize}
+\item Data can be accessed from the catalog using meta data queries
+  directly during job submission
+  \begin{itemize}
+  \item DIRAC File catalog has meta data information (and replica info)
+  \end{itemize}
+\item Steering files used for production are available directly to the
+  users
+  \begin{itemize}
+  \item Only the file names are needed
+  \end{itemize}
+\item Output files are stored in a user configurable directory,
+  without need of Storage Element specification (cloud-like)
+\end{itemize}
+\end{frame}
+
+\subsection{Using the web portal}
+\label{sec:web}
+
+\begin{frame}
+  \frametitle{Job Management with the Web portal}
+  \begin{itemize}
+  \item Possibility to submit small jobs through the portal directly
+  \item Web interface to monitor the statuses, apply some operations
+  (kill, reschedule, etc.)
+\item Small sandboxes can be obtained from the portal
+  \end{itemize}
+\end{frame}
+
+\section{File Catalog}
+\label{sec:fc}
+\begin{frame}
+  \frametitle{File catalog}
+\end{frame}
+
+\section{Production Management}
+\label{sec:ts}
+
+\begin{frame}
+  \frametitle{Production system}
+Idea: Apply a set of operations to a set of files automatically
+\begin{itemize}
+\item Generation of a given channel at a given machine
+\item Simulation, Reconstruction of a given channel
+\item Transfer: replication from one site to another
+\item Additing new tasks at the Generation steps automatically implies
+  the creation of Simulation/Reconstruction of the new files: data
+  driven process
+\end{itemize}
+~\\
+All failing tasks that analyse files are reset: 99.9\% of the data
+produced was simulated/reconstructed during the CLIC\_CDR production
+\end{frame}
+
+\section{Support}
+\label{sec:support}
+
+\begin{frame}
+  \frametitle{Support}
+JIRA, 
+Community of admins
+DIRAC developers
+\end{frame}
+
+\section{Conclusion}
+\label{sec:conc}
+\begin{frame}
+  \frametitle{Conclusion}
+
+\end{frame}
+\end{document}
+
+
+% Local Variables:
+% TeX-PDF-mode: t
+% End:
