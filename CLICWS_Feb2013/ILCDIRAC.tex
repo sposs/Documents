@@ -3,13 +3,18 @@
 \usepackage{mathptmx}
 \usepackage[scaled=0.94]{helvet}
 \usepackage[absolute,overlay]{textpos}
-
 \usepackage{hyperref}
+\usepackage{listings}
+\lstloadlanguages{python}
 
 \author{S.~Poss}
 \title{ILCDIRAC}
-\subtitle{A grid solution for the ILC community}
+\subtitle{A grid solution for the LC community}
 \date{Jan 29, 2013}
+\institute{CERN, LAPP}
+\newcommand{\interstitial}[1]{\begin{frame}\begin{block}{}\centering\Huge{#1}\end{block} \end{frame}}
+\newcommand{\backupslides}{\interstitial{Backup Slides}}
+
 \mode<all>
 \TPGrid{50}{50}
 
@@ -48,6 +53,8 @@ head/foot}%
 %\setbeamertemplate{headline}[default]
 
 \begin{document}
+\renewcommand{\inserttotalframenumber}{\ref{lastframe}}
+
 \begin{frame}
 \titlepage
 \end{frame}
@@ -60,21 +67,20 @@ head/foot}%
 \section{Introduction}\label{sec:intro}
 \begin{frame}
   \frametitle{What is ILCDIRAC ?}
-DIRAC client specific to the ILC community:
+It's a \alert{DIRAC client} specific to the Linear Collider community:
 \begin{itemize}
-\item DIRAC is a grid solution initially developed for LHCb
-\item Extended for other communitites: Belle 2, BES, FERMI-LAT,
-  CREATIS, ILC, etc.
-\item Complete solution: Job Management, File cataloging, etc.
+\item DIRAC is a {\color{NavyBlue}grid solution} initially developed for LHCb
+\item Extended for {\color{NavyBlue}other communitites}: Belle 2, BES, ILC, FERMI-LAT,\\
+  several biomed applications, etc.
+\item \alert{Complete solution}: Job Management, File catalog, etc.
 \end{itemize}
 ~\\
 ILCDIRAC:
 \begin{itemize}
-\item Enables use of \alert{all ILC software} on the grid in a unified manner
-\item Use of \alert{any} available resource (WLCG, OSG, local batch farms,
+\item Enables use of {\color{NavyBlue}ALL ILC software} on the grid in a {\color{NavyBlue}unified manner}
+\item Use of {\color{NavyBlue}any available resource} (WLCG, OSG, local batch farms,
   etc.)
-\item Has a failover mechanism: \alert{produced files cannot be lost}
-\item Comes with a web portal that allows for most operations
+\item Comes with a {\color{NavyBlue}web portal} that allows for most operations
 \end{itemize}
 \end{frame}
 
@@ -88,27 +94,44 @@ ILCDIRAC:
   \frametitle{Job Management with the python API}
 Idea: \alert{Users need to care what to run, not how.}
 \begin{itemize}
-\item All ILC applications are configured uniformly thanks to a unified interface
+\item All ILC {\color{NavyBlue}applications are configured uniformly} thanks to a common interface
   \begin{itemize}
-  \item Applications share logical properties like SteeringFile,
-    Version, etc.
-  \item Application specific things (Model, DST file name, etc.) have
-    dedicated setters: they are only available to applications for
+  \item {\color{ForestGreen} ``Applications'' share logical properties} like SteeringFile,
+    Version, etc.\\
+~\\
+  \item {\color{ForestGreen}Application specific things} (Model, DST file name, etc.) have
+    {\color{ForestGreen} dedicated setters}: they are only available to applications for
     which they make sense
   \end{itemize}
-\item Data can be accessed from the catalog using meta data queries
+~\\
+\item {\color{NavyBlue}Data can be accessed} from the catalog using {\color{NavyBlue}meta data queries}
   directly during job submission
   \begin{itemize}
-  \item DIRAC File catalog has meta data information (and replica info)
+  \item DIRAC File catalog has meta data information (and replica
+    info), see later\\
   \end{itemize}
-\item Steering files used for production are available directly to the
+~\\
+\item {\color{NavyBlue}Steering files} used for Production are {\color{NavyBlue}available directly} to the
   users
   \begin{itemize}
   \item Only the file names are needed
   \end{itemize}
-\item Output files are stored in a user configurable directory,
-  without need of Storage Element specification (cloud-like)
+~\\
+\item {\color{NavyBlue}Output files} are stored in a user configurable directory,
+  without need of Storage Element specification
+  ({\color{NavyBlue}cloud-like})\\
+~\\
+\item Failover mechanism: \alert{produced files cannot be lost}
 \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Simple job example: Marlin} 
+\lstset{emph={Marlin,m,Applications,setVersion,setSteeringFile,setGearFile,setInputFile},emphstyle=\color{blue},
+emph={[2]UserJob,j,append,submit},emphstyle={[2]\color{red}},
+emph={[3]DiracILC,d},emphstyle={[3]\color{BurntOrange}}}
+\lstinputlisting[language=python,basicstyle=\footnotesize]{SimpleJob.py} 
+Complete examples and documentation in {\color{blue}http://www.cern.ch/lcd-data/doc/HeadFirstTalk.pdf}
 \end{frame}
 
 \subsection{Using the web portal}
@@ -117,17 +140,91 @@ Idea: \alert{Users need to care what to run, not how.}
 \begin{frame}
   \frametitle{Job Management with the Web portal}
   \begin{itemize}
-  \item Possibility to submit small jobs through the portal directly
-  \item Web interface to monitor the statuses, apply some operations
-  (kill, reschedule, etc.)
-\item Small sandboxes can be obtained from the portal
-  \end{itemize}
+  \item Possibility to {\color{NavyBlue}submit small jobs through the portal} directly
+\end{itemize}
+\centering
+\includegraphics[width=0.7\textwidth]{JobMan2}~\\
+\begin{itemize}
+\item Interface to {\color{NavyBlue}monitor the statuses, apply some operations}
+\item {\color{NavyBlue}Small sandboxes} can be obtained {\color{NavyBlue}from the portal}, big ones are
+  stored on the GRID
+\end{itemize}
 \end{frame}
 
-\section{File Catalog}
-\label{sec:fc}
+\subsection{Performance}
+\label{sec:perfs}
+
 \begin{frame}
-  \frametitle{File catalog}
+  \frametitle{Performance: User jobs}
+\centering
+\includegraphics[width=.9\textwidth]{JobsJJ}\\
+\end{frame}
+\begin{frame}
+  \frametitle{Performance: Production jobs}
+\centering
+\includegraphics[width=0.9\textwidth]{JobsProd}\\
+\end{frame}
+
+\begin{frame}
+  \frametitle{Performance: Total jobs}
+\centering
+\includegraphics[width=0.9\textwidth]{JobsAll}\\
+\end{frame}
+
+
+\section{DIRAC File Catalog}
+\label{sec:fc}
+
+\subsection{Details}
+\label{sec:fcdetails}
+
+\begin{frame}
+  \frametitle{DIRAC File catalog}
+\begin{itemize}
+\item Meta data catalog: {\color{NavyBlue}Directory and file level meta tags}
+  \begin{itemize}
+  \item Searchable (like Event type) and non searchable tags (like number of events)
+  \item {\color{ForestGreen}Ancestor/daughter relationships}
+  \end{itemize}
+~\\
+\item {\color{NavyBlue}Replica catalog}: Where the files are physically, with a path
+  depending only on Storage Element logical name
+  \begin{itemize}
+  \item SE logical name is defined in the Configuration Service: {\color{ForestGreen}if an
+    end-point changes its name, the files are not lost}
+  \end{itemize}
+\end{itemize}
+~\\
+File {\color{NavyBlue}Write operations} now done {\color{NavyBlue}in the DFC and the Lcg File Catalog}
+simultaneously (failover applies here too)
+\end{frame}
+
+\subsection{Web interface}
+\label{sec:webfc}
+
+\begin{frame}
+  \frametitle{File catalog web interface}
+\centering
+\includegraphics[width=.9\textwidth]{WebFC}~\\
+\end{frame}
+
+\subsection{Performance}
+\label{sec:prefsfc}
+
+\begin{frame}
+  \frametitle{File catalog performance}
+Timing for replica resolution:\\
+~\\
+\begin{columns}[c]
+\column{6cm}
+Many concurent clients:\\
+\includegraphics[width=\textwidth]{DFC_stats_lin_all}
+\column{6cm}
+One client:\\
+\includegraphics[width=\textwidth]{t_vs_f_nc1_zoom2_pol2}
+\end{columns}
+~\\
+Meta data search times are compatible with those of the AMGA system
 \end{frame}
 
 \section{Production Management}
@@ -135,35 +232,65 @@ Idea: \alert{Users need to care what to run, not how.}
 
 \begin{frame}
   \frametitle{Production system}
-Idea: Apply a set of operations to a set of files automatically
+Idea: \alert{Apply a set of operations to a set of files automatically}
 \begin{itemize}
-\item Generation of a given channel at a given machine
-\item Simulation, Reconstruction of a given channel
-\item Transfer: replication from one site to another
+\item {\color{NavyBlue}Generation} of a given channel at a given machine (with WHIZARD 1.95)
+\item {\color{NavyBlue}Simulation, Reconstruction} of a given channel (ILD and SiD
+  reconstruction chains)
+\item {\color{NavyBlue}Transfer}: replication from one site to another
 \item Additing new tasks at the Generation steps automatically implies
-  the creation of Simulation/Reconstruction of the new files: data
-  driven process
+  the creation of Simulation/Reconstruction of the new files: \alert{data
+  driven process}
 \end{itemize}
 ~\\
-All failing tasks that analyse files are reset: 99.9\% of the data
-produced was simulated/reconstructed during the CLIC\_CDR production
+All failing tasks that analyse files are reset: \alert{99.9\% of the data
+produced was simulated/reconstructed} during the CLIC\_CDR production
 \end{frame}
 
-\section{Support}
+\section{ILCDIRAC Support}
 \label{sec:support}
 
 \begin{frame}
-  \frametitle{Support}
-JIRA, 
-Community of admins
-DIRAC developers
+  \frametitle{Support to the users}
+\begin{itemize}
+ \item Mailing list for registered users: ilc-dirac@cern.ch
+ \item Mailing list for registering users: ilcdirac-register@cern.ch
+ \item Bug tracker: JIRA
+ \item Growing community of users sharing tools
+ \item Large support from the DIRAC main developers
+\end{itemize}
 \end{frame}
 
 \section{Conclusion}
 \label{sec:conc}
 \begin{frame}
   \frametitle{Conclusion}
+ILCDIRAC is:\\
+~\\
+\begin{itemize}
+\item A \alert{fully functionnal grid solution} for the Linear Collider
+  community
+  \begin{itemize}
+  \item Used for {\color{ForestGreen}CLIC CDR} and {\color{ForestGreen}ILC DBD} activities\\~\\
+  \end{itemize}
+\item Coming with an {\color{NavyBlue}intuitive/user friendly} interface\\
+~\\
+\item {\color{NavyBlue}Easily connected with any new resources} (Site, storage,
+  etc.)\\
+~\\
+\item {\color{NavyBlue}Open source}\\
+~\\
+\item {\color{NavyBlue}Available} for any ILC VO member
+\end{itemize}
+\label{lastframe}
+\end{frame}
 
+\backupslides
+
+\begin{frame}
+  \frametitle{Site usage}
+\centering
+\includegraphics[width=0.9\textwidth]{PilotsPerSite}\\
 \end{frame}
 \end{document}
 
