@@ -121,7 +121,9 @@ Idea: \alert{Users need to care what to run, not how.}
   without need of Storage Element specification
   ({\color{NavyBlue}cloud-like})\\
 ~\\
-\item Failover mechanism: \alert{produced files cannot be lost}
+\item Failover mechanism: \alert{produced files cannot be lost}:
+  copied to another storage, and replication request is issued for
+  later treatment
 \end{itemize}
 \end{frame}
 
@@ -195,8 +197,10 @@ Complete examples and documentation in {\color{blue}http://www.cern.ch/lcd-data/
   \end{itemize}
 \end{itemize}
 ~\\
-File {\color{NavyBlue}Write operations} now done {\color{NavyBlue}in the DFC and the Lcg File Catalog}
-simultaneously (failover applies here too)
+File {\color{NavyBlue}Register operations} in ILCDIRAC now done {\color{NavyBlue}in the DFC and the Lcg File Catalog}
+simultaneously (failover applies here too). \\
+~\\
+{\color{NavyBlue}ILC DBD files} in the LFC are synchronised in the DFC.
 \end{frame}
 
 \subsection{Web interface}
@@ -253,20 +257,48 @@ produced was simulated/reconstructed} during the CLIC\_CDR production
 \begin{frame}
   \frametitle{Support to the users}
 \begin{itemize}
- \item Mailing list for registered users: ilc-dirac@cern.ch
- \item Mailing list for registering users: ilcdirac-register@cern.ch
- \item Bug tracker: JIRA
- \item Growing community of users sharing tools
- \item Large support from the DIRAC main developers
+ \item {\color{NavyBlue}Mailing lists}:
+   \begin{itemize}
+   \item for registering users: ilcdirac-register@cern.ch\\~\\
+   \item for registered users: ilc-dirac@cern.ch\\~\\
+   \end{itemize}
+ \item {\color{NavyBlue}JIRA bug tracking}: https://its.cern.ch/jira/browse/ILCDIRAC
+   \begin{itemize}
+   \item CERN IT provides this service among others\\~\\
+   \end{itemize}
+ \item {\color{NavyBlue}Growing community} of users sharing tools\\~\\
+ \item {\color{NavyBlue}Large support} from the DIRAC developers
 \end{itemize}
+\end{frame}
+
+\section{Future plans}
+\label{sec:future}
+
+\begin{frame}
+  \frametitle{Future plans}
+  \begin{block}{Short term:}
+  \begin{itemize}
+  \item {\color{NavyBlue}Wiki} documentation: flexibility\\~\\
+  \item {\color{NavyBlue}WHIZARD 2 and PHYSSIM} supported in ILCDIRAC:
+    completeness
+\end{itemize}
+  \end{block}
+~\\
+\begin{block}{Longer term:}
+\begin{itemize}
+  \item {\color{NavyBlue}WHIZARD 2 process factory}: no precompiled
+    binary needed, only \\process definition\\~\\
+  \item {\color{NavyBlue}Configure} and {\color{NavyBlue}Run the applications locally}, no installation
+    necessary, let DIRAC do it. {\color{ForestGreen}Ideal for testing.}
+  \end{itemize}
+\end{block}
 \end{frame}
 
 \section{Conclusion}
 \label{sec:conc}
 \begin{frame}
   \frametitle{Conclusion}
-ILCDIRAC is:\\
-~\\
+\begin{block}{ILCDIRAC is:}
 \begin{itemize}
 \item A \alert{fully functionnal grid solution} for the Linear Collider
   community
@@ -282,6 +314,7 @@ ILCDIRAC is:\\
 ~\\
 \item {\color{NavyBlue}Available} for any ILC VO member
 \end{itemize}
+\end{block}
 \label{lastframe}
 \end{frame}
 
