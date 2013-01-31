@@ -201,9 +201,21 @@ For meta data:
 \item DFC again: used for CLIC CDR and SID DBD, file and directory
   meta data
 \end{itemize}
-Can interface the FC from DESY to use the replica catalog part of the
-DFC instead of the LFC.
+
 \end{frame}
+
+\begin{frame}
+  \frametitle{What can we do?}
+\centering
+  \begin{tikzpicture}
+    \node {\includegraphics[width=.9\textwidth]{ilcprod}};
+    \uncover<2->{\draw[color=red] (-1,-3) -- (-0.2,-2.55);}; 
+    \uncover<2->{\draw[color=red, thick] (-1,-2.55) -- (-0.2,-3);};
+    \uncover<3>{\draw (0.5,-2.8) node[color=red]{DIRAC};};
+  \end{tikzpicture}\\
+\uncover<3>{Then use DIRAC utilities to get the files, register the outputs, etc.} 
+\end{frame}
+
 
 \section{Conclusion}
 \label{sec:conc}
