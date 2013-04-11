@@ -10,7 +10,7 @@
 \author{S.~Poss}
 \title{ILCDIRAC}
 \subtitle{A few words on future plans}
-\date{Feb. 2, 2013}
+\date{Feb. 1, 2013}
 \institute{CERN, LAPP}
 \newcommand{\interstitial}[1]{\begin{frame}\begin{block}{}\centering\Huge{#1}\end{block} \end{frame}}
 \newcommand{\backupslides}{\interstitial{Backup Slides}}
@@ -87,12 +87,13 @@ Idea:
 \end{itemize}
 \end{frame}
 \begin{frame}
-  \frametitle{What would be needed?}
+  \frametitle{W2: What would be needed?}
   \begin{itemize}
   \item Web interface for fanciness, and CLI for gurus
   \item DIRAC service to listen to the queries
-  \item Agent to run WHIZARD2 and produce the binary
+  \item Agent to run WHIZARD2 (submit jobs to dedicated resources?) and produce the binary
   \item Agent to monitor everything
+  \item Agent to submit integration jobs (for the grid files) to dedicated resources w/o CPU time limit (ex. desktop grid)
   \item Notification to notify the user about completion (already in DIRAC)
   \item Interface to DIRAC Transformation service to produce the
     events
@@ -100,7 +101,7 @@ Idea:
   \end{itemize}
 \end{frame}
 \begin{frame}
-  \frametitle{Proposed interface}
+  \frametitle{W2: Proposed interface}
 What would be required from the user:
 \begin{itemize}
 \item Process definition (a la WHIZARD 2, in sindarin), also the
@@ -130,7 +131,7 @@ What would be required from the user:
 \end{itemize}
 \end{frame}
 \begin{frame}
-\frametitle{How would it work?}
+\frametitle{W2: How would it work?}
 \begin{itemize}
   \item The service stores the process request: what has to be done,
   how, etc.\\
@@ -155,7 +156,7 @@ What would be required from the user:
 \end{frame}
 
 \begin{frame}
-  \frametitle{How would it work?}
+  \frametitle{W2: How would it work?}
 \begin{itemize}
   \item Monitoring Agent (on Running requests): 
   \begin{itemize}
@@ -201,40 +202,72 @@ For meta data:
 \item DFC again: used for CLIC CDR and SID DBD, file and directory
   meta data
 \end{itemize}
-Can interface the FC from DESY to use the replica catalog part of the
-DFC instead of the LFC.
+
+\end{frame}
+
+\begin{frame}
+  \frametitle{What can we do?}
+\centering
+  \begin{tikzpicture}
+    \node {\includegraphics[width=.9\textwidth]{ilcprod}};
+    \uncover<2->{\draw[color=red] (-1,-3) -- (-0.2,-2.55);}; 
+    \uncover<2->{\draw[color=red, thick] (-1,-2.55) -- (-0.2,-3);};
+    \uncover<3>{\draw (0.5,-2.8) node[color=red]{DIRAC};};
+  \end{tikzpicture}\\
+\uncover<3>{Then use DIRAC utilities to get the files, register the outputs, etc. No other changes needed.} 
+\end{frame}
+
+\section{Using OSG}
+\label{sec:osg}
+
+\begin{frame}
+  \frametitle{Using OSG resources}
+  \begin{itemize}
+  \item US part of the ILC VO relies on Open Science Grid
+  \item Status information of sites not ``properly'' published in the Status service (BDII) according to gLite
+  \item Faced many complains by sites because the info was not respected by gLite
+  \item Solution: get rid of gLite, use OSG client. Implies coding pilot submission tool specific to OSG.
+  \item Testing would be done by Belle2 people
+  \end{itemize}
 \end{frame}
 
 \section{Conclusion}
 \label{sec:conc}
 \begin{frame}
   \frametitle{Conclusion}
-\begin{block}{ILCDIRAC is:}
-\begin{itemize}
-\item A \alert{fully functionnal grid solution} for the Linear Collider
-  community
-  \begin{itemize}
-  \item Used for {\color{ForestGreen}CLIC CDR} and {\color{ForestGreen}ILC DBD} activities\\~\\
-  \end{itemize}
-\item Coming with an {\color{NavyBlue}intuitive/user friendly} interface\\
-~\\
-\item {\color{NavyBlue}Easily connected with any new resources} (Site, storage,
-  etc.)\\
-~\\
-\item {\color{NavyBlue}Open source}\\
-~\\
-\item {\color{NavyBlue}Available} for any ILC VO member
-\end{itemize}
-\end{block}
+Some long term ideas, some short term ideas. 
+
+Unifying the ILDGridProd with DIRAC can be done in a relatively short term.
+
+Using properly OSG resources will be possible soon.
 \label{lastframe}
 \end{frame}
 
 \backupslides
-
 \begin{frame}
-  \frametitle{Site usage}
-\centering
-\includegraphics[width=0.9\textwidth]{PilotsPerSite}\\
+  \frametitle{Resource sharing}
+Groups:
+  \begin{itemize}
+  \item All ILC members do not share the same activities (ex. ILD, SID, TPC, etc.)
+  \item Many groups in the VO to match those activities
+  \item Users are not aware!
+  \end{itemize}
+Roles:
+\begin{itemize}
+\item Several Roles for every group (Production, lcgadmin, etc.)
+\item Users do not know what they mean\ldots
+\end{itemize}
+Resources:
+\begin{itemize}
+\item Should be used properly
+\item Should be shared between groups
+\end{itemize}
+DIRAC/ILCDIRAC can allow that!
+\begin{itemize}
+\item Create different JobTypes and assign them to different groups, then set site priorities per JobTypes.
+\item Define JobType automatically given a user proxy.
+\end{itemize}
+\alert{What about /ilc/Role=Production?}
 \end{frame}
 \end{document}
 
