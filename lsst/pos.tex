@@ -1,0 +1,209 @@
+\documentclass[10pt,table,dvipsnames]{beamer}
+\usepackage{tikz}
+\usepackage{mathptmx}
+\usepackage[scaled=0.94]{helvet}
+\usepackage[absolute,overlay]{textpos}
+\usepackage{hyperref}
+\usepackage{listings}
+\lstloadlanguages{python}
+
+\author{S.~Poss}
+\title{DIRAC Transformation System}
+\subtitle{un coups d'oeil}
+\date{11 avril 2013}
+\institute{CERN, LAPP}
+\newcommand{\interstitial}[1]{\begin{frame}\begin{block}{}\centering\Huge{#1}\end{block} \end{frame}}
+\newcommand{\backupslides}{\interstitial{Backup Slides}}
+
+\mode<all>
+\TPGrid{50}{50}
+
+\pgfdeclareimage[width=0.1\paperwidth]{cliclogo}{CLIClogo}
+\newcommand{\ClicLogo}{%
+\begin{textblock}{14}(45., 0.05)
+ \href{http://lcd.web.cern.ch}{\pgfuseimage{cliclogo}}
+\end{textblock}
+}
+
+\setbeamertemplate{footline}
+{%
+  \leavevmode%
+  \hbox{%
+  \begin{beamercolorbox}[wd=.222222\paperwidth,ht=2.25ex,dp=1ex,left]{title in 
+head/foot}%
+    \usebeamerfont{date in head/foot}\insertshortdate{}\hspace*{2em}
+  \end{beamercolorbox}%
+  \begin{beamercolorbox}[wd=.555555\paperwidth,ht=2.25ex,dp=1ex,center]{author 
+in head/foot}%
+    \usebeamerfont{author in head/foot}\insertshortauthor{}:
+    \usebeamerfont{title in head/foot}\insertshorttitle
+  \end{beamercolorbox}%
+  \begin{beamercolorbox}[wd=.222222\paperwidth,ht=2.25ex,dp=1ex,right]{date in 
+head/foot}%
+    \insertframenumber{}/\inserttotalframenumber\hspace*{2ex}
+  \end{beamercolorbox}}%
+  %\vskip0pt%
+  %\ClicLogo
+}
+
+\beamertemplatenavigationsymbolsempty
+\setbeamertemplate{blocks}[rectangle]
+\setbeamersize{text margin left=1em,text margin right=1em}
+
+%\setbeamertemplate{headline}[default]
+
+\begin{document}
+\renewcommand{\inserttotalframenumber}{\ref{lastframe}}
+
+\begin{frame}
+\titlepage
+\end{frame}
+
+%\begin{frame}
+%\frametitle{Outline}
+%\tableofcontents
+%\end{frame}
+
+\begin{frame}
+  \frametitle{Transformation System}
+
+  \begin{description}
+    \item[Transformation:] Op\'eration sur un lot de fichiers~: cr\'eation et/ou modification \\
+~\\
+    \item[T\^ache:] Element d'une transformation: associe un/plusieurs fichier(s) \`a
+      une op\'eration
+  \end{description}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Objectif}
+\begin{enumerate}
+\item Obtenir un syst\`eme permettant l'ex\'ecution de t\^aches similaires sur un
+lot de donn\'ees\\~\\
+\item Automatisation de la proc\'edure\\~\\
+\item Encha\^inement simple de t\^aches\\~\\
+\item Limiter les actions manuelles\\~\\
+\item Ne pas re-traiter les fichiers d\'ej\`a utilis\'es
+\end{enumerate}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Comment ?}
+Le Transformation System permet ceci:
+\begin{itemize}
+\item Avec un ``template'' de job (workflow)
+\item avec un lot de fichier (input des jobs, peut \^etre un chemin ou autre)
+\end{itemize}
+~\\
+Il cr\'ee les t\^aches qui conviennent:
+\begin{description}
+\item[TransformationAgent] cr\'e\'e les t\^aches: associe un fichier \`a une t\^ache
+  (plusieurs r\`egles possible, voir plus loin)
+\item[Workflow/RequestTaskAgent] envoie les t\^aches au syst\`eme correspondant: WMS pour les
+  jobs, Request Manager pour les requ\^etes (r\'eplication par exemple)
+\item[DataRecoveryAgent] recup\`ere les jobs failed et change le status des fichiers
+  en input pour que l'agent 1 recr\'e\'e une/plusieurs t\^ache(s)
+  (n'existe pas par defaut)
+\item[InputDataAgent] met \`a jour la liste d'input par transformation suivant
+  des requ\^etes de meta data dans le catalogue (data-driven procedure).
+\item[TransformationCleaningAgent] nettoie les transformations lorsque
+  necessaire: nettoie les tables, retire les fichiers si necessaire,
+  nettoie les catalogues
+\end{description}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Comment ?}
+Utilise le status des fichiers:
+\begin{description}
+\item[Unused:] Le fichier n'est pas encore utilis\'e
+\item[Assigned:] le fichier est associ\'e \`a une t\^ache: il n'est
+  pas consid\'er\'e lors de la cr\'eation d'une nouvelle t\^ache
+\item[Processed:] Le fichier a \'et\'e trait\'e: g\'en\'eralement, ce
+  satus est mis \`a jour \`a la fin d'un job (en appelant le
+  \emph{FileReport}). Si le job est 'failed' et la raison comprise alors le fichier peut
+  \^etre marqu\'e comme 'Unused'.
+\item[MaxReset:] Lorsqu'un fichier \'echoue trop souvent, il est
+  marqu\'e de mani\`ere \`a ne pas recr\'eer de nouvelle t\^ache. Peut
+  \^etre ignor\'e par le DataRecoveryAgent s'il est utilis\'e.
+\end{description}
+\end{frame}
+
+\begin{frame}
+  \frametitle{D\'efinition du template}
+  \begin{itemize}
+  \item Techniquement, un template peut \^etre n'importe quoi: c'est un BLOB
+dans la TransformationDB. \\
+~\\
+  \item Ajustement des agents n\'ecessaire si ce n'est pas un DIRAC
+    Workflow: reimpl\'ementation du WorkflowTaskAgent
+  \end{itemize}
+
+~\\
+
+(\emph{t.setBody()})
+\end{frame}
+
+\begin{frame}
+  \frametitle{R\`egles de cr\'eation des t\^aches (TransformationPlugin)}
+Tous les fichiers disponibles et non associ\'es \`a une t\^ache sont utilis\'es
+pour cr\'eer de nouvelles t\^aches en utilisant les r\`egles suivantes:
+  \begin{description}
+  \item[Standard] Groupe les fichiers par site, avec la taille du
+    groupe choisie lors de la cr\'eation de la transformation
+    (\emph{t.setGroupSize()}).
+  \item[Broadcast] Utilis\'e pour les replications: assigne les
+    destinations des fichiers (\emph{t.setTargetSE()})
+  \item[ByShare] S'assure que tout les sites ont une
+    utilisation \'equivalente
+  \item[BySize] Groupe les fichiers d'input de mani\`ere \`a avoir une
+    utilisation du disque \'equivalente (pas souvent utilis\'e)
+  \end{description}
+~\\
+Possibilite d'\'etendre ces r\`egles simplement (subclass). \\
+
+~\\
+
+(\emph{t.setPlugin()})
+\end{frame}
+
+\begin{frame} 
+  \frametitle{Exemple}
+\lstinputlisting[language=python,basicstyle=\footnotesize]{SimpleJob.py} 
+\end{frame}
+
+\begin{frame}
+  \frametitle{Monitoring}
+Depuis le portail DIRAC (Matvey): 
+\begin{itemize}
+\item Suivi de l'\'evolution de chaque transformation
+\item Op\'erations: start, stop, clean, complete (, flush) 
+\item Obtension des propri\'et\'es de chaque transformation
+\item Possibilit\'e d'inspecter chaque job 
+\item Extension de certaines transformations
+\end{itemize}
+\end{frame}
+
+\begin{frame}
+\frametitle{Conclusion}
+Si un ensemble de t\^aches identiques doivent \^etre appliqu\'ees sur
+un lot de donn\'ees, alors le TS est le bon choix
+
+~\\
+
+L'enchainement des t\^aches est possible en utilisant l'aspect
+data-driven
+
+~\\
+
+L'extension des fonctionnalit\'es est possible en cr\'eant de nouvelles classes/services/agents
+\label{lastframe}
+\end{frame}
+
+\backupslides 
+
+
+\end{document}
+% Local Variables:
+% TeX-PDF-mode: t
+% End:
