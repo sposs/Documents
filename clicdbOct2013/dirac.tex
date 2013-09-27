@@ -6,7 +6,7 @@
 \author{C.~Grefe, S.~Poss, A.~Sailer}
 \title{ILCDIRAC}
 \subtitle{A grid solution for the LC community}
-\date{Oct. 2nd 2013}
+\date{Oct. 1st 2013, CLIC dp meeting}
 \institute{CERN}
 \newcommand{\interstitial}[1]{\begin{frame}\begin{block}{}\centering\Huge{#1}\end{block} \end{frame}}
 \newcommand{\backupslides}{\interstitial{Backup Slides}}
@@ -61,12 +61,16 @@ head/foot}%
 \section{Current status}
 \begin{frame}
 \frametitle{Current status}
-ILD concept now moves towards using DIRAC
+ILCDIRAC now stable, no more developments, only bug fixes.
+
+~\\
+
+ILD concept now moves towards using DIRAC:
 \begin{itemize}
 \item Several questions came
-\item ILCDIRAC required a few fixes to adapt to that use case: Production job class, 
-support for application specific inputs (ILDConfig package)
+\item ILCDIRAC required a few fixes to adapt to that use case: Production job class, support for application specific inputs (ILDConfig package)
 \item File Catalog meta data adjustements for ILD
+\item The web interface to the File Catalog has issues, but working on those now. Next major version of the portal will have a different interface.
 \end{itemize}
 ~\\
 More users are coming every week, now $\approx 100$ registered, 20 active
@@ -96,14 +100,14 @@ More users are coming every week, now $\approx 100$ registered, 20 active
 
 \section{File catalog}
 \begin{frame}
-\frametitle{File catalog}
+\frametitle{DIRAC File Catalog}
 The file catalog includes most files produced for the ILC DBD, all files 
-for the SID DBD, all files for CLIC. LFC and DFC are written in parallel
+for the SID DBD, all files for CLIC. LFC and DFC are written in parallel, and
 thanks to the failover mechanism: \alert{NO DATA LOSS}
 
 ~\\
 
-Top 5 usage {\scriptsize (FC:/$>$size -l)}:\\
+Top 5 disk usage {\scriptsize (FC:/$>$size -l)}:\\
 \begin{center}
 \begin{tabular}{|ccccc|}
 \hline
@@ -121,7 +125,7 @@ PNNL-SRM & 25 TB & 0 & 25 TB & 733\,423\\
 \hline
 \end{tabular}
 \end{center}
-Most data comes from the CLIC CDR.
+Most data produced for the CLIC CDR.
 
 \end{frame}
 
@@ -147,12 +151,12 @@ Register: ilcdirac-register@cern.ch
 
 ~\\
 
-Issues: ilcdirac-support@cern.ch
+Questions: ilcdirac-support@cern.ch
 
 ~\\
 
-Forum: 
-\scriptsize http://forum.linearcollider.org/index.php?t=index&cat=22&rid=0&S=e56e5487e1f220b0b5f4a425989fcbd7
+Forum:\\ 
+\scriptsize \url{http://forum.linearcollider.org/index.php?t=index&cat=22&rid=0&S=e56e5487e1f220b0b5f4a425989fcbd7}
 \vfill
 \begin{center}
 \alert{\Large Any new user is welcome!}
