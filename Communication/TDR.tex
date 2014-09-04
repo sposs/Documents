@@ -1,0 +1,165 @@
+\documentclass[9pt, a4, twoside]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[]{authblk}
+\usepackage{amsmath}
+\usepackage[cm]{fullpage}
+
+\title{First proposal for the REWOLF project}
+%\author{Christophe M.F. Hugon\thanks{funded by the ShareLaTeX team}, Antonio Orzelli\thanks{funded by the ShareLaTeX team}, Vladimir Kulikovskyi}
+
+\author[1]{Christophe M.F. Hugon}
+\author[1]{Antonio Orzelli}
+\author[1]{Vladimir Kulikovskiy}
+
+\affil[1]{INFN, Sezione di Genova}
+
+\date{February 2014}
+ 
+\begin{document}
+ 
+%\begin{titlepage}
+\maketitle
+\begin{abstract}
+The objectives of the REWOLF project (name?) is to detect an eventual group velocity fluctuation in vacuum. This fluctuation is expected to be stochastic and can be studied with the arrival time of a short light pusle after a propagation in the vacuum. Longer the propagation path is, wider the timing enlargement of a pulse is.
+
+In this document we propose a model which predicts this kind of fluctuations at a detectable scale and that proposes an origin to the values of the vacuum permitivity ($\epsilon_0$), permeability ($\mu_0$) and group velocity ($c_{group}$). It is followed by an experimental proposal to measure such an effect at the femtosecond scale.
+\end{abstract}
+
+%\end{titlepage}
+ \section {Theoritical model of fluctuation of the speed of light}
+This section proposes an overview of the proposed model, and provides the references to some alternatives models that predict group velocity fluctuations. The objective is to understand the principle, it will give the main equations and results. The detailled calculation is given in (ref).
+
+The parameters $\epsilon_0$ and $\mu_0$ have been, until now, considered as fundamental constants, in time and space. We will see that if we consider the vacuum filled of ephemeral particles and antiparticles, those two values can arise naturally from a definition of a quantum vacuum.
+
+\subsection {Quantum vacuum description}
+
+The vacuum is considered as full of continously appearing and disappearing pairs of fermion-antifermion. In this model we will consider only the Standard Model fermions ($e$, $\mu$, $\tau$, (u,d), (c,s), (t,b)). Those fermions are supposed to be the product of the fusion of two virtual photons of the vacuum, and the only non conservated quantity is the energy. From the uncertainity of Heisenberg it will limit the particles lifetime. Even if, in those estimations, we will take into account only the average of energy, a "reasonable" distribution of energy such as $dW/W^2$ offers the same order of magnitude for the observable fluctuation of the group velocity.
+
+By assuming that the ephemeral fermion pairs density is driven by the Pauli exlusion principle, and noting $\Delta x$ the spacing between two identical fermions and $N_i$ the fermion density, we can write that
+
+\[ \Delta x = \frac {\lambda _{Ci}} {\sqrt {K^2_W - 1}} \]
+and
+\[N_i \approx \frac {1} {\Delta x} = \left(\frac {\sqrt {K^2_W - 1}}{\lambda _{Ci}}\right)^3\]
+
+where $\lambda _{Ci}$ is the Compton length of the fermion $i$ and $K^2_W = W_i / 2m_ic^2_{rel}$ is a constant defining the mean energy of the fermion $i$ in function of its mass.
+
+\subsection {Vacuum permeability}
+As said previously, the permeability arises naturaly from the given vacuum description. Even if the mean value of the magnetization of the pairs is null, each one carry a magnetic moment that is proportional to the Bohr magneton.
+
+\[\mu_i = \frac {eQ_i\hbar} {2m_i} = \frac {eQ_ic_{rel}\lambda_{C_i}} {4\pi}\]
+
+Under a magnetic stress B, the energy of the pair is modified proportionnaly by $B\cos\theta$ where $\theta$ is the angle between the pair magnetic moment and the stress magnetic field $\vec B$.
+
+This implies that the pairs having their magnetic moment aligned with the field have a longer lifetime than the anti-aligned ones. This allows the calculation of the average magnetic moment $\langle M_i \rangle$
+%\[\langle M_i \rangle = \frac {4\mu^2_i}{3W_i}B\]
+
+If we integrate this average on $theta$, by volume unit, density and on all of possible fermion species, we obtain the permeability:
+
+\[ \tilde \mu_0 = \frac {K_W} { (K^2_W - 1)^{3/2}}\frac {3\pi^3\hbar}{c_{rel}e^2}\]
+
+The value $\tilde \mu_0$ is equal to the experimental $\mu_0$ for an energy $K_W\approx 31.9$. In the more complete view including a pdf for the fermion pair of energy such as $dW/W^2$, we obtain $K_W\approx 51$, which still stays in the same order of magnitude. We will see later that such a value does'nt impact too much the prediction of the speed of light propagation in the vacuum, and the group velocity dispertion.
+
+\subsection{vacuum permitivity}
+
+In this section we will abstract the main considerations for the permitivity of the quantic vacuum, and we will see that the same process is implied. We assume that the ephemeral fermion pairs have a electric dipole given by:
+
+\[d_i=Q_ie\delta_i\]
+
+where $\delta_i$ is the average separation between the two fermions of the pairs, expressed by the reduced compton length $\delta_i\approx \frac \lambda {2\pi}$. Without any external electric field stress, the average field is null. Under an electric field $E$, the dipole lifetime is influenced proportionnaly of $E\cos \theta$, where $\theta$ is the angle between the dipole and the electric field. If we integrate on $\theta$ by volume unit, density and all of the possible fermion species, we optain the permitivity:
+%weird in the original article: 
+%\[\tilde \epsilon_0 =\frac {e^2} {6\pi^2} \sum_i  \frac {N_i Q^2_i \lambda^2_i} {W_i} \]
+%think of asking if there is a mistake
+\[\tilde \epsilon_0 = \frac {(K^2_W - 1)^{3/2}} {K_W} \frac{e^2}{3\pi^3\hbar c_{rel}}\]
+
+To satisfy the constraint $\epsilon_0=\tilde \epsilon_0$, the energy should correspond to energy $K_W\approx 31.9$, which is totally coherent with the foregoing permeability results. It is important also to note that, analyticaly:
+
+\[
+\begin {array}{r c l}
+\frac 1 {\sqrt {\tilde \epsilon_0 \ times \tilde \mu_0}} & = & \frac 1 {\sqrt {\frac {(K^2_W - 1)^{3/2}} {K_W} \frac{e^2}{3\pi^3\hbar c_{rel}}\times\frac {K_W} { (K^2_W - 1)^{3/2}}\frac {3\pi^3\hbar}{c_{rel}e^2}}}\\
+ & = & c_{rel}\\
+\end {array}
+\]
+
+Witch is a fundamental description of $\mu_0$ and $\epsilon_0$.
+%in the original article they speak about c_{\phi}. Think to ask why, how. Why it isn't the phase velocity from the begining ?
+
+We can also note that $\tilde \mu_0$ and $\tilde \epsilon_0$ depend neither on the fermion mass nor on the vacuum density. It depends only on the number of fermions because of the fermi exclusion, and there energy.
+
+\subsection {The propagation of the photon and the transit time fluctuation}
+
+In this model, when a photon propagates in the vacuum, it interacts with those ephemeral fermion pairs. It will be captured for a while, then released with the same impulsion. Its propagation between two interactions will be in bare infinite speed, so all of the total time propagation is due to the time spent captured by the ephemeral pairs, which leads to a finite total speed.
+This process sounds natural when we consider that, in the vacuum, the time and space are carried by the compton scale and the fermion lifetime. This conception is far to be a new one, and is used in numerous model as in reference (ref).
+
+We can write that the total mean time $\bar T$ for a photon to cross a length $L$ is:
+
+\[\bar T=\sum_i L\sigma_i N_i \frac {\tau_i} {2}\]
+
+Where $N_i$ is the density given in subsection (ref) and $\sigma_i$ is the cross section of a photon on a fermion pair.
+
+Strong constraints have been done on the vacuum phase velocity and dispersion (ref), therefore we know that the vacuum should not be a dispersive medium. It induces that the cross section should be independant on the photon energy. The total impulsion should be conserved, therefore we assume that the cross section should be proportionnal to the surface of the volume unit $\lambda^2_C$ and the square of the charge unit. Then we can express the cross section as:
+%ask why the square of the charge ?
+
+\[ \sigma_i = k_\sigma Q^2_i \lambda^2_{C_i}\]
+
+From the Heisenberg principle, we can note that the lifetime of the pairs $\tau_i = \hbar/ 2W_i$. It permits to write the mean of the group velocity as:
+
+\[
+\begin {array} {r c l}
+\bar {c}_{group} & = & \frac {L} {\bar T}\\
+                 & = & \frac {1} {\sum_i\sigma_iN_i \tau_i/2}\\
+                 & = &  \frac {K_W} { (K^2_W - 1)^{3/2}} \frac {16\pi} {k_\sigma \sum_iQ^2_i} c_{rel}
+\end {array}
+\]
+
+If $\bar {c}_{group} = c_{rel}$, it corresponds to a cross-section $\sigma_i=4\times 10^{-26}m^2$ on an ephemeral pair.
+%ask for the remark in the equation 31
+
+This implies that the photon velocity depends also ypon the charge units in the ephemeral pairs, but still not upon there masses nor the density.
+
+The photons will propagate, on average, along the light cone, independently of the inertial frame, which is exiged by the special relativity. This mechanism relies on the notion of an absolute frame for the vacuum at rest. It is compatible with the Lorentz-Fitzgerald definition of the special relativity.
+
+This average speed will be dependant on a stochastic effect due to the probability to interact or not with an ephemeral fermion pair. This probability will imply, for the same path, a fluctuation of the number of interactions, and consequently a fluctuation on the propagation path of each photon, as a particle.
+
+We can write that the variance of the propagation time $T$ of a photon through a distance $L$ is:
+
+\[\sigma_T^2=\sum_i \left(\sigma^2_{N_{stop,i}} \bar {t}^2_{stop,i}+\bar {N}_{stop,i}\sigma^2_{t,i}\right)\]
+
+where $\bar {t}^2_{stop,i}=\tau_i/2$ is the stop time mean on a $i$-type pair, $\sigma^2_{t,i}=\tau^2_i$/12 its variance and $\sigma^2_{N_{stop,i}}$ the variance of the number of interactions. So we can write:
+
+\[\sigma^2_T=\frac 13 \sum_i \bar {N}_{stop,i}\tau^2_i=\frac L3 \sum_i \sigma_iN_i\tau^2_i\]
+
+It permits to write:
+
+\[\sigma_T=\frac {\sqrt{L\lambda_{C}}} {c_{rel}} \frac {1} {\sqrt {96 \pi K_W}}\]
+
+In this model, if $K_W=31.9$, the predicted fluctuation is:
+
+\[\sigma_T\approx 50 \text{ as.m}^{-1/2}\]
+
+We note that the fluctuation will vary with the square root of the distance $L$. Therefore this model could be confirmed by a multiple distances measurement of the light propagation time in the vacuum.
+
+We note also that it varies with the square root of the pair energy. This implies that, in the foregoing example of an energy distribution of $dW_K/W_K^2$, we have a fluctuation of $\sigma_T\approx 40 \text{ as.m}^{-1/2}$, which stays in the same order of magnitude. To reduce the effect by one order of magnitude the energy should be at least $W_K=100$, which leads to a energy $100$ times higher than the fermions masses. Furthermore, since there is not yet an interpretation on the $W_K$ value, it can have any distribution (for instance, black body distribution), also distributions that can lead to the case of a $W_K<1$. In those cases we go out of relative scale for the fermion pairs, while we increase $\sigma_T$ by one order of magnitude only (current experimental limit). Those considerations mean that those fluctuations have a bigger probability to be detectable than to be out of reach from the current technologies.
+
+It is also very important to note that this fluctuations concern only the group velocity. The phase velocity, on which strong limits were put (ref), is very weakly impacted by this effect.
+
+These orders of magnitude are reacheable in the current state of the optics technologies. The last given limit is $\sigma_T=200\text{ as.m}^{-1/2}$, and was put from cosmologic observations (ref) (based on assumption as a negligeable cosmologic scattering).
+
+We will see in the next part how these values can be measured and we will developp the different phases of the proposal.
+
+
+
+
+\section{Laser choice}
+A femtosecond laser is a laser which emits optical pulses with a duration well below 1 ps (ultrashort pulses), i.e., in the domain of femtoseconds (1 fs = $10^{-15}$ s). It thus also belongs to the category of ultrafast lasers or ultrashort pulse lasers. The generation of such short pulses is nearly always achieved with the technique of passive mode locking.
+
+
+
+
+
+
+
+
+
+
+\end{document}
+
