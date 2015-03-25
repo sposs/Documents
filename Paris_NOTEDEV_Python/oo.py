@@ -1,4 +1,4 @@
-class A():
+class A(object):
     pass
 
 my_object = A

@@ -198,7 +198,6 @@ C++ construct:
 \lstinputlisting[style=customcpp]{cppcomp.cpp}
 PYTHON:
 \lstinputlisting[style=custompy]{pycomp.py}
-
 \end{frame}
 
 \begin{frame}
@@ -208,11 +207,23 @@ C++ (in .h):
 in .cpp:
 \lstinputlisting[style=customcpp]{imp.cpp}
 \end{frame}
+
 \begin{frame}
 \frametitle{Class definitions}
 PYTHON:
 \lstinputlisting[style=custompy]{class.py}
 \end{frame}
+
+
+\begin{frame}
+\frametitle{Multiple inheritance}
+\lstinputlisting[style=custompy]{inheritance.py}
+
+No 'Diamond of doom' problems!
+
+C++ has it, JAVA doesn't by preventing multiple inheritance.
+\end{frame}
+
 
 \begin{frame}
 \frametitle{String manipulation}
@@ -234,7 +245,7 @@ C++:
 PYTHON:
 \begin{itemize}
 \item str() is array like
-\item No difference between ' and ", can be used for
+\item No difference between ' and ",
 \lstinputlisting[style=custompy]{str.py}
 \item simple operations
 \lstinputlisting[style=custompy]{strpy.py}
@@ -279,6 +290,19 @@ Due to its large user community:
 \end{itemize}
 \end{frame}
 
+\section{Editors}
+\begin{frame}
+\frametitle{Which IDE to use?}
+\alert{Proper coding environment essential for efficiency.}\\
+Recommendations
+\begin{itemize}
+\item PyCharm (JetBrains)
+\item Eclipse (Eclipse foundation)
+\item Emacs (with Python mode or Elpy)
+\item Vim
+\end{itemize}
+\end{frame}
+
 \section{Conclusion}
 
 \begin{frame}
@@ -293,23 +317,5 @@ PYTHON is:
 \end{itemize}
 \end{frame}
 
-\section{Libraries for physicist}
-
-\begin{frame}
-\frametitle{Numpy}
-\end{frame}
-
-\section{Use examples}
-
-\begin{frame}
-\frametitle{Astronomers}
-\end{frame}
-
-\appendix
-\section{Bibliography}
-
-\begin{frame}
-\frametitle{Bibliography}
-\end{frame}
 
 \end{document}
