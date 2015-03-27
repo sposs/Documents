@@ -82,4 +82,222 @@
 \tableofcontents
 \end{frame}
 
+\section{The need}
+\begin{frame}
+\frametitle{Why do we need this?}
+\begin{itemize}
+\item Statistical trust in results: significance of one point?
+\pause
+\item Optimize: 'best' set of parameters' values
+\pause
+\item Investigate phase space: impact of correlations
+\begin{itemize}
+\item How will a structure behave at different temperature/higher current/different geometry?\\ 
+\pause
+\alert{$\rightarrow$ Predict behavior}
+\end{itemize}
+\pause
+\item Numerical validation when no analytical model available
+\end{itemize}
+\end{frame}
+
+\section{The goal}
+\begin{frame}
+\frametitle{What we want to achieve}
+\begin{block}{}
+Analyse many phase space points quickly: \\try 1000s of combinaisons
+\end{block}
+\begin{block}{}
+Access results efficiently\\
+Ensure reproducibility
+\end{block}
+\end{frame}
+
+\section{Python intermission}
+\begin{frame}
+\frametitle{Intermission}
+\centering
+\includegraphics[width=\textwidth]{python-logo-master-v3-TM.png}
+\end{frame}
+
+\begin{frame}
+\frametitle{Why PYTHON?}
+\begin{itemize}
+\item Modern Object Oriented language
+\item Large user base and lots of libraries
+\item Suitable for task definition
+\item Flexible
+\item Easy to write/read
+\item No compilation needed
+\end{itemize}
+See other presentations.
+\end{frame}
+
+\section{Version control}
+\begin{frame}
+\frametitle{Version control}
+\begin{block}{Why?}
+\begin{itemize}
+\item Compare different version of an analysis
+\item Share with others
+\item Traceability
+\end{itemize}
+\end{block}
+\end{frame}
+\begin{frame}
+\frametitle{Version control}
+\begin{block}{How?}
+\begin{itemize}
+\item[SVN] Centralized: need to get all changes from master server every time
+\item[\alert{Git}] Distributed: all history local, can have many parallel copies
+\end{itemize}
+\includegraphics[width=0.5\textwidth]{svn-name-banner.jpg}$\quad$
+\includegraphics[width=0.3\textwidth]{Git-Logo-2Color.png}
+\end{block}
+\end{frame}
+
+\begin{frame}
+\frametitle{Version control}
+\centering
+\alert{Version control is essential!}
+\end{frame}
+
+\section{Computing}
+\begin{frame}
+\frametitle{Computing paradigms}
+\begin{itemize}
+\item[Parallelize] Process complex computations using all cores of a PC or many cores of a supercomputer. Uses Threading/Multiprocess. Tasks exchange data while running.
+\item[Distribute] Send multiple times the same task with different inputs to different unrelated computers.
+\end{itemize}
+MPI is in between.
+\end{frame}
+
+\section{Program wrapping}
+\begin{frame}
+\frametitle{Execute a program indirectly}
+Why?
+\begin{itemize}
+\item Distribute: run the program remotely, i.e. without looking. 
+\begin{itemize}
+\item Configure individual runs
+\item Control the program's behavior: error catching/recovery
+\end{itemize}
+\item Simplify the interface: expose only the essential components
+\end{itemize}
+$\rightarrow$ wrap it!
+\end{frame}
+
+\begin{frame}
+\frametitle{Wrapping}
+\begin{itemize}
+\item Produce the steering files / command line arguments
+\item Control them
+\item Call the program (PYTHON's subprocess)
+\item Check the output
+\end{itemize}
+$\rightarrow$ Make sure no intervention is required
+\end{frame}
+
+\section{Distributing the tasks}
+\begin{frame}
+\frametitle{Task distribution}
+A Task:
+\begin{itemize}
+\item should be executed
+\item only once
+\item should not compete for resources
+\end{itemize}
+\alert{Proper scheduling needed}
+\end{frame}
+
+\subsection{DIRAC}
+\begin{frame}
+\frametitle{DIRAC}
+Distributed computing solution for HEP
+
+Now available for other communities
+
+SOA based
+
+Workload management, data management, multiple users
+different end points: grid, local machines, local cluster, etc
+
+
+\end{frame}
+
+\section{Collecting results}
+\begin{frame}
+\frametitle{Data collection}
+Results should be available
+\begin{itemize}
+\item quickly
+\item in a logical way
+\end{itemize}
+\end{frame}
+
+\subsection{Text files}
+\begin{frame}
+\frametitle{Text files}
+\begin{itemize}
+\item large files
+\item complex to parse when data > 3d
+\item loss of precision due to truncation
+\item Usualy has header documentation 
+\end{itemize}
+Example: CSV
+\end{frame}
+
+\subsection{Binary files}
+\begin{frame}
+\frametitle{Binary file storage}
+\begin{itemize}
+\item Full precision
+\item Hard to parse
+\item Separate documentation
+\item Can be compressed
+\end{itemize}
+Examples: HDF5, netcdf
+\end{frame}
+
+\subsection{Database}
+\begin{frame}
+\frametitle{Database systems}
+\begin{itemize}
+\item Use relations between data (RDMS)
+\item Many systems exist: MySQL, PostgresSQL, ORACLE, SQLite, etc.
+\item Use logical queries to get data
+\item Interface complex: description of data model, access to server, etc.
+\begin{itemize}
+\item SQLAlchemy
+\end{itemize}
+\end{itemize}
+Other system: SciDB
+\end{frame}
+
+
+\section{User interfaces}
+\begin{frame}
+\frametitle{User Interfaces categories}
+\begin{block}{One user}
+Simple command line: parameter validation done by user coding
+\end{block}
+\begin{block}{Many users}
+Parameter validation\\
+Options presented
+\end{block}
+\end{frame}
+
+\begin{frame}
+\frametitle{UI Types}
+\begin{block}{Command Line Interface}
+Simple/straightforward, clumsy, ugly, portable
+\end{block}
+\begin{block}{Graphical User Interfaces}
+Harder to code, good looking, not portable as requires client specific code
+\end{block}
+\begin{block}{Web GUI}
+Mix of both, requires server+client, very portable
+\end{block}
+\end{frame}
+
 \end{document}

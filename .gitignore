@@ -1,1 +1,11 @@
 .nfs*
+*/*.toc
+*/*.inc
+*/*.pdf
+*/*.synctex*
+*/*.log
+*/*.nav
+*/*.out
+*/*.snm
+*/*.aux
+*/*.pyc

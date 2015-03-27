@@ -1,7 +1,0 @@
-\beamer@endinputifotherversion {3.24pt}
-\select@language {english}
-\beamer@sectionintoc {1}{What is PYTHON?}{3}{0}{1}
-\beamer@sectionintoc {2}{Why use it?}{5}{0}{2}
-\beamer@sectionintoc {3}{Libraries for physicist}{18}{0}{3}
-\beamer@sectionintoc {4}{Use examples}{19}{0}{4}
-\beamer@sectionintoc {5}{Bibliography}{20}{1}{5}

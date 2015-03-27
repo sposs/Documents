@@ -1,8 +1,8 @@
 #include "parent.h"
 
-class MyObject: public parent {
+class MyObject: public Parent {
 public:
-  MyObject(int arg){parent(arg);}
+  MyObject(int arg){Parent(arg);}
   ~MyObject();
   
   int my_function(int a);
