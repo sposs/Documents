@@ -113,7 +113,7 @@ Ensure reproducibility
 \end{block}
 \end{frame}
 
-\section{Python intermission}
+\section{Utilities}
 \begin{frame}
 \frametitle{Intermission}
 \centering
@@ -133,7 +133,6 @@ Ensure reproducibility
 See other presentations.
 \end{frame}
 
-\section{Version control}
 \begin{frame}
 \frametitle{Version control}
 \begin{block}{Why?}
@@ -177,7 +176,7 @@ MPI is in between.
 \frametitle{Execute a program indirectly}
 Why?
 \begin{itemize}
-\item Distribute: run the program remotely, i.e. without looking. 
+\item Distribute computations
 \begin{itemize}
 \item Configure individual runs
 \item Control the program's behavior: error catching/recovery
@@ -198,32 +197,6 @@ $\rightarrow$ wrap it!
 $\rightarrow$ Make sure no intervention is required
 \end{frame}
 
-\section{Distributing the tasks}
-\begin{frame}
-\frametitle{Task distribution}
-A Task:
-\begin{itemize}
-\item should be executed
-\item only once
-\item should not compete for resources
-\end{itemize}
-\alert{Proper scheduling needed}
-\end{frame}
-
-\subsection{DIRAC}
-\begin{frame}
-\frametitle{DIRAC}
-Distributed computing solution for HEP
-
-Now available for other communities
-
-SOA based
-
-Workload management, data management, multiple users
-different end points: grid, local machines, local cluster, etc
-
-
-\end{frame}
 
 \section{Collecting results}
 \begin{frame}
@@ -239,9 +212,9 @@ Results should be available
 \begin{frame}
 \frametitle{Text files}
 \begin{itemize}
-\item large files
-\item complex to parse when data > 3d
-\item loss of precision due to truncation
+\item Large files
+\item Complex to parse when data > 3d
+\item Loss of precision due to truncation
 \item Usualy has header documentation 
 \end{itemize}
 Example: CSV
@@ -299,5 +272,26 @@ Harder to code, good looking, not portable as requires client specific code
 Mix of both, requires server+client, very portable
 \end{block}
 \end{frame}
+
+\begin{frame}
+\frametitle{Intermediate summary}
+We have now:
+\begin{itemize}
+\item A program that can be executed indirectly
+\item Reproducibility
+\item A means to control the I/O
+\item A way to store the results
+\item User convenience
+\end{itemize}
+What we need:
+\begin{itemize}
+\item Run many times similar things
+\end{itemize}
+
+\centering
+\includegraphics[width=0.5\textwidth]{Dirac_logo_RGB.png}
+
+\end{frame}
+
 
 \end{document}
