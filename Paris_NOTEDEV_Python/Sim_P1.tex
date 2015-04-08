@@ -165,9 +165,11 @@ See other presentations.
 \begin{frame}
 \frametitle{Computing paradigms}
 \begin{itemize}
-\item[Parallelize] Process complex computations using all cores of a PC or many cores of a supercomputer. Uses Threading/Multiprocess. Tasks exchange data while running.
+\item[Parallelize] Process complex computations using all cores of a PC or many cores of a supercomputer.\\ Uses Threading/Multiprocess.\\ Tasks exchange data while running.
+\pause
 \item[Distribute] Send multiple times the same task with different inputs to different unrelated computers.
 \end{itemize}
+\pause
 MPI is in between.
 \end{frame}
 
@@ -181,9 +183,11 @@ Why?
 \item Configure individual runs
 \item Control the program's behavior: error catching/recovery
 \end{itemize}
+\pause
 \item Simplify the interface: expose only the essential components
 \end{itemize}
-$\rightarrow$ wrap it!
+\pause
+\alert{$\rightarrow$ wrap it}
 \end{frame}
 
 \begin{frame}
@@ -194,7 +198,8 @@ $\rightarrow$ wrap it!
 \item Call the program (PYTHON's subprocess)
 \item Check the output
 \end{itemize}
-$\rightarrow$ Make sure no intervention is required
+\pause
+\alert{$\rightarrow$ Make sure no intervention is required.}
 \end{frame}
 
 
@@ -215,7 +220,7 @@ Results should be available
 \item Large files
 \item Complex to parse when data > 3d
 \item Loss of precision due to truncation
-\item Usualy has header documentation 
+\item Usually has header documentation 
 \end{itemize}
 Example: CSV
 \end{frame}
@@ -236,9 +241,12 @@ Examples: HDF5, netcdf
 \begin{frame}
 \frametitle{Database systems}
 \begin{itemize}
-\item Use relations between data (RDMS)
+\item Use relations between data (RDBMS)
 \item Many systems exist: MySQL, PostgresSQL, ORACLE, SQLite, etc.
 \item Use logical queries to get data
+\begin{itemize}
+\item SELECT current FROM Measures WHERE ID=23;
+\end{itemize}
 \item Interface complex: description of data model, access to server, etc.
 \begin{itemize}
 \item SQLAlchemy
@@ -254,6 +262,7 @@ Other system: SciDB
 \begin{block}{One user}
 Simple command line: parameter validation done by user coding
 \end{block}
+\pause
 \begin{block}{Many users}
 Parameter validation\\
 Options presented
@@ -265,9 +274,11 @@ Options presented
 \begin{block}{Command Line Interface}
 Simple/straightforward, clumsy, ugly, portable
 \end{block}
+\pause
 \begin{block}{Graphical User Interfaces}
 Harder to code, good looking, not portable as requires client specific code
 \end{block}
+\pause
 \begin{block}{Web GUI}
 Mix of both, requires server+client, very portable
 \end{block}
