@@ -1,0 +1,141 @@
+% Copyright 2004 by Manuel Carro <mcarro@fi.upm.es>
+%
+% This file may be distributed and/or modified
+%
+% 1. under the LaTeX Project Public License and/or
+% 2. under the GNU Public License.
+%
+% See the file doc/licenses/LICENSE for more details.
+\ProvidesPackageRCS $Header: beamerthemeAlpesLasers.sty,v 1. 2013/12/17 $
+
+\mode<presentation>
+
+\newdimen\beamer@sidebarwidth
+\newdimen\beamer@headheight
+\usebeamerfont{frametitle}
+\beamer@sidebarwidth=2.\baselineskip
+\beamer@headheight=2.5\baselineskip
+\reset@font
+
+\def\beamer@lefttext{left}
+
+% Package options
+\DeclareSymbolFont{extraup}{U}{zavm}{m}{n}
+\DeclareMathSymbol{\vardiamond}{\mathalpha}{extraup}{87}
+
+\DeclareOptionBeamer{hideothersubsections}[]{\beamer@nav@subsectionstyle{show/show/hide}}
+\DeclareOptionBeamer{hideallsubsections}[]{\beamer@nav@subsectionstyle{hide}}
+
+\DeclareOptionBeamer{width}{\beamer@sidebarwidth=#1}
+\DeclareOptionBeamer{height}{\beamer@headheight=#1}
+\DeclareOptionBeamer{left}{\def\beamer@sidebarside{left}}
+\DeclareOptionBeamer{right}{\def\beamer@sidebarside{right}}
+\ExecuteOptionsBeamer{left}
+\ProcessOptionsBeamer
+
+%\usecolortheme[RGB={196,0,9}]{structure}
+
+% Complete color themes:
+% albatross, beetle, crane, dove, fly, seagull
+
+% Inner color themes:
+% lily, orchid, rose
+
+% Outer color themes:
+% whale, seahorse, dolphin(?)
+
+%\usecolortheme{orchid} % Establishes inner, dark colors
+% Tills' opinion: should be done in an inner theme, not here.
+
+\mode<presentation>
+
+\definecolor{AlRed}{rgb}{0.7686274509803922, 0, 0.03529411764705882}
+%%\logo{\includegraphics[width=3cm]{AlpesLaserLogo.jpg}}
+%
+%%\setbeamercolor*{title in head/foot}{fg=black}
+\setbeamercolor{frametitle}{fg=black}
+\setbeamercolor{structure}{fg=black}
+\setbeamercolor{palette primary}{fg=black}
+\setbeamercolor{palette secondary}{fg=white, bg=AlRed}
+
+\setbeamercolor{alred}{fg=black,bg=AlRed}
+\setbeamercolor{title}{parent=palette secondary}
+\setbeamercolor{subtitle}{parent=palette secondary}
+\setbeamercolor{date}{parent=palette secondary}
+\setbeamercolor{author}{parent=palette secondary}
+%\setbeamercolor{title}{fg=black, bg=white}
+
+\defbeamertemplate*{navigation symbols} {}
+
+%
+%
+
+\logo{\includegraphics[width=2.5cm]{AlpesLaserLogo}}
+\setbeamertemplate{sidebar right}{}  % remove logo in right sidebar
+% from sidebar theme
+\setbeamertemplate{headline}[text line]
+{%
+  \begin{beamercolorbox}[wd=\paperwidth,dp=1ex]{frametitle}
+    \vskip 3mm
+    \hskip 3mm
+    \insertlogo%
+  \end{beamercolorbox}
+
+}%
+\setbeamerfont{frametitle}{size={\fontsize{17}{17}}}
+
+\setbeamerfont{itemize/enumerate body}{size={\fontsize{14}{16}}}
+\setbeamerfont{itemize/enumerate subbody}{size={\fontsize{12}{14}}}
+
+\newlength{\logowidth}
+\settowidth{\logowidth}{\insertlogo}
+\setbeamertemplate{frametitle}{%
+  \vspace{-35pt}
+
+  %\settowidth{\logowidth}{\insertlogo}
+  \hspace{10pt}
+  {\usebeamerfont{frametitle}\raggedleft\insertframetitle}
+}
+\setbeamerfont{date}{size=\tiny}
+\setbeamertemplate{title page}
+{
+   \begin{beamercolorbox}[wd=\paperwidth,ht=7.5cm,dp=5cm]{palette secondary}%
+     \begin{flushright}
+       %\vskip 8cm
+       \usebeamercolor{title}\usebeamerfont{title}\inserttitle\hspace{1cm}~\par
+       \usebeamerfont{subtitle}\insertsubtitle\hspace{1cm}~\par
+       ~\par
+       \usebeamerfont{date}\insertdate\hspace{1cm}~
+     \end{flushright}
+
+  \end{beamercolorbox}
+}
+
+
+\setbeamertemplate{footline}
+{
+  \leavevmode
+  \begin{beamercolorbox}[wd=\paperwidth,ht=2.ex,dp=0.5ex,right]{palette secondary}%secondary
+    \usebeamerfont{date in head/foot}
+    \insertframenumber{}\hspace{2ex}
+  \end{beamercolorbox}%
+}
+
+
+\useitemizeitemtemplate{%
+    \tiny\raise2pt\hbox{\color{black}$\bullet$}%
+}
+\usesubitemizeitemtemplate{%
+     \Tiny\raise2pt\hbox{\color{black}$\vardiamond$}%
+}
+
+\usesubsubitemizeitemtemplate{%
+    \small\raise2pt\hbox{\color{black}$\bigstar$}%
+}
+
+
+\setbeamersize{text margin left=1.\logowidth, text margin right=1cm}
+
+
+
+\mode<all>
