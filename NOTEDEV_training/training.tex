@@ -116,7 +116,7 @@ Definitions
 
 
 \begin{frame}
-Simulation framework
+\frametitle{Simulation framework}
 \includegraphics[width=\textwidth]{Horse_simulator_WWI}
 \end{frame}
 \note{Defining simulation framework goes to defining modeling. Wikipedia has a nice article on this, where the image is taken from. It's a horse simulator used during WW1. It's important to define properly what we mean by simulation as it drives the rest of the talk.}
@@ -127,10 +127,14 @@ Simulation framework
 \end{frame}
 \note{Starting from a real life situation, we want to put a theory on it, because we want to predict the future behavior of the system. If there is a theory, there is a model. The model may not be a complete representation of the theory. This, the simulation has 2 purposes: improve the model when comparing with experiment, or improve the theory by numerically checking its soundness.}
 
+%\begin{frame}
+%\includegraphics[width=1.1\textwidth]{agentbased-modeling-system-dynamics-or-discreteevent-simulation-modeling-paradigm-for-supply-chains-simulation-3-638}
+%\end{frame}
+%\note{This shows more or less the same ideas as previously}
+
 \begin{frame}
-\includegraphics[width=1.1\textwidth]{agentbased-modeling-system-dynamics-or-discreteevent-simulation-modeling-paradigm-for-supply-chains-simulation-3-638}
+\alert{Simulations are essential for science!}
 \end{frame}
-\note{This shows more or less the same ideas as previously}
 
 
 \section{The usual situation}
@@ -139,6 +143,7 @@ Simulation framework
 \includegraphics[width=\textwidth]{painful_but_true}
 \end{frame}
 \note{I will now tell you a bit about how things are usually done during a PhD (and beyond). It's a bit ugly and some of you may laugh due to experience.}
+
 \begin{frame}
 \frametitle{1st year PhD}
 \begin{itemize}
@@ -268,13 +273,7 @@ A big mess!
 Documentation is fundamental! People tend to overlook it, because they don't see the point. They don't see that maybe, someday, someone will reuse their stuff. Or they think that no one cares. It's wrong!
 }
 
-\begin{frame}
-\frametitle{Documentation}
-\centering
-\includegraphics[width=0.6\textwidth]{goodcomments}
 
-\end{frame}
-\note{Example of bad doc!}
 
 \begin{frame}
 \frametitle{Documentation}
@@ -283,12 +282,21 @@ Documentation is fundamental! People tend to overlook it, because they don't see
 \item Tests (if any) aren't enough
 \item Think documentation as teaching
 \end{itemize}
+\url{http://docs.writethedocs.org/}
 \end{frame}
 \note{ 
 Remember there is someone that will be using your stuff after you left!
 
 Tests should exist!
 }
+
+\begin{frame}
+\frametitle{Documentation}
+\centering
+\includegraphics[width=0.6\textwidth]{goodcomments}
+
+\end{frame}
+\note{Example of bad doc!}
 
 \begin{frame}
 \frametitle{Coding practices}
@@ -299,7 +307,7 @@ Tests should exist!
 
 \subsection{PYTHON}
 \begin{frame}
-\frametitle{Python}
+\includegraphics[width=\textwidth]{python-logo-master-v3-TM}\\
 Perfect scripting language for the physicist!
 \end{frame}
 \note{Been using Python for many years. Prefer it to C++. Easy to learn and use. Lack of compilation saves many headaches.}
@@ -338,29 +346,63 @@ Many other utilities available!
 \frametitle{Control your applications}
 \begin{itemize}
 \item Control: keep track of your inputs and outputs
+\item Know your application status
+\item Ideally: connect your application with data I/O
 \end{itemize}
 \end{frame}
 
 \subsection{Data storage}
 \begin{frame}
 \frametitle{Data storage and metadata}
+Know your data: what, where?
+\begin{itemize}
+\item How to store data files?
+\item Prefered: distributed, backed-up, DB backed system
+\end{itemize}
+Metadata:
+\begin{itemize}
+\item data about data or information about information
+\end{itemize}
+Technical solution?
 \end{frame}
 
 \begin{frame}
 \frametitle{Data base systems}
+RDBMS: SQL
+\begin{itemize}
+\item MySQL
+\item PostgreSQL
+\item Oracle
+\end{itemize}
+NoSQL
+\begin{itemize}
+\item MongoDB
+\item CouchDB
+\item Graph DB (ex. neo4j)
+\end{itemize}
 \end{frame}
 
 \begin{frame}
 \frametitle{iRods}
+Integrated Rule-Oriented Data System
+\begin{itemize}
+\item data discovery using a metadata catalog
+\item automates data workflows
+\item enables secure collaboration
+\item implements data virtualization
+\end{itemize}
+\url{https://irods.org}
 \end{frame}
 
 \begin{frame}
 \frametitle{Sumatra}
+Track down your simulation results and provenance!\\
+\url{neuralensemble.org/sumatra/}
 \end{frame}
 
 \section{Real life example}
 \begin{frame}
-\frametitle{Real life example: Alpes Lasers simulation framework}
+\frametitle{Alpes Lasers simulation framework}
 \end{frame}
 
 \section{Conclusions}
