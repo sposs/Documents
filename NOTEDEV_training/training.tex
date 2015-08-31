@@ -1,4 +1,4 @@
-\documentclass[14pt]{beamer}
+\documentclass[14pt,notes]{beamer}
 
 
 \usepackage{color}
@@ -106,7 +106,7 @@ Maybe it's not worth telling people about this stuff, maybe it's worth for them 
 
 \section{Definitions}
 \begin{frame}
-Definitions
+\includegraphics[width=\textwidth]{definition}
 \end{frame}
 
 \begin{frame}
@@ -149,12 +149,14 @@ Definitions
 \begin{itemize}
 \item Create files on the fly, in the same directory
 \item Overwrite code, changes drastically every day, DRY principle NOT applied
-\item Code monolithic as much as possible, data structure unclear
 \item Output are named test\_1, test\_2, test\_1\_altered, lum\_check\_260815, plots are all in the same directory
+\item Code monolithic as much as possible, data structure unclear
 \end{itemize}
 \end{frame}
 \note{
-A big mess!
+A big mess! Usually, you don't have any idea about you are doing then, so you do not think ahead. Not your fault! So you tend to overwrite stuff, both files and code, without thinking that some results may have already been found. 
+
+Also, in the code, you usually have one big file containing one big function, called main, which contains all the code you can think of. As for the handling of the inputs and outputs, there is no clear logic: it's done as it comes. Usually, you'd have many times he same main function, in different code pieces. The Don't repeat yourself principle is not applied at all!
 }
 
 \begin{frame}
@@ -166,6 +168,12 @@ A big mess!
 \item All analysis are slightly different, can hardly be shared between run points
 \end{itemize}
 \end{frame}
+\note{In case you use an external application (commercial software is legion in this domain), you tend not to care too much about the version and the feqatures: as long as it does what you want (or what you think you want), you are good to go. True? NOO! Applications are buggy in general, or there is one corner case that isn't handled yet, and eventually, you need to change the version. As for data: it's stored usually on your own computer despite the availability of other solutions (not so true anymore due to google drive and such). What happens if computer dies? 
+
+Sharing information with colleagues is funny too: you send them some code and some data files, they come back to you with a little problem, making you realize that to procesws the data, you'd have to look thru old code version, which you do not have due to the situation before! So you have to rewrite lots of code!
+
+In any case, you'd have many version, slightly different, of essentially the same thing!
+}
 
 \begin{frame}
 \frametitle{2nd year PhD}
@@ -176,7 +184,12 @@ A big mess!
 \item Application version is checked regularly, new features asked to dev being added on demand (if possible)
 \end{itemize}
 \end{frame}
-\note{\begin{itemize}
+\note{Situation a bit better: you use a proper directory structure that holds some meta information about your data (more on that later), and your code is now organized by date: you have many copies, but they each have a date. Even better, the many versions of your code tend to re-use functions! 
+
+You are now aware that your commercial application tends to evolve, possibly thanks to your input, so you now take that into account. 
+
+Several questions remain:
+\begin{itemize}
 \item How to add info in fixed path? variable and rigid
 \item How do you know which code contains which change?
 \end{itemize}
@@ -186,15 +199,14 @@ A big mess!
 \begin{itemize}
 \item Log book used
 \item Data shared via NFS/FTP/SCP/etc. 
-\item Code base clearer 
 \item Recipes to process data in place, still done manually
 \end{itemize}
 \end{frame}
 \note{
 \begin{itemize}
-\item Log book stores links between data and source/inputs
-\item training takes a few days
-\item API changes not backward compatible
+\item logbook: more or less efficiently and effectively: link data and dates and inputs and outputs. Huge work to write those down, so sometimes you don't do it because everyone is lazy. 
+\item data sharing: use transfer protocols, no mail
+\item data processing: in the logbook. But no one else, plus code changes often still
 \end{itemize}
 }
 
@@ -209,6 +221,7 @@ A big mess!
 \end{itemize}
 \end{frame}
 \note{
+Finally, good practices arrive!
 \begin{itemize}
 \item flexible, extensible, easy to find what you want
 \item Use relational databases
@@ -241,6 +254,7 @@ A big mess!
 \includegraphics[width=0.8\textwidth]{wooden_tool_box}
 
 \end{frame}
+\note{Following slides show the tools that are useful}
 
 \subsection{Coding practices}
 \begin{frame}
