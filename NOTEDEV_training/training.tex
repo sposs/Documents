@@ -312,7 +312,6 @@ Perfect scripting language for the physicist!
 \end{frame}
 \note{Been using Python for many years. Prefer it to C++. Easy to learn and use. Lack of compilation saves many headaches.}
 
-
 \begin{frame}
 \frametitle{Python}
 \begin{itemize}
@@ -367,7 +366,7 @@ Technical solution?
 \end{frame}
 
 \begin{frame}
-\frametitle{Data base systems}
+\frametitle{Database systems}
 RDBMS: SQL
 \begin{itemize}
 \item MySQL
@@ -380,6 +379,7 @@ NoSQL
 \item CouchDB
 \item Graph DB (ex. neo4j)
 \end{itemize}
+Python bindings available for most!
 \end{frame}
 
 \begin{frame}
@@ -396,16 +396,83 @@ Integrated Rule-Oriented Data System
 
 \begin{frame}
 \frametitle{Sumatra}
-Track down your simulation results and provenance!\\
+Track down your simulation provenance and results!\\
 \url{neuralensemble.org/sumatra/}
 \end{frame}
 
 \section{Real life example}
 \begin{frame}
 \frametitle{Alpes Lasers simulation framework}
+Goal:
+\begin{itemize}
+\item Simulate (predict) 1000s of QCL designs
+\end{itemize}
+~\\Problems:
+\begin{itemize}
+\item No on-site computing resources
+\item $\approx70$ parameters
+\item Fast runs: 2-3 minutes
+\item Reduce costs
+\end{itemize}
+\end{frame}
+
+\begin{frame}
+\frametitle{Alpes Lasers simulation framework}
+Solutions:
+\begin{itemize}
+\item Cloud: AWS
+\item Database
+\item Python
+\item Decouple application from task definition
+\item Decouple task management from execution backend
+\end{itemize}
+\end{frame}
+
+\begin{frame}
+\frametitle{Alpes Lasers simulation framework}
+\includegraphics[width=1.3\textwidth]{simudb}
+\end{frame}
+
+\begin{frame}
+\frametitle{Alpes Lasers simulation framework}
+\lstinputlisting[language=python, style=custompy]{input.py}
+\end{frame}
+
+\begin{frame}
+\frametitle{Alpes Lasers simulation framework}
+Tasks are executed by DIRAC\\
+~\\
+DIRAC is a complete distributed computing solution from CERN\\
+~\\
+Coupling lose: can be any backend that can read from DB.
+\end{frame}
+
+\begin{frame}
+\frametitle{Alpes Lasers simulation framework}
+Finding data:
+\lstinputlisting[language=python, style=custompy]{read.py}
+\end{frame}
+
+\begin{frame}
+\frametitle{Alpes Lasers simulation framework}
+System operational, used by many in the company
 \end{frame}
 
 \section{Conclusions}
+\begin{frame}
+\frametitle{Conclusions}
+\begin{itemize}
+\item Many ideas
+\item Many tools
+\item Sometimes hard to implement
+\item \alert{Really worth it!}
+\end{itemize}
+\end{frame}
+\begin{frame}
+\centering
+\includegraphics[width=0.7\textwidth]{doit}
+
+\end{frame}
 \begin{frame}
 \includegraphics[width=\textwidth]{sad_truth}
 \end{frame}
