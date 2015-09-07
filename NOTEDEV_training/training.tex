@@ -1,9 +1,9 @@
-\documentclass[14pt,notes]{beamer}
-
+\documentclass[14pt]{beamer}
+%\documentclass[a4paper]{article}
+%\usepackage[envcountsect]{beamerarticle}
 
 \usepackage{color}
 \usepackage{tikz}
-
 
 \mode<presentation>
 {
@@ -34,7 +34,6 @@
 \date{\today}
 % This is only inserted into the PDF information catalog. Can be left
 % out.
-\subject{PYTHON}
 
 \lstdefinestyle{custompy}{
   belowcaptionskip=1\baselineskip,
@@ -125,7 +124,7 @@ Maybe it's not worth telling people about this stuff, maybe it's worth for them 
 \frametitle{Why simulations?}
 \includegraphics[width=\textwidth]{733px-Molecular_simulation_process}
 \end{frame}
-\note{Starting from a real life situation, we want to put a theory on it, because we want to predict the future behavior of the system. If there is a theory, there is a model. The model may not be a complete representation of the theory. This, the simulation has 2 purposes: improve the model when comparing with experiment, or improve the theory by numerically checking its soundness.}
+\note{Starting from a real life situation, we want to put a theory on it, because we want to predict the future behavior of the system. If there is a theory, there is a model. The model may not be a complete representation of the theory. Thus, the simulation has 2 purposes: improve the model when comparing with experiment, or improve the theory by numerically checking its soundness.}
 
 %\begin{frame}
 %\includegraphics[width=1.1\textwidth]{agentbased-modeling-system-dynamics-or-discreteevent-simulation-modeling-paradigm-for-supply-chains-simulation-3-638}
@@ -156,7 +155,7 @@ Maybe it's not worth telling people about this stuff, maybe it's worth for them 
 \note{
 A big mess! Usually, you don't have any idea about you are doing then, so you do not think ahead. Not your fault! So you tend to overwrite stuff, both files and code, without thinking that some results may have already been found. 
 
-Also, in the code, you usually have one big file containing one big function, called main, which contains all the code you can think of. As for the handling of the inputs and outputs, there is no clear logic: it's done as it comes. Usually, you'd have many times he same main function, in different code pieces. The Don't repeat yourself principle is not applied at all!
+Also, in the code, you usually have one big file containing one big function, called main, which contains all the code you can think of. As for the handling of the inputs and outputs, there is no clear logic: it's done as it comes. Usually, you'd have many times the same main function, in different code pieces. The Don't Repeat Yourself principle is not applied at all!
 }
 
 \begin{frame}
@@ -168,9 +167,9 @@ Also, in the code, you usually have one big file containing one big function, ca
 \item All analysis are slightly different, can hardly be shared between run points
 \end{itemize}
 \end{frame}
-\note{In case you use an external application (commercial software is legion in this domain), you tend not to care too much about the version and the feqatures: as long as it does what you want (or what you think you want), you are good to go. True? NOO! Applications are buggy in general, or there is one corner case that isn't handled yet, and eventually, you need to change the version. As for data: it's stored usually on your own computer despite the availability of other solutions (not so true anymore due to google drive and such). What happens if computer dies? 
+\note{In case you use an external application (commercial software is legion in this domain), you tend not to care too much about the version and the features: as long as it does what you want (or what you think you want), you are good to go. True? NO! Applications are buggy in general, or there is one corner case that isn't handled yet, and eventually, you need to change the version. As for data: it's stored usually on your own computer despite the availability of other solutions (not so true anymore due to google drive and such). What happens if computer dies? 
 
-Sharing information with colleagues is funny too: you send them some code and some data files, they come back to you with a little problem, making you realize that to procesws the data, you'd have to look thru old code version, which you do not have due to the situation before! So you have to rewrite lots of code!
+Sharing information with colleagues is funny too: you send them some code and some data files, they come back to you with a little problem, making you realize that to process the data, you'd have to look thru old code version, which you do not have due to the situation before! So you have to rewrite lots of code!
 
 In any case, you'd have many version, slightly different, of essentially the same thing!
 }
